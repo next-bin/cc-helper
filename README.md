@@ -10,11 +10,23 @@
 
 ## Usage
 
+### 命令
+
 | Command             | Description            |
 | ------------------- | ---------------------- |
 | `cc-helper enable`  | Enable `/loop` feature |
 | `cc-helper disable` | Restore original       |
 | `cc-helper status`  | Check current status   |
+
+### Examples
+
+After enabling, use the `/loop` command in Claude Code:
+
+![/loop command hint](./docs/images/loop-1.png)
+
+Example of executing a loop command:
+
+![/loop execution example](./docs/images/loop-2.png)
 
 ## Requirements
 
