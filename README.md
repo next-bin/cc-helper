@@ -2,6 +2,32 @@
 
 > Enable/disable the `/loop` feature in Claude Code CLI
 
+## Requirements
+
+- Claude Code v2.1.71+
+
+```bash
+npm install -g @anthropic-ai/claude-code@v2.1.71
+```
+
+## Usage
+
+### Command
+
+| Command             | Description            |
+| ------------------- | ---------------------- |
+| `cc-helper enable`  | Enable `/loop` feature |
+| `cc-helper disable` | Restore original       |
+| `cc-helper status`  | Check current status   |
+
+## Sponsors
+
+🚀 **GLM Coding Plan**
+
+👉 [Enjoy full support for Claude Code, Cline, and 20+ top coding tools — starting at just $10/month. Subscribe now and grab the limited-time deal!](https://z.ai/subscribe?ic=1YVKN4IRCQ)
+
+---
+
 ## What is `/loop`?
 
 `/loop` is a built-in command in Claude Code CLI that lets you schedule recurring prompts. It's useful for:
@@ -27,11 +53,11 @@
 
 ### Interval Formats
 
-| Form | Example | Parsed Interval |
-|------|---------|-----------------|
-| Leading token | `/loop 30m check` | every 30 minutes |
-| Trailing `every` clause | `/loop check every 2 hours` | every 2 hours |
-| No interval | `/loop check` | defaults to every 10 minutes |
+| Form                    | Example                     | Parsed Interval              |
+| ----------------------- | --------------------------- | ---------------------------- |
+| Leading token           | `/loop 30m check`           | every 30 minutes             |
+| Trailing `every` clause | `/loop check every 2 hours` | every 2 hours                |
+| No interval             | `/loop check`               | defaults to every 10 minutes |
 
 Supported units: `s` (seconds), `m` (minutes), `h` (hours), `d` (days)
 
@@ -55,16 +81,6 @@ cancel the deploy check job       # Cancel by description or ID
 - Easy restore functionality
 - Automatic backup
 
-## Usage
-
-### 命令
-
-| Command             | Description            |
-| ------------------- | ---------------------- |
-| `cc-helper enable`  | Enable `/loop` feature |
-| `cc-helper disable` | Restore original       |
-| `cc-helper status`  | Check current status   |
-
 ### Examples
 
 After enabling, use the `/loop` command in Claude Code:
@@ -74,14 +90,6 @@ After enabling, use the `/loop` command in Claude Code:
 Example of executing a loop command:
 
 ![/loop execution example](./docs/images/loop-2.png)
-
-## Requirements
-
-- Claude Code v2.1.71+
-
-```bash
-npm install -g @anthropic-ai/claude-code@v2.1.71
-```
 
 ## Platforms
 
