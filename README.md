@@ -6,7 +6,7 @@
 
 **English** | [**简体中文**](./README-zh.md)
 
-> ⚡ Enable the `/loop` feature in Claude Code CLI with one command
+> ⚡ Enable hidden features in Claude Code CLI with one command: `/loop` and `/btw`
 
 ## Requirements
 
@@ -20,15 +20,23 @@ npm install -g @anthropic-ai/claude-code@v2.1.71
 ## Usage
 
 ```bash
-# Enable /loop feature
+# Enable all features (default)
 npx @unitsvc/cc-helper enable
 
 # Check status
 npx @unitsvc/cc-helper status
 
-# Disable /loop feature (restore original)
+# Disable all features (restore original)
 npx @unitsvc/cc-helper disable
 ```
+
+### Commands
+
+| Command   | Description              |
+| --------- | ------------------------ |
+| `enable`  | Enable `/loop` and `/btw` features |
+| `disable` | Restore original         |
+| `status`  | Check current status     |
 
 ### Proxy Support
 
@@ -41,14 +49,6 @@ npx @unitsvc/cc-helper --proxy enable
 # Use custom proxy
 npx @unitsvc/cc-helper --proxy https://your-proxy.com enable
 ```
-
-### Commands
-
-| Command   | Description            |
-| --------- | ---------------------- |
-| `enable`  | Enable `/loop` feature |
-| `disable` | Restore original       |
-| `status`  | Check current status   |
 
 ## Sponsors
 
@@ -114,9 +114,27 @@ what scheduled tasks do I have?   # List all tasks
 cancel the deploy check job       # Cancel by description or ID
 ```
 
+## What is `/btw`?
+
+`/btw` (by the way) is a hidden command for asking side questions without disrupting the main conversation flow. Perfect for quick clarifications.
+
+### Usage
+
+```
+/btw <question>
+```
+
+**Examples:**
+
+```
+/btw what does this function do?
+/btw explain the error handling here
+/btw why use async/await in this case?
+```
+
 ## Features
 
-- Enable `/loop` with one command
+- Enable `/loop` and `/btw` with one command
 - Easy restore functionality
 - Automatic backup
 - Zero runtime dependencies

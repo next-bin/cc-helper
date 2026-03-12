@@ -6,7 +6,7 @@
 
 [**English**](./README.md) | **简体中文**
 
-> ⚡ 一键启用 Claude Code CLI 的 `/loop` 功能
+> ⚡ 一键启用 Claude Code CLI 的隐藏功能：`/loop` 和 `/btw`
 
 ## 环境要求
 
@@ -20,13 +20,13 @@ npm install -g @anthropic-ai/claude-code@v2.1.71
 ## 使用方法
 
 ```bash
-# 启用 /loop 功能
+# 启用所有功能（默认）
 npx @unitsvc/cc-helper enable
 
 # 查看状态
 npx @unitsvc/cc-helper status
 
-# 禁用 /loop 功能（恢复原状）
+# 禁用功能（恢复原状）
 npx @unitsvc/cc-helper disable
 ```
 
@@ -44,11 +44,11 @@ npx @unitsvc/cc-helper --proxy https://your-proxy.com enable
 
 ### 命令说明
 
-| 命令      | 说明              |
-| --------- | ----------------- |
-| `enable`  | 启用 `/loop` 功能 |
-| `disable` | 恢复原始状态      |
-| `status`  | 查看当前状态      |
+| 命令      | 说明                    |
+| --------- | ----------------------- |
+| `enable`  | 启用 `/loop` 和 `/btw` 功能 |
+| `disable` | 恢复原始状态            |
+| `status`  | 查看当前状态            |
 
 ## 赞助
 
@@ -114,9 +114,27 @@ what scheduled tasks do I have?   # 列出所有任务
 cancel the deploy check job       # 按描述或 ID 取消
 ```
 
+## 什么是 `/btw`？
+
+`/btw`（by the way）是一个隐藏命令，用于在不打断主对话流程的情况下提问旁支问题。适合快速澄清疑问。
+
+### 使用方法
+
+```
+/btw <问题>
+```
+
+**示例：**
+
+```
+/btw 这个函数是做什么的？
+/btw 解释一下这里的错误处理
+/btw 为什么这里要用 async/await？
+```
+
 ## 功能特点
 
-- 一键启用 `/loop` 功能
+- 一键启用 `/loop` 和 `/btw` 功能
 - 轻松恢复原始状态
 - 自动备份原文件
 - 零运行时依赖
