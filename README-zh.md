@@ -6,7 +6,7 @@
 
 [**English**](./README.md) | **简体中文**
 
-> ⚡ 一键启用 Claude Code CLI 的隐藏功能：`/loop` 和 `/btw`
+> ⚡ 一键启用 Claude Code CLI 的隐藏功能：`/loop`、`/btw` 和 `MCPSearch`
 
 ## 环境要求
 
@@ -20,8 +20,13 @@ npm install -g @anthropic-ai/claude-code@v2.1.71
 ## 使用方法
 
 ```bash
-# 启用所有功能（默认）
+# 启用默认功能（/loop, /btw）
 npx @unitsvc/cc-helper enable
+
+# 启用特定功能
+npx @unitsvc/cc-helper enable loop
+npx @unitsvc/cc-helper enable btw
+npx @unitsvc/cc-helper enable toolsearch
 
 # 查看状态
 npx @unitsvc/cc-helper status
@@ -30,25 +35,16 @@ npx @unitsvc/cc-helper status
 npx @unitsvc/cc-helper disable
 ```
 
-### 代理支持
-
-如果下载失败，使用 `--proxy` 参数：
-
-```bash
-# 使用默认代理 (https://edgeone.gh-proxy.org)
-npx @unitsvc/cc-helper --proxy enable
-
-# 使用自定义代理
-npx @unitsvc/cc-helper --proxy https://your-proxy.com enable
-```
-
 ### 命令说明
 
-| 命令      | 说明                    |
-| --------- | ----------------------- |
-| `enable`  | 启用 `/loop` 和 `/btw` 功能 |
-| `disable` | 恢复原始状态            |
-| `status`  | 查看当前状态            |
+| 命令 | 说明 |
+|---------|-------------|
+| `enable` | 启用 `/loop` 和 `/btw` 功能（默认，不包含 toolsearch） |
+| `enable loop` | 仅启用 `/loop` 功能 |
+| `enable btw` | 仅启用 `/btw` 功能 |
+| `enable toolsearch` | 启用 toolsearch 功能（需要显式激活） |
+| `disable` | 恢复原始状态 |
+| `status` | 查看当前状态及版本要求 |
 
 ## 赞助
 
@@ -132,23 +128,75 @@ cancel the deploy check job       # 按描述或 ID 取消
 /btw 为什么这里要用 async/await？
 ```
 
-### 示例
+## 什么是工具搜索？
 
-启用后，在 Claude Code 中使用 `/btw` 命令：
+工具搜索（Tool Search）是一项允许 Claude 在运行时动态搜索和加载工具的功能，而不是一次性发送所有工具定义。这可以节省 token 并提高性能。
 
-![btw 命令示例](./docs/images/btw-1.png)
+### 为什么为第三方 API 启用？
 
-执行 btw 命令示例：
+默认情况下，Claude Code 在使用第三方 API 代理（如 Kimi、自定义端点）时会禁用工具搜索。此功能修改该行为，为这些代理启用工具搜索。
 
-![btw 执行示例](./docs/images/btw-2.png)
+### 优势
+
+- **Token 效率**：减少大型 MCP 工具目录的上下文窗口占用
+- **性能提升**：延迟加载工具，响应更快
+- **代理兼容**：支持 Kimi 和其他第三方 Claude API 提供商
+
+### 要求
+
+- 您的代理必须支持 API 响应中的 `tool_reference` 块
+- 仅支持 Claude Sonnet 4+ 和 Opus 4+ 模型（不支持 Haiku）
+
+### 配置说明
+
+使用官方 Anthropic API 时，工具搜索默认启用。但当 `ANTHROPIC_BASE_URL` 指向非第一方主机时，工具搜索默认禁用（大多数代理不转发 `tool_reference` 块）。
+
+通过 `ENABLE_TOOL_SEARCH` 环境变量控制工具搜索行为：
+
+| 值         | 行为                                                   |
+| ---------- | ------------------------------------------------------ |
+| （未设置） | 默认启用。当 `ANTHROPIC_BASE_URL` 为非第一方主机时禁用 |
+| `true`     | 始终启用，包括非第一方 `ANTHROPIC_BASE_URL`            |
+| `auto`     | 当 MCP 工具超过上下文 10% 时激活                       |
+| `auto:<N>` | 自定义阈值激活（如 `auto:5` 表示 5%）                  |
+| `false`    | 禁用，所有 MCP 工具预先加载                            |
+
+**示例：**
+
+```bash
+# 使用 5% 自定义阈值
+ENABLE_TOOL_SEARCH=auto:5 claude
+
+# 完全禁用工具搜索
+ENABLE_TOOL_SEARCH=false claude
+
+# 始终启用（适用于支持 tool_reference 的代理）
+ENABLE_TOOL_SEARCH=true claude
+```
+
+或在 `settings.json` 的 env 字段中设置。
+
+#### 禁用 MCPSearch 工具
+
+您还可以使用 `disallowedTools` 设置专门禁用 `MCPSearch` 工具：
+
+```json
+{
+  "permissions": {
+    "deny": ["MCPSearch"]
+  }
+}
+```
 
 ## 功能特点
 
-- 一键启用 `/loop` 和 `/btw` 功能
+- 一键启用 `/loop`、`/btw` 功能（toolsearch 需要显式激活）
+- 可单独启用特定功能
 - 轻松恢复原始状态
 - 自动备份原文件
 - 零运行时依赖
 - 跨平台支持
+- 支持版本：2.1.71、2.1.72、2.1.73、2.1.74
 
 ### 示例
 

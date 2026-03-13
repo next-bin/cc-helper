@@ -6,7 +6,7 @@
 
 **English** | [**简体中文**](./README-zh.md)
 
-> ⚡ Enable hidden features in Claude Code CLI with one command: `/loop` and `/btw`
+> ⚡ Enable hidden features in Claude Code CLI with one command: `/loop`, `/btw`, and `MCPSearch`
 
 ## Requirements
 
@@ -20,8 +20,13 @@ npm install -g @anthropic-ai/claude-code@v2.1.71
 ## Usage
 
 ```bash
-# Enable all features (default)
+# Enable default features (/loop, /btw)
 npx @unitsvc/cc-helper enable
+
+# Enable specific features
+npx @unitsvc/cc-helper enable loop
+npx @unitsvc/cc-helper enable btw
+npx @unitsvc/cc-helper enable toolsearch
 
 # Check status
 npx @unitsvc/cc-helper status
@@ -32,11 +37,14 @@ npx @unitsvc/cc-helper disable
 
 ### Commands
 
-| Command   | Description              |
-| --------- | ------------------------ |
-| `enable`  | Enable `/loop` and `/btw` features |
-| `disable` | Restore original         |
-| `status`  | Check current status     |
+| Command             | Description                                                       |
+| ------------------- | ----------------------------------------------------------------- |
+| `enable`            | Enable `/loop` and `/btw` features (default, excludes toolsearch) |
+| `enable loop`       | Enable only `/loop` feature                                       |
+| `enable btw`        | Enable only `/btw` feature                                        |
+| `enable toolsearch` | Enable toolsearch feature (requires explicit activation)          |
+| `disable`           | Restore original                                                  |
+| `status`            | Check current status with version requirements                    |
 
 ### Proxy Support
 
@@ -132,23 +140,75 @@ cancel the deploy check job       # Cancel by description or ID
 /btw why use async/await in this case?
 ```
 
-### Examples
+## What is Tool Search?
 
-After enabling, use `/btw` in Claude Code:
+Tool Search is a feature that allows Claude to dynamically search and load tools at runtime instead of sending all tool definitions upfront. This saves tokens and improves performance.
 
-![btw command example](./docs/images/btw-1.png)
+### Why Enable for Third-Party APIs?
 
-btw execution example:
+By default, Claude Code disables Tool Search when using third-party API proxies (like Kimi, custom endpoints). This feature patches that behavior to enable Tool Search for these proxies.
 
-![btw execution](./docs/images/btw-2.png)
+### Benefits
+
+- **Token efficiency**: Reduces context window usage for large MCP tool catalogs
+- **Better performance**: Faster response times with deferred tool loading
+- **Proxy compatibility**: Works with Kimi and other third-party Claude API providers
+
+### Requirements
+
+- Your proxy must support `tool_reference` blocks in API responses
+- Works with Claude Sonnet 4+ and Opus 4+ models (not Haiku)
+
+### Configuration
+
+Tool Search is enabled by default when using official Anthropic APIs. However, when `ANTHROPIC_BASE_URL` points to a non-first-party host, Tool Search is disabled by default (most proxies do not forward `tool_reference` blocks).
+
+Control Tool Search behavior using the `ENABLE_TOOL_SEARCH` environment variable:
+
+| Value      | Behavior                                                                         |
+| ---------- | -------------------------------------------------------------------------------- |
+| (unset)    | Enabled by default. Disabled when `ANTHROPIC_BASE_URL` is a non-first-party host |
+| `true`     | Always enabled, including for non-first-party `ANTHROPIC_BASE_URL`               |
+| `auto`     | Activates when MCP tools exceed 10% of context                                   |
+| `auto:<N>` | Activates at custom threshold (e.g., `auto:5` for 5%)                            |
+| `false`    | Disabled, all MCP tools loaded upfront                                           |
+
+**Examples:**
+
+```bash
+# Use custom 5% threshold
+ENABLE_TOOL_SEARCH=auto:5 claude
+
+# Disable tool search entirely
+ENABLE_TOOL_SEARCH=false claude
+
+# Always enable (useful for proxies that support tool_reference)
+ENABLE_TOOL_SEARCH=true claude
+```
+
+Or set the value in your `settings.json` env field.
+
+#### Disabling MCPSearch Tool
+
+You can also disable the `MCPSearch` tool specifically using the `disallowedTools` setting:
+
+```json
+{
+  "permissions": {
+    "deny": ["MCPSearch"]
+  }
+}
+```
 
 ## Features
 
-- Enable `/loop` and `/btw` with one command
+- Enable `/loop`, `/btw`, and toolsearch with one command
+- Enable specific features individually
 - Easy restore functionality
 - Automatic backup
 - Zero runtime dependencies
 - Cross-platform support
+- Version support: 2.1.71, 2.1.72, 2.1.73, 2.1.74
 
 ### Examples
 
