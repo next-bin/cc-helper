@@ -243,6 +243,21 @@ When using third-party API proxies, extended thinking (reasoning) capabilities v
 | qwen3-coder-next     | Not supported                |
 | qwen3-coder-plus     | Not supported                |
 
+### Context Length
+
+Maximum context window sizes for third-party API proxies:
+
+| Model                | Context Length (Tokens) |
+| -------------------- | ----------------------- |
+| qwen3.5-plus         | 1,000,000               |
+| qwen3-coder-plus     | 1,000,000               |
+| kimi-k2.5            | 262,144                 |
+| qwen3-max-2026-01-23 | 262,144                 |
+| qwen3-coder-next     | 262,144                 |
+| MiniMax-M2.5         | 204,800                 |
+| glm-5                | 202,752                 |
+| glm-4.7              | 202,752                 |
+
 ## Features
 
 - Enable `/loop`, `/btw`, `/keybindings` with one command

@@ -231,6 +231,21 @@ npx @unitsvc/cc-helper enable 1M
 | qwen3-coder-next     | 不支持思考模式        |
 | qwen3-coder-plus     | 不支持思考模式        |
 
+### 上下文长度
+
+第三方 API 代理的最大上下文窗口大小：
+
+| 模型                 | 上下文长度（Tokens） |
+| -------------------- | -------------------- |
+| qwen3.5-plus         | 1,000,000            |
+| qwen3-coder-plus     | 1,000,000            |
+| kimi-k2.5            | 262,144              |
+| qwen3-max-2026-01-23 | 262,144              |
+| qwen3-coder-next     | 262,144              |
+| MiniMax-M2.5         | 204,800              |
+| glm-5                | 202,752              |
+| glm-4.7              | 202,752              |
+
 ## 功能特点
 
 - 一键启用 `/loop`、`/btw`、`/keybindings` 功能
