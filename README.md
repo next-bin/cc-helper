@@ -50,6 +50,19 @@ npx @unitsvc/cc-helper disable
 | `disable`            | Restore original                                                     |
 | `status`             | Check current status with version requirements                       |
 
+**Note**: Running `cc-helper enable` also automatically configures recommended environment variables in `~/.claude/settings.json`:
+
+- `DISABLE_INSTALLATION_CHECKS=1` - Disable npm installation warnings
+- `DISABLE_AUTOUPDATER=1` - Disable auto-updater
+- `DISABLE_BUG_COMMAND=1` - Disable bug command
+- `DISABLE_ERROR_REPORTING=1` - Disable error reporting
+- `DISABLE_TELEMETRY=1` - Disable telemetry
+- `CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1` - Disable non-essential traffic
+- `CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY=1` - Disable feedback survey
+- `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` - Enable experimental agent teams
+- `CLAUDE_CODE_HIDE_ACCOUNT_INFO=1` - Hide account info
+- `API_TIMEOUT_MS=3000000` - Set API timeout to 50 minutes
+
 ### Proxy Support
 
 If download fails, use `--proxy` flag:
@@ -228,35 +241,20 @@ npx @unitsvc/cc-helper enable 1m
 npx @unitsvc/cc-helper enable 1M
 ```
 
-### Extended Thinking Support
+### Extended Thinking and Context Length
 
-When using third-party API proxies, extended thinking (reasoning) capabilities vary by model:
+When using third-party API proxies, extended thinking (reasoning) capabilities and context window sizes vary by model:
 
-| Model                | Max Thinking Tokens          |
-| -------------------- | ---------------------------- |
-| qwen3.5-plus         | 81,920                       |
-| qwen3-max-2026-01-23 | 81,920                       |
-| kimi-k2.5            | 81,920                       |
-| glm-5                | 32,768                       |
-| glm-4.7              | 32,768                       |
-| MiniMax-M2.5         | 32,768 (thinking + response) |
-| qwen3-coder-next     | Not supported                |
-| qwen3-coder-plus     | Not supported                |
-
-### Context Length
-
-Maximum context window sizes for third-party API proxies:
-
-| Model                | Context Length (Tokens) |
-| -------------------- | ----------------------- |
-| qwen3.5-plus         | 1,000,000               |
-| qwen3-coder-plus     | 1,000,000               |
-| kimi-k2.5            | 262,144                 |
-| qwen3-max-2026-01-23 | 262,144                 |
-| qwen3-coder-next     | 262,144                 |
-| MiniMax-M2.5         | 204,800                 |
-| glm-5                | 202,752                 |
-| glm-4.7              | 202,752                 |
+| Model                | Max Thinking Tokens          | Context Length (Tokens) |
+| -------------------- | ---------------------------- | ----------------------- |
+| qwen3.5-plus         | 81,920                       | 1,000,000               |
+| qwen3-coder-plus     | Not supported                | 1,000,000               |
+| qwen3-max-2026-01-23 | 81,920                       | 262,144                 |
+| qwen3-coder-next     | Not supported                | 262,144                 |
+| kimi-k2.5            | 81,920                       | 262,144                 |
+| MiniMax-M2.5         | 32,768 (thinking + response) | 204,800                 |
+| glm-5                | 32,768                       | 202,752                 |
+| glm-4.7              | 32,768                       | 202,752                 |
 
 ## Features
 

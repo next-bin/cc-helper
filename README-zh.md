@@ -50,6 +50,19 @@ npx @unitsvc/cc-helper disable
 | `disable`            | 恢复原始状态                                                   |
 | `status`             | 查看当前状态及版本要求                                         |
 
+**注意**: 运行 `cc-helper enable` 时会自动在 `~/.claude/settings.json` 中配置推荐的环境变量：
+
+- `DISABLE_INSTALLATION_CHECKS=1` - 禁用 npm 安装警告
+- `DISABLE_AUTOUPDATER=1` - 禁用自动更新
+- `DISABLE_BUG_COMMAND=1` - 禁用 bug 命令
+- `DISABLE_ERROR_REPORTING=1` - 禁用错误报告
+- `DISABLE_TELEMETRY=1` - 禁用遥测
+- `CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1` - 禁用非必要流量
+- `CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY=1` - 禁用反馈调查
+- `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` - 启用实验性 Agent Teams
+- `CLAUDE_CODE_HIDE_ACCOUNT_INFO=1` - 隐藏账户信息
+- `API_TIMEOUT_MS=3000000` - 设置 API 超时为 50 分钟
+
 ---
 
 ## 什么是 `/loop`？
@@ -216,35 +229,20 @@ npx @unitsvc/cc-helper enable 1m
 npx @unitsvc/cc-helper enable 1M
 ```
 
-### 扩展思维支持
+### 扩展思维与上下文长度
 
-使用第三方 API 代理时，扩展思维（推理）能力因模型而异：
+使用第三方 API 代理时，扩展思维（推理）能力和上下文窗口大小因模型而异：
 
-| 模型                 | 最大思维链长度        |
-| -------------------- | --------------------- |
-| qwen3.5-plus         | 81,920                |
-| qwen3-max-2026-01-23 | 81,920                |
-| kimi-k2.5            | 81,920                |
-| glm-5                | 32,768                |
-| glm-4.7              | 32,768                |
-| MiniMax-M2.5         | 32,768（思维链+回复） |
-| qwen3-coder-next     | 不支持思考模式        |
-| qwen3-coder-plus     | 不支持思考模式        |
-
-### 上下文长度
-
-第三方 API 代理的最大上下文窗口大小：
-
-| 模型                 | 上下文长度（Tokens） |
-| -------------------- | -------------------- |
-| qwen3.5-plus         | 1,000,000            |
-| qwen3-coder-plus     | 1,000,000            |
-| kimi-k2.5            | 262,144              |
-| qwen3-max-2026-01-23 | 262,144              |
-| qwen3-coder-next     | 262,144              |
-| MiniMax-M2.5         | 204,800              |
-| glm-5                | 202,752              |
-| glm-4.7              | 202,752              |
+| 模型                 | 最大思维链长度          | 上下文长度（Tokens） |
+| -------------------- | ----------------------- | -------------------- |
+| qwen3.5-plus         | 81,920                  | 1,000,000            |
+| qwen3-coder-plus     | 不支持思考模式          | 1,000,000            |
+| qwen3-max-2026-01-23 | 81,920                  | 262,144              |
+| qwen3-coder-next     | 不支持思考模式          | 262,144              |
+| kimi-k2.5            | 81,920                  | 262,144              |
+| MiniMax-M2.5         | 32,768（思维链 + 回复） | 204,800              |
+| glm-5                | 32,768                  | 202,752              |
+| glm-4.7              | 32,768                  | 202,752              |
 
 ## 功能特点
 
