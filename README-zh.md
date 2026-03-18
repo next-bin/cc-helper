@@ -197,6 +197,8 @@ cancel the deploy check job       # 按描述或 ID 取消
 npx @unitsvc/cc-helper enable context1m  # 别名: 1m, 1M
 ```
 
+![/context1m 启用](./docs/images/1m-1.png)
+
 ### 扩展思维与上下文长度
 
 | 模型                 | 最大思维链长度 | 上下文长度 |

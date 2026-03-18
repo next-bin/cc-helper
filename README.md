@@ -197,6 +197,8 @@ Enable 1M token context window for Claude Opus models.
 npx @unitsvc/cc-helper enable context1m  # or: 1m, 1M
 ```
 
+![/context1m enable](./docs/images/1m-1.png)
+
 ### Extended Thinking & Context Length
 
 | Model                | Max Thinking Tokens | Context Length |
