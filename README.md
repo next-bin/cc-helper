@@ -1,17 +1,29 @@
 # cc-helper
 
-[![npm version](https://img.shields.io/npm/v/@unitsvc/cc-helper.svg)](https://www.npmjs.com/package/@unitsvc/cc-helper)
-[![License](https://img.shields.io/badge/License-AGPL%203.0-blue.svg)](https://github.com/next-bin/cc-helper/blob/master/LICENSE)
-[![Node](https://img.shields.io/badge/Node-%3E%3D14.0.0-green.svg)](https://nodejs.org)
+[![npm version](https://img.shields.io/npm/v/@unitsvc/cc-helper.svg)](https://www.npmjs.com/package/@unitsvc/cc-helper) [![License](https://img.shields.io/badge/License-AGPL%203.0-blue.svg)](https://github.com/next-bin/cc-helper/blob/master/LICENSE) [![Node](https://img.shields.io/badge/Node-%3E%3D14.0.0-green.svg)](https://nodejs.org) [![CLAUDE](https://img.shields.io/badge/Claude%20Code-v2.1.71%2B-green.svg)](https://docs.anthropic.com/en/docs/claude-code)
 
-**English** | [**简体中文**](./README-zh.md)
+[**English**](./README.md) | [**简体中文**](./README-zh.md)
 
-> ⚡ Enable hidden features in Claude Code CLI with one command: `/loop`, `/btw`, `/keybindings`, `/context1m`, and `MCPSearch`
+> One command to unlock Claude Code's hidden superpowers: `/loop`, `/btw`, `/keybindings`, `/context1m`, and `MCPSearch`
+
+## Table of Contents
+
+| Category          | Content                                                                                                                         |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| **Quick Start**   | [Requirements](#requirements) · [Installation](#installation) · [Usage](#usage) · [Commands](#commands)                         |
+| **Core Features** | [`/loop`](#what-is-loop) · [`/btw`](#what-is-btw) · [`/keybindings`](#what-is-keybindings) · [`/context1m`](#what-is-context1m) |
+| **Tool Search**   | [Overview](#what-is-tool-search) · [Configuration](#configuration)                                                              |
+| **Commands**      | [plan](#plan-command) · [vault](#vault-command) · [env](#env-command) · [sync](#sync-command)                                   |
+| **More**          | [Features](#features) · [Platforms](#platforms) · [License](#license) · [Security](#security)                                   |
+
+---
 
 ## Requirements
 
-- Node.js >= 14.0.0
-- Claude Code v2.1.71+
+| Item        | Version   |
+| ----------- | --------- |
+| Node.js     | >= 14.0.0 |
+| Claude Code | v2.1.71+  |
 
 ```bash
 npm install -g @anthropic-ai/claude-code@v2.1.76
@@ -19,14 +31,26 @@ npm install -g @anthropic-ai/claude-code@v2.1.76
 
 ## Installation
 
+Two ways to use (choose one):
+
 ```bash
+# Install globally (optional)
 npm install -g @unitsvc/cc-helper@latest
+
+# Or run directly without installation
+npx @unitsvc/cc-helper@latest enable
 ```
 
-Or use without installation:
+### Proxy Support
+
+If download fails, use `--proxy` flag:
 
 ```bash
-npx @unitsvc/cc-helper enable
+# Use default proxy
+npx @unitsvc/cc-helper --proxy enable
+
+# Use custom proxy
+npx @unitsvc/cc-helper --proxy https://your-proxy.com enable
 ```
 
 ## Usage
@@ -45,58 +69,47 @@ npx @unitsvc/cc-helper enable context1m   # or: 1m, 1M
 # Check status
 npx @unitsvc/cc-helper status
 
-# Disable all features (restore original)
+# Disable all features
 npx @unitsvc/cc-helper disable
 ```
 
-### Commands
+## Commands
 
-| Command              | Description                                                          |
-| -------------------- | -------------------------------------------------------------------- |
-| `enable`             | Enable `/loop`, `/btw`, and `/keybindings` features (default)        |
-| `enable loop`        | Enable only `/loop` feature                                          |
-| `enable btw`         | Enable only `/btw` feature                                           |
-| `enable keybindings` | Enable only `/keybindings` feature                                   |
-| `enable toolsearch`  | Enable toolsearch feature (requires explicit activation)             |
-| `enable context1m`   | Enable 1M context window for Claude Opus (v2.1.76+, explicit opt-in) |
-| `disable`            | Restore original                                                     |
-| `status`             | Check current status with version requirements                       |
+| Command              | Description                                          |
+| -------------------- | ---------------------------------------------------- |
+| `enable`             | Enable `/loop`, `/btw`, and `/keybindings` (default) |
+| `enable loop`        | Enable only `/loop`                                  |
+| `enable btw`         | Enable only `/btw`                                   |
+| `enable keybindings` | Enable only `/keybindings`                           |
+| `enable toolsearch`  | Enable toolsearch (requires explicit activation)     |
+| `enable context1m`   | Enable 1M context for Claude Opus (v2.1.76+)         |
+| `disable`            | Restore original                                     |
+| `status`             | Check current status with version requirements       |
 
-**Note**: Running `cc-helper enable` also automatically configures recommended environment variables in `~/.claude/settings.json`:
-
-- `DISABLE_INSTALLATION_CHECKS=1` - Disable npm installation warnings
-- `DISABLE_AUTOUPDATER=1` - Disable auto-updater
-- `DISABLE_BUG_COMMAND=1` - Disable bug command
-- `DISABLE_ERROR_REPORTING=1` - Disable error reporting
-- `DISABLE_TELEMETRY=1` - Disable telemetry
-- `CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1` - Disable non-essential traffic
-- `CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY=1` - Disable feedback survey
-- `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` - Enable experimental agent teams
-- `CLAUDE_CODE_HIDE_ACCOUNT_INFO=1` - Hide account info
-- `API_TIMEOUT_MS=3000000` - Set API timeout to 50 minutes
-
-### Proxy Support
-
-If download fails, use `--proxy` flag:
-
-```bash
-# Use default proxy (https://edgeone.gh-proxy.org)
-npx @unitsvc/cc-helper --proxy enable
-
-# Use custom proxy
-npx @unitsvc/cc-helper --proxy https://your-proxy.com enable
-```
+> **Note**: Running `cc-helper enable` also automatically configures recommended environment variables in `~/.claude/settings.json`:
+>
+> ```json
+> {
+>   "env": {
+>     "DISABLE_INSTALLATION_CHECKS": "1",
+>     "DISABLE_AUTOUPDATER": "1",
+>     "DISABLE_BUG_COMMAND": "1",
+>     "DISABLE_ERROR_REPORTING": "1",
+>     "DISABLE_TELEMETRY": "1",
+>     "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
+>     "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1",
+>     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
+>     "CLAUDE_CODE_HIDE_ACCOUNT_INFO": "1",
+>     "API_TIMEOUT_MS": "3000000"
+>   }
+> }
+> ```
 
 ---
 
 ## What is `/loop`?
 
-`/loop` is a built-in command in Claude Code CLI that lets you schedule recurring prompts. It's useful for:
-
-- Polling deployments or builds
-- Babysitting PRs
-- Setting reminders
-- Running workflows on an interval
+Schedule recurring prompts for polling deployments, babysitting PRs, setting reminders, or running workflows on an interval.
 
 ### Usage Syntax
 
@@ -114,20 +127,20 @@ npx @unitsvc/cc-helper --proxy https://your-proxy.com enable
 
 ### Interval Formats
 
-| Form                    | Example                     | Parsed Interval              |
-| ----------------------- | --------------------------- | ---------------------------- |
-| Leading token           | `/loop 30m check`           | every 30 minutes             |
-| Trailing `every` clause | `/loop check every 2 hours` | every 2 hours                |
-| No interval             | `/loop check`               | defaults to every 10 minutes |
+| Form             | Example                     | Parsed Interval        |
+| ---------------- | --------------------------- | ---------------------- |
+| Leading token    | `/loop 30m check`           | every 30 minutes       |
+| Trailing `every` | `/loop check every 2 hours` | every 2 hours          |
+| No interval      | `/loop check`               | defaults to 10 minutes |
 
 Supported units: `s` (seconds), `m` (minutes), `h` (hours), `d` (days)
 
 ### Key Features
 
-- **Session-scoped**: Tasks live in the current Claude Code session and are gone when you exit
-- **Auto-expiry**: Recurring tasks expire after 3 days
-- **Jitter protection**: Adds small offsets to prevent API thundering herd
-- **Low priority**: Scheduled prompts fire between your turns, not while Claude is busy
+- **Session-scoped**: Tasks live in the current session and disappear on exit
+- **Auto-expiry**: Tasks expire after 3 days
+- **Jitter protection**: Small offsets prevent API thundering herd
+- **Low priority**: Fires between your turns, not while Claude is busy
 
 ### Managing Tasks
 
@@ -138,7 +151,7 @@ cancel the deploy check job       # Cancel by description or ID
 
 ## What is `/btw`?
 
-`/btw` (by the way) is a hidden command for asking side questions without disrupting the main conversation flow. Perfect for quick clarifications.
+Ask side questions without disrupting the main conversation flow.
 
 ### Usage
 
@@ -154,73 +167,9 @@ cancel the deploy check job       # Cancel by description or ID
 /btw why use async/await in this case?
 ```
 
-## What is Tool Search?
-
-Tool Search is a feature that allows Claude to dynamically search and load tools at runtime instead of sending all tool definitions upfront. This saves tokens and improves performance.
-
-### Why Enable for Third-Party APIs?
-
-By default, Claude Code disables Tool Search when using third-party API proxies (like Kimi, custom endpoints). This feature patches that behavior to enable Tool Search for these proxies.
-
-### Benefits
-
-- **Token efficiency**: Reduces context window usage for large MCP tool catalogs
-- **Better performance**: Faster response times with deferred tool loading
-- **Proxy compatibility**: Works with Kimi and other third-party Claude API providers
-
-### Requirements
-
-- Your proxy must support `tool_reference` blocks in API responses
-- Works with Claude Sonnet 4+ and Opus 4+ models (not Haiku)
-
-### Configuration
-
-Tool Search is enabled by default when using official Anthropic APIs. However, when `ANTHROPIC_BASE_URL` points to a non-first-party host, Tool Search is disabled by default (most proxies do not forward `tool_reference` blocks).
-
-Control Tool Search behavior using the `ENABLE_TOOL_SEARCH` environment variable:
-
-| Value      | Behavior                                                                         |
-| ---------- | -------------------------------------------------------------------------------- |
-| (unset)    | Enabled by default. Disabled when `ANTHROPIC_BASE_URL` is a non-first-party host |
-| `true`     | Always enabled, including for non-first-party `ANTHROPIC_BASE_URL`               |
-| `auto`     | Activates when MCP tools exceed 10% of context                                   |
-| `auto:<N>` | Activates at custom threshold (e.g., `auto:5` for 5%)                            |
-| `false`    | Disabled, all MCP tools loaded upfront                                           |
-
-**Examples:**
-
-```bash
-# Use custom 5% threshold
-ENABLE_TOOL_SEARCH=auto:5 claude
-
-# Disable tool search entirely
-ENABLE_TOOL_SEARCH=false claude
-
-# Always enable (useful for proxies that support tool_reference)
-ENABLE_TOOL_SEARCH=true claude
-```
-
-Or set the value in your `settings.json` env field.
-
-#### Disabling MCPSearch Tool
-
-You can also disable the `MCPSearch` tool specifically using the `disallowedTools` setting:
-
-```json
-{
-  "permissions": {
-    "deny": ["MCPSearch"]
-  }
-}
-```
-
 ## What is `/keybindings`?
 
-`/keybindings` enables custom keyboard shortcuts support. Configure your keybindings in `~/.claude/keybindings.json`.
-
-### Configuration
-
-Create or edit `~/.claude/keybindings.json`:
+Custom keyboard shortcuts. Configure in `~/.claude/keybindings.json`:
 
 ```json
 {
@@ -234,7 +183,7 @@ Create or edit `~/.claude/keybindings.json`:
 
 ## What is `/context1m`?
 
-`/context1m` enables 1M token context window for Claude Opus models. This allows you to work with much larger codebases and conversations.
+Enable 1M token context window for Claude Opus models.
 
 ### Requirements
 
@@ -245,30 +194,74 @@ Create or edit `~/.claude/keybindings.json`:
 ### Usage
 
 ```bash
-# Enable 1M context
-npx @unitsvc/cc-helper enable context1m
-
-# Or use aliases
-npx @unitsvc/cc-helper enable 1m
-npx @unitsvc/cc-helper enable 1M
+npx @unitsvc/cc-helper enable context1m  # or: 1m, 1M
 ```
 
-### Extended Thinking and Context Length
+### Extended Thinking & Context Length
 
-When using third-party API proxies, extended thinking (reasoning) capabilities and context window sizes vary by model:
+| Model                | Max Thinking Tokens | Context Length |
+| -------------------- | ------------------- | -------------- |
+| qwen3.5-plus         | 81,920              | 1,000,000      |
+| qwen3-coder-plus     | Not supported       | 1,000,000      |
+| qwen3-max-2026-01-23 | 81,920              | 262,144        |
+| qwen3-coder-next     | Not supported       | 262,144        |
+| kimi-k2.5            | 81,920              | 262,144        |
+| MiniMax-M2.5         | 32,768              | 204,800        |
+| glm-5                | 32,768              | 202,752        |
+| glm-4.7              | 32,768              | 202,752        |
 
-| Model                | Max Thinking Tokens          | Context Length (Tokens) |
-| -------------------- | ---------------------------- | ----------------------- |
-| qwen3.5-plus         | 81,920                       | 1,000,000               |
-| qwen3-coder-plus     | Not supported                | 1,000,000               |
-| qwen3-max-2026-01-23 | 81,920                       | 262,144                 |
-| qwen3-coder-next     | Not supported                | 262,144                 |
-| kimi-k2.5            | 81,920                       | 262,144                 |
-| MiniMax-M2.5         | 32,768 (thinking + response) | 204,800                 |
-| glm-5                | 32,768                       | 202,752                 |
-| glm-4.7              | 32,768                       | 202,752                 |
+---
 
-## plan Command - Configure Provider
+## What is Tool Search?
+
+Dynamically search and load tools at runtime instead of sending all tool definitions upfront. Saves tokens and improves performance.
+
+### Why Third-Party APIs?
+
+Claude Code disables Tool Search for third-party proxies by default. This feature enables it.
+
+### Benefits
+
+- **Token efficiency**: Reduces context usage for large MCP tool catalogs
+- **Better performance**: Faster response with deferred loading
+- **Proxy compatibility**: Works with Kimi and other providers
+
+### Requirements
+
+- Proxy must support `tool_reference` blocks
+- Claude Sonnet 4+ or Opus 4+ models only (not Haiku)
+
+### Configuration
+
+Control via `ENABLE_TOOL_SEARCH` environment variable:
+
+| Value      | Behavior                                            |
+| ---------- | --------------------------------------------------- |
+| (unset)    | Default enabled, disabled for non-first-party hosts |
+| `true`     | Always enabled                                      |
+| `auto`     | Activates when MCP tools exceed 10% of context      |
+| `auto:<N>` | Custom threshold (e.g., `auto:5` for 5%)            |
+| `false`    | Disabled, all tools loaded upfront                  |
+
+```bash
+ENABLE_TOOL_SEARCH=auto:5 claude   # 5% threshold
+ENABLE_TOOL_SEARCH=false claude   # Disable
+ENABLE_TOOL_SEARCH=true claude    # Always enable
+```
+
+#### Disable MCPSearch Tool
+
+```json
+{
+  "permissions": {
+    "deny": ["MCPSearch"]
+  }
+}
+```
+
+---
+
+## plan Command
 
 Configure AI providers with vault-based secret storage.
 
@@ -277,78 +270,60 @@ Configure AI providers with vault-based secret storage.
 cc-helper plan add -p bailian -k YOUR_API_KEY
 cc-helper plan add -p minimaxi -k YOUR_API_KEY --mcp
 
-# Switch provider (auto-retrieves key from vault)
+# Switch provider
 cc-helper plan switch -p zai
 
-# List configured providers
+# List providers
 cc-helper plan list
 
-# Export configuration
+# Export config
 cc-helper plan export --all-env -o config.json
 ```
 
 **Supported Providers:**
 
-- `bailian` - (CN) Aliyun
-- `minimaxi` - (CN) MiniMax
-- `glm` - (CN) Zhipu
-- `zai` - (EN) Zhipu
+| Provider   | Description  |
+| ---------- | ------------ |
+| `bailian`  | (CN) Aliyun  |
+| `minimaxi` | (CN) MiniMax |
+| `glm`      | (CN) Zhipu   |
+| `zai`      | (EN) Zhipu   |
 
----
+## vault Command
 
-## vault Command - Secret Management
-
-Securely store API keys encrypted in `cc-helper.json`.
-
-```bash
-# List all secrets
-cc-helper vault list
-
-# Set a secret
-cc-helper vault set bailian default -k "YOUR_API_KEY"
-
-# Get and decrypt a secret
-cc-helper vault get bailian default
-
-# Delete a secret
-cc-helper vault delete bailian default
-```
-
----
-
-## env Command - Environment Management
-
-Support multiple environments (default, work, staging, etc.).
+Secure API key storage, encrypted in `cc-helper.json`.
 
 ```bash
-# List environments
-cc-helper env list
-
-# Create environment
-cc-helper env create work
-
-# Switch environment
-cc-helper env switch work
+cc-helper vault list                  # List secrets
+cc-helper vault set bailian default -k "KEY"   # Set
+cc-helper vault get bailian default             # Get & decrypt
+cc-helper vault delete bailian default          # Delete
 ```
 
----
+## env Command
 
-## sync Command - Configuration Sync
+Multiple environments (default, work, staging, etc.).
 
-Export/import configuration to/from Git repository with JWE encryption.
+```bash
+cc-helper env list    # List environments
+cc-helper env create work   # Create
+cc-helper env switch work   # Switch
+```
+
+## sync Command
+
+Export/import config to Git repository with JWE encryption.
 
 ```bash
 # Login to GitHub
 cc-helper sync login -r https://github.com/user/repo -t ghp_xxx
 
-# Export to Git repository
+# Export
 cc-helper sync export
-
-# Export to file
 cc-helper sync export --file config.json
-cc-helper sync export --workspace test  # Use workspace config
+cc-helper sync export --workspace test
 
-# Import configuration
+# Import
 cc-helper sync import
 ```
 
@@ -356,37 +331,30 @@ cc-helper sync import
 
 ## Features
 
-- Enable `/loop`, `/btw`, `/keybindings` with one command
-- Optional `/toolsearch` for third-party API proxies
-- Optional `/context1m` for 1M context window (v2.1.76+)
-- `plan` command with vault-based API key storage
-- `vault` command for secure secret management
-- `env` command for multi-environment support
-- `sync` command for Git repository sync
-- Enable specific features individually
-- Easy restore functionality
-- Automatic backup
-- Auto-disable npm deprecation warning
-- Auto-skip onboarding flow
-- Zero runtime dependencies
-- Cross-platform support
-- Version support: 2.1.71 - 2.1.76+
+| Feature            | Description                                             |
+| ------------------ | ------------------------------------------------------- |
+| One-command enable | Enable `/loop`, `/btw`, `/keybindings` with one command |
+| Tool Search        | Optional `/toolsearch` for third-party API proxies      |
+| 1M Context         | Optional `/context1m` for 1M context (v2.1.76+)         |
+| Provider config    | `plan` command with vault-based API key storage         |
+| Secret management  | `vault` command for secure secret storage               |
+| Multi-environment  | `env` command for environment switching                 |
+| Git sync           | `sync` command for configuration sync                   |
+| Easy restore       | Automatic backup and restore                            |
+| Zero dependencies  | No runtime dependencies                                 |
 
-### Examples
-
-After enabling, use the `/loop` command in Claude Code:
+### Screenshots
 
 ![/loop command hint](./docs/images/loop-1.png)
-
-Example of executing a loop command:
-
 ![/loop execution example](./docs/images/loop-2.png)
 
 ## Platforms
 
-- macOS (amd64, arm64)
-- Linux (amd64, arm64)
-- Windows (amd64, arm64)
+| Platform | Architecture |
+| -------- | ------------ |
+| macOS    | amd64, arm64 |
+| Linux    | amd64, arm64 |
+| Windows  | amd64, arm64 |
 
 ## License
 
@@ -396,7 +364,7 @@ AGPL-3.0 - see [LICENSE](./LICENSE)
 
 ### Reporting Vulnerabilities
 
-If you discover a security vulnerability in cc-helper, please report it responsibly:
+If you discover a security vulnerability, please report it responsibly:
 
 1. **Do not** open a public issue
 2. Send an email to the maintainer with details

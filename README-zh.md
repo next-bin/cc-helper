@@ -1,17 +1,29 @@
 # cc-helper
 
-[![npm version](https://img.shields.io/npm/v/@unitsvc/cc-helper.svg)](https://www.npmjs.com/package/@unitsvc/cc-helper)
-[![License](https://img.shields.io/badge/License-AGPL%203.0-blue.svg)](https://github.com/next-bin/cc-helper/blob/master/LICENSE)
-[![Node](https://img.shields.io/badge/Node-%3E%3D14.0.0-green.svg)](https://nodejs.org)
+[![npm version](https://img.shields.io/npm/v/@unitsvc/cc-helper.svg)](https://www.npmjs.com/package/@unitsvc/cc-helper) [![License](https://img.shields.io/badge/License-AGPL%203.0-blue.svg)](https://github.com/next-bin/cc-helper/blob/master/LICENSE) [![Node](https://img.shields.io/badge/Node-%3E%3D14.0.0-green.svg)](https://nodejs.org) [![CLAUDE](https://img.shields.io/badge/Claude%20Code-v2.1.71%2B-green.svg)](https://docs.anthropic.com/en/docs/claude-code)
 
-[**English**](./README.md) | **简体中文**
+[**English**](./README.md) | [**简体中文**](./README-zh.md)
 
-> ⚡ 一键启用 Claude Code CLI 的隐藏功能：`/loop`、`/btw`、`/keybindings`、`/context1m` 和 `MCPSearch`
+> 一键解锁 Claude Code 隐藏超能力：`/loop`、`/btw`、`/keybindings`、`/context1m` 和 `MCPSearch`
+
+## 目录
+
+| 分类         | 内容                                                                                                                        |
+| ------------ | --------------------------------------------------------------------------------------------------------------------------- |
+| **快速开始** | [环境要求](#环境要求) · [安装](#安装) · [使用方法](#使用方法) · [命令说明](#命令说明)                                       |
+| **核心功能** | [`/loop`](#什么是-loop) · [`/btw`](#什么是-btw) · [`/keybindings`](#什么是-keybindings) · [`/context1m`](#什么是-context1m) |
+| **工具搜索** | [概述](#什么是工具搜索) · [配置说明](#配置说明)                                                                             |
+| **配置命令** | [plan](#plan-命令) · [vault](#vault-命令) · [env](#env-命令) · [sync](#sync-命令)                                           |
+| **更多**     | [功能特点](#功能特点) · [支持平台](#支持平台) · [许可证](#许可证) · [安全](#安全)                                           |
+
+---
 
 ## 环境要求
 
-- Node.js >= 14.0.0
-- Claude Code v2.1.71+
+| 项目        | 版本      |
+| ----------- | --------- |
+| Node.js     | >= 14.0.0 |
+| Claude Code | v2.1.71+  |
 
 ```bash
 npm install -g @anthropic-ai/claude-code@v2.1.76
@@ -19,14 +31,26 @@ npm install -g @anthropic-ai/claude-code@v2.1.76
 
 ## 安装
 
+两种使用方式（二选一）：
+
 ```bash
+# 全局安装（可选）
 npm install -g @unitsvc/cc-helper@latest
+
+# 或直接运行，无需安装
+npx @unitsvc/cc-helper@latest enable
 ```
 
-或直接使用 npx 运行：
+### 代理支持
+
+如果下载失败，使用 `--proxy` 参数：
 
 ```bash
-npx @unitsvc/cc-helper enable
+# 使用默认代理
+npx @unitsvc/cc-helper --proxy enable
+
+# 使用自定义代理
+npx @unitsvc/cc-helper --proxy https://your-proxy.com enable
 ```
 
 ## 使用方法
@@ -45,46 +69,47 @@ npx @unitsvc/cc-helper enable context1m   # 别名: 1m, 1M
 # 查看状态
 npx @unitsvc/cc-helper status
 
-# 禁用功能（恢复原状）
+# 禁用所有功能
 npx @unitsvc/cc-helper disable
 ```
 
-### 命令说明
+## 命令说明
 
-| 命令                 | 说明                                                           |
-| -------------------- | -------------------------------------------------------------- |
-| `enable`             | 启用 `/loop`、`/btw` 和 `/keybindings` 功能（默认）            |
-| `enable loop`        | 仅启用 `/loop` 功能                                            |
-| `enable btw`         | 仅启用 `/btw` 功能                                             |
-| `enable keybindings` | 仅启用 `/keybindings` 功能                                     |
-| `enable toolsearch`  | 启用 toolsearch 功能（需要显式激活）                           |
-| `enable context1m`   | 启用 1M 上下文窗口，用于 Claude Opus（v2.1.76+，需要显式激活） |
-| `disable`            | 恢复原始状态                                                   |
-| `status`             | 查看当前状态及版本要求                                         |
+| 命令                 | 说明                                         |
+| -------------------- | -------------------------------------------- |
+| `enable`             | 启用 `/loop`、`/btw`、`/keybindings`（默认） |
+| `enable loop`        | 仅启用 `/loop`                               |
+| `enable btw`         | 仅启用 `/btw`                                |
+| `enable keybindings` | 仅启用 `/keybindings`                        |
+| `enable toolsearch`  | 启用 toolsearch（需要显式激活）              |
+| `enable context1m`   | 启用 1M 上下文（v2.1.76+）                   |
+| `disable`            | 恢复原始状态                                 |
+| `status`             | 查看当前状态及版本要求                       |
 
-**注意**: 运行 `cc-helper enable` 时会自动在 `~/.claude/settings.json` 中配置推荐的环境变量：
-
-- `DISABLE_INSTALLATION_CHECKS=1` - 禁用 npm 安装警告
-- `DISABLE_AUTOUPDATER=1` - 禁用自动更新
-- `DISABLE_BUG_COMMAND=1` - 禁用 bug 命令
-- `DISABLE_ERROR_REPORTING=1` - 禁用错误报告
-- `DISABLE_TELEMETRY=1` - 禁用遥测
-- `CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1` - 禁用非必要流量
-- `CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY=1` - 禁用反馈调查
-- `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` - 启用实验性 Agent Teams
-- `CLAUDE_CODE_HIDE_ACCOUNT_INFO=1` - 隐藏账户信息
-- `API_TIMEOUT_MS=3000000` - 设置 API 超时为 50 分钟
+> **注意**: 运行 `cc-helper enable` 时会自动在 `~/.claude/settings.json` 中配置推荐的环境变量：
+>
+> ```json
+> {
+>   "env": {
+>     "DISABLE_INSTALLATION_CHECKS": "1",
+>     "DISABLE_AUTOUPDATER": "1",
+>     "DISABLE_BUG_COMMAND": "1",
+>     "DISABLE_ERROR_REPORTING": "1",
+>     "DISABLE_TELEMETRY": "1",
+>     "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
+>     "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1",
+>     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
+>     "CLAUDE_CODE_HIDE_ACCOUNT_INFO": "1",
+>     "API_TIMEOUT_MS": "3000000"
+>   }
+> }
+> ```
 
 ---
 
 ## 什么是 `/loop`？
 
-`/loop` 是 Claude Code CLI 的内置命令，用于创建定时重复提示。适用于：
-
-- 轮询部署或构建状态
-- 监控 PR 状态
-- 设置提醒
-- 定时执行工作流
+定时重复提示，适用于轮询部署、监控 PR、设置提醒、定时执行工作流。
 
 ### 使用语法
 
@@ -102,20 +127,20 @@ npx @unitsvc/cc-helper disable
 
 ### 间隔时间格式
 
-| 形式       | 示例                        | 解析间隔       |
-| ---------- | --------------------------- | -------------- |
-| 前置时间   | `/loop 30m check`           | 每 30 分钟     |
-| 后置 every | `/loop check every 2 hours` | 每 2 小时      |
-| 无间隔     | `/loop check`               | 默认每 10 分钟 |
+| 形式       | 示例                        | 解析间隔     |
+| ---------- | --------------------------- | ------------ |
+| 前置时间   | `/loop 30m check`           | 每 30 分钟   |
+| 后置 every | `/loop check every 2 hours` | 每 2 小时    |
+| 无间隔     | `/loop check`               | 默认 10 分钟 |
 
 支持单位：`s`（秒）、`m`（分）、`h`（时）、`d`（天）
 
 ### 核心特性
 
-- **会话级别**：任务仅在当前 Claude Code 会话中存在，退出即消失
-- **自动过期**：重复任务 3 天后自动过期
-- **抖动保护**：添加小偏移量防止 API 惊群效应
-- **低优先级**：定时提示在你与 Claude 交互间隙触发
+- **会话级别**：任务仅在当前会话中存在，退出即消失
+- **自动过期**：3 天后自动过期
+- **抖动保护**：小偏移量防止 API 惊群效应
+- **低优先级**：在你与 Claude 交互间隙触发
 
 ### 管理任务
 
@@ -126,7 +151,7 @@ cancel the deploy check job       # 按描述或 ID 取消
 
 ## 什么是 `/btw`？
 
-`/btw`（by the way）是一个隐藏命令，用于在不打断主对话流程的情况下提问旁支问题。适合快速澄清疑问。
+在不打断主对话的情况下提问旁支问题。
 
 ### 使用方法
 
@@ -142,73 +167,9 @@ cancel the deploy check job       # 按描述或 ID 取消
 /btw 为什么这里要用 async/await？
 ```
 
-## 什么是工具搜索？
-
-工具搜索（Tool Search）是一项允许 Claude 在运行时动态搜索和加载工具的功能，而不是一次性发送所有工具定义。这可以节省 token 并提高性能。
-
-### 为什么为第三方 API 启用？
-
-默认情况下，Claude Code 在使用第三方 API 代理（如 Kimi、自定义端点）时会禁用工具搜索。此功能修改该行为，为这些代理启用工具搜索。
-
-### 优势
-
-- **Token 效率**：减少大型 MCP 工具目录的上下文窗口占用
-- **性能提升**：延迟加载工具，响应更快
-- **代理兼容**：支持 Kimi 和其他第三方 Claude API 提供商
-
-### 要求
-
-- 您的代理必须支持 API 响应中的 `tool_reference` 块
-- 仅支持 Claude Sonnet 4+ 和 Opus 4+ 模型（不支持 Haiku）
-
-### 配置说明
-
-使用官方 Anthropic API 时，工具搜索默认启用。但当 `ANTHROPIC_BASE_URL` 指向非第一方主机时，工具搜索默认禁用（大多数代理不转发 `tool_reference` 块）。
-
-通过 `ENABLE_TOOL_SEARCH` 环境变量控制工具搜索行为：
-
-| 值         | 行为                                                   |
-| ---------- | ------------------------------------------------------ |
-| （未设置） | 默认启用。当 `ANTHROPIC_BASE_URL` 为非第一方主机时禁用 |
-| `true`     | 始终启用，包括非第一方 `ANTHROPIC_BASE_URL`            |
-| `auto`     | 当 MCP 工具超过上下文 10% 时激活                       |
-| `auto:<N>` | 自定义阈值激活（如 `auto:5` 表示 5%）                  |
-| `false`    | 禁用，所有 MCP 工具预先加载                            |
-
-**示例：**
-
-```bash
-# 使用 5% 自定义阈值
-ENABLE_TOOL_SEARCH=auto:5 claude
-
-# 完全禁用工具搜索
-ENABLE_TOOL_SEARCH=false claude
-
-# 始终启用（适用于支持 tool_reference 的代理）
-ENABLE_TOOL_SEARCH=true claude
-```
-
-或在 `settings.json` 的 env 字段中设置。
-
-#### 禁用 MCPSearch 工具
-
-您还可以使用 `disallowedTools` 设置专门禁用 `MCPSearch` 工具：
-
-```json
-{
-  "permissions": {
-    "deny": ["MCPSearch"]
-  }
-}
-```
-
 ## 什么是 `/keybindings`？
 
-`/keybindings` 启用自定义键盘快捷键支持。在 `~/.claude/keybindings.json` 中配置您的键绑定。
-
-### 配置方法
-
-创建或编辑 `~/.claude/keybindings.json`：
+自定义键盘快捷键。在 `~/.claude/keybindings.json` 中配置：
 
 ```json
 {
@@ -222,7 +183,7 @@ ENABLE_TOOL_SEARCH=true claude
 
 ## 什么是 `/context1m`？
 
-`/context1m` 为 Claude Opus 模型启用 1M token 上下文窗口。这允许您处理更大的代码库和更长的对话。
+为 Claude Opus 模型启用 1M token 上下文窗口。
 
 ### 要求
 
@@ -233,95 +194,123 @@ ENABLE_TOOL_SEARCH=true claude
 ### 使用方法
 
 ```bash
-# 启用 1M 上下文
-npx @unitsvc/cc-helper enable context1m
-
-# 或使用别名
-npx @unitsvc/cc-helper enable 1m
-npx @unitsvc/cc-helper enable 1M
+npx @unitsvc/cc-helper enable context1m  # 别名: 1m, 1M
 ```
 
 ### 扩展思维与上下文长度
 
-使用第三方 API 代理时，扩展思维（推理）能力和上下文窗口大小因模型而异：
+| 模型                 | 最大思维链长度 | 上下文长度 |
+| -------------------- | -------------- | ---------- |
+| qwen3.5-plus         | 81,920         | 1,000,000  |
+| qwen3-coder-plus     | 不支持         | 1,000,000  |
+| qwen3-max-2026-01-23 | 81,920         | 262,144    |
+| qwen3-coder-next     | 不支持         | 262,144    |
+| kimi-k2.5            | 81,920         | 262,144    |
+| MiniMax-M2.5         | 32,768         | 204,800    |
+| glm-5                | 32,768         | 202,752    |
+| glm-4.7              | 32,768         | 202,752    |
 
-| 模型                 | 最大思维链长度          | 上下文长度（Tokens） |
-| -------------------- | ----------------------- | -------------------- |
-| qwen3.5-plus         | 81,920                  | 1,000,000            |
-| qwen3-coder-plus     | 不支持思考模式          | 1,000,000            |
-| qwen3-max-2026-01-23 | 81,920                  | 262,144              |
-| qwen3-coder-next     | 不支持思考模式          | 262,144              |
-| kimi-k2.5            | 81,920                  | 262,144              |
-| MiniMax-M2.5         | 32,768（思维链 + 回复） | 204,800              |
-| glm-5                | 32,768                  | 202,752              |
-| glm-4.7              | 32,768                  | 202,752              |
+---
 
-## plan 命令 - 配置 Provider
+## 什么是工具搜索？
 
-`cc-helper plan` 命令帮助配置 AI Provider，支持 vault 加密存储。
+在运行时动态搜索和加载工具，而非一次性发送所有工具定义。节省 token 并提高性能。
+
+### 为什么为第三方 API 启用？
+
+Claude Code 在使用第三方 API 代理时默认禁用工具搜索。此功能为这些代理启用工具搜索。
+
+### 优势
+
+- **Token 效率**：减少大型 MCP 工具目录的上下文占用
+- **性能提升**：延迟加载，响应更快
+- **代理兼容**：支持 Kimi 和其他提供商
+
+### 要求
+
+- 代理必须支持 API 响应中的 `tool_reference` 块
+- 仅支持 Claude Sonnet 4+ 和 Opus 4+ 模型（不支持 Haiku）
+
+### 配置说明
+
+通过 `ENABLE_TOOL_SEARCH` 环境变量控制：
+
+| 值         | 行为                              |
+| ---------- | --------------------------------- |
+| （未设置） | 默认启用，非第一方主机时禁用      |
+| `true`     | 始终启用                          |
+| `auto`     | MCP 工具超过上下文 10% 时激活     |
+| `auto:<N>` | 自定义阈值（如 `auto:5` 表示 5%） |
+| `false`    | 禁用，所有工具预先加载            |
+
+```bash
+ENABLE_TOOL_SEARCH=auto:5 claude   # 5% 阈值
+ENABLE_TOOL_SEARCH=false claude    # 禁用
+ENABLE_TOOL_SEARCH=true claude     # 始终启用
+```
+
+#### 禁用 MCPSearch 工具
+
+```json
+{
+  "permissions": {
+    "deny": ["MCPSearch"]
+  }
+}
+```
+
+---
+
+## plan 命令
+
+配置 AI Provider，支持 vault 加密存储。
 
 ```bash
 # 添加 Provider（自动保存到 vault + settings.json）
 cc-helper plan add -p bailian -k YOUR_API_KEY
 cc-helper plan add -p minimaxi -k YOUR_API_KEY --mcp
 
-# 切换 Provider（自动从 vault 获取密钥）
+# 切换 Provider
 cc-helper plan switch -p zai
 
-# 列出已配置的 Provider
+# 列出 Provider
 cc-helper plan list
 
 # 导出配置
 cc-helper plan export --all-env -o config.json
 ```
 
-**支持的 Provider:**
+**支持的 Provider：**
 
-- `bailian` - (CN) Aliyun
-- `minimaxi` - (CN) MiniMax
-- `glm` - (CN) Zhipu
-- `zai` - (EN) Zhipu
+| Provider   | 说明         |
+| ---------- | ------------ |
+| `bailian`  | (CN) Aliyun  |
+| `minimaxi` | (CN) MiniMax |
+| `glm`      | (CN) Zhipu   |
+| `zai`      | (EN) Zhipu   |
 
----
-
-## vault 命令 - 密钥管理
+## vault 命令
 
 安全的密钥存储，加密存储在 `cc-helper.json` 中。
 
 ```bash
-# 列出所有密钥
-cc-helper vault list
-
-# 设置密钥
-cc-helper vault set bailian default -k "YOUR_API_KEY"
-
-# 获取并解密密钥
-cc-helper vault get bailian default
-
-# 删除密钥
-cc-helper vault delete bailian default
+cc-helper vault list                    # 列出密钥
+cc-helper vault set bailian default -k "KEY"   # 设置
+cc-helper vault get bailian default              # 获取并解密
+cc-helper vault delete bailian default          # 删除
 ```
 
----
+## env 命令
 
-## env 命令 - 环境管理
-
-支持多环境配置（default、work、staging 等）。
+多环境配置（default、work、staging 等）。
 
 ```bash
-# 列出环境
-cc-helper env list
-
-# 创建环境
-cc-helper env create work
-
-# 切换环境
-cc-helper env switch work
+cc-helper env list    # 列出环境
+cc-helper env create work   # 创建
+cc-helper env switch work   # 切换
 ```
 
----
-
-## sync 命令 - 配置同步
+## sync 命令
 
 将配置导出/导入到 Git 仓库，支持 JWE 加密。
 
@@ -329,14 +318,12 @@ cc-helper env switch work
 # 登录 GitHub
 cc-helper sync login -r https://github.com/user/repo -t ghp_xxx
 
-# 导出到 Git 仓库
+# 导出
 cc-helper sync export
-
-# 导出到文件
 cc-helper sync export --file config.json
-cc-helper sync export --workspace test  # 使用工作区配置
+cc-helper sync export --workspace test
 
-# 导入配置
+# 导入
 cc-helper sync import
 ```
 
@@ -344,36 +331,30 @@ cc-helper sync import
 
 ## 功能特点
 
-- 一键启用 `/loop`、`/btw`、`/keybindings` 功能
-- 可选 `/toolsearch` 用于第三方 API 代理
-- 可选 `/context1m` 用于 1M 上下文窗口（v2.1.76+）
-- `plan` 命令支持 vault 加密存储 API 密钥
-- `vault` 命令安全管理密钥
-- `env` 命令支持多环境配置
-- `sync` 命令支持 Git 仓库同步
-- 轻松恢复原始状态
-- 自动备份原文件
-- 自动禁用 npm 弃用警告
-- 自动跳过入门引导流程
-- 零运行时依赖
-- 跨平台支持
-- 支持版本：2.1.71 - 2.1.76+
+| 功能          | 说明                                         |
+| ------------- | -------------------------------------------- |
+| 一键启用      | 启用 `/loop`、`/btw`、`/keybindings`         |
+| 工具搜索      | 可选 `/toolsearch` 用于第三方 API 代理       |
+| 1M 上下文     | 可选 `/context1m` 用于 1M 上下文（v2.1.76+） |
+| Provider 配置 | `plan` 命令支持 vault 加密存储               |
+| 密钥管理      | `vault` 命令安全管理密钥                     |
+| 多环境支持    | `env` 命令环境切换                           |
+| Git 同步      | `sync` 命令配置同步                          |
+| 轻松恢复      | 自动备份和恢复                               |
+| 零依赖        | 无运行时依赖                                 |
 
-### 示例
-
-启用后，在 Claude Code 中使用 `/loop` 命令：
+### 截图
 
 ![/loop 命令提示](./docs/images/loop-1.png)
-
-执行 loop 命令示例：
-
 ![/loop 执行示例](./docs/images/loop-2.png)
 
 ## 支持平台
 
-- macOS (amd64, arm64)
-- Linux (amd64, arm64)
-- Windows (amd64, arm64)
+| 平台    | 架构         |
+| ------- | ------------ |
+| macOS   | amd64, arm64 |
+| Linux   | amd64, arm64 |
+| Windows | amd64, arm64 |
 
 ## 许可证
 
