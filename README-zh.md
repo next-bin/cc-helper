@@ -6,16 +6,6 @@
 
 > 一键解锁 Claude Code 隐藏超能力：`/loop`、`/btw`、`/keybindings`、`/context1m` 和 `MCPSearch`
 
-## 目录
-
-| 分类         | 内容                                                                                                                        |
-| ------------ | --------------------------------------------------------------------------------------------------------------------------- |
-| **快速开始** | [环境要求](#环境要求) · [安装](#安装) · [使用方法](#使用方法) · [命令说明](#命令说明)                                       |
-| **核心功能** | [`/loop`](#什么是-loop) · [`/btw`](#什么是-btw) · [`/keybindings`](#什么是-keybindings) · [`/context1m`](#什么是-context1m) |
-| **工具搜索** | [概述](#什么是工具搜索) · [配置说明](#配置说明)                                                                             |
-| **配置命令** | [plan](#plan-命令) · [vault](#vault-命令) · [env](#env-命令) · [sync](#sync-命令)                                           |
-| **更多**     | [功能特点](#功能特点) · [支持平台](#支持平台) · [许可证](#许可证) · [安全](#安全)                                           |
-
 ---
 
 ## 环境要求
@@ -107,163 +97,9 @@ npx @unitsvc/cc-helper disable
 
 ---
 
-## 什么是 `/loop`？
+## 配置命令
 
-定时重复提示，适用于轮询部署、监控 PR、设置提醒、定时执行工作流。
-
-### 使用语法
-
-```
-/loop [间隔时间] <提示内容>
-```
-
-**示例：**
-
-```
-/loop 5m check if the deployment finished
-/loop 30m /review-pr 1234
-/loop remind me to push the release at 3pm
-```
-
-### 间隔时间格式
-
-| 形式       | 示例                        | 解析间隔     |
-| ---------- | --------------------------- | ------------ |
-| 前置时间   | `/loop 30m check`           | 每 30 分钟   |
-| 后置 every | `/loop check every 2 hours` | 每 2 小时    |
-| 无间隔     | `/loop check`               | 默认 10 分钟 |
-
-支持单位：`s`（秒）、`m`（分）、`h`（时）、`d`（天）
-
-### 核心特性
-
-- **会话级别**：任务仅在当前会话中存在，退出即消失
-- **自动过期**：3 天后自动过期
-- **抖动保护**：小偏移量防止 API 惊群效应
-- **低优先级**：在你与 Claude 交互间隙触发
-
-### 管理任务
-
-```
-what scheduled tasks do I have?   # 列出所有任务
-cancel the deploy check job       # 按描述或 ID 取消
-```
-
-## 什么是 `/btw`？
-
-在不打断主对话的情况下提问旁支问题。
-
-### 使用方法
-
-```
-/btw <问题>
-```
-
-**示例：**
-
-```
-/btw 这个函数是做什么的？
-/btw 解释一下这里的错误处理
-/btw 为什么这里要用 async/await？
-```
-
-## 什么是 `/keybindings`？
-
-自定义键盘快捷键。在 `~/.claude/keybindings.json` 中配置：
-
-```json
-{
-  "submit": ["ctrl+s"],
-  "interrupt": ["ctrl+c"],
-  "custom_commands": {
-    "ctrl+shift+l": "/loop 5m check status"
-  }
-}
-```
-
-## 什么是 `/context1m`？
-
-为 Claude Opus 模型启用 1M token 上下文窗口。
-
-### 要求
-
-- Claude Code v2.1.76 或更高版本
-- Claude Opus 4+ 模型
-- 可能需要 Pro 计划或官方 API
-
-### 使用方法
-
-```bash
-npx @unitsvc/cc-helper enable context1m  # 别名: 1m, 1M
-```
-
-![/context1m 启用](./docs/images/1m-1.png)
-
-### 扩展思维与上下文长度
-
-| 模型                 | 最大思维链长度 | 上下文长度 |
-| -------------------- | -------------- | ---------- |
-| qwen3.5-plus         | 81,920         | 1,000,000  |
-| qwen3-coder-plus     | 不支持         | 1,000,000  |
-| qwen3-max-2026-01-23 | 81,920         | 262,144    |
-| qwen3-coder-next     | 不支持         | 262,144    |
-| kimi-k2.5            | 81,920         | 262,144    |
-| MiniMax-M2.5         | 32,768         | 204,800    |
-| glm-5                | 32,768         | 202,752    |
-| glm-4.7              | 32,768         | 202,752    |
-
----
-
-## 什么是工具搜索？
-
-在运行时动态搜索和加载工具，而非一次性发送所有工具定义。节省 token 并提高性能。
-
-### 为什么为第三方 API 启用？
-
-Claude Code 在使用第三方 API 代理时默认禁用工具搜索。此功能为这些代理启用工具搜索。
-
-### 优势
-
-- **Token 效率**：减少大型 MCP 工具目录的上下文占用
-- **性能提升**：延迟加载，响应更快
-- **代理兼容**：支持 Kimi 和其他提供商
-
-### 要求
-
-- 代理必须支持 API 响应中的 `tool_reference` 块
-- 仅支持 Claude Sonnet 4+ 和 Opus 4+ 模型（不支持 Haiku）
-
-### 配置说明
-
-通过 `ENABLE_TOOL_SEARCH` 环境变量控制：
-
-| 值         | 行为                              |
-| ---------- | --------------------------------- |
-| （未设置） | 默认启用，非第一方主机时禁用      |
-| `true`     | 始终启用                          |
-| `auto`     | MCP 工具超过上下文 10% 时激活     |
-| `auto:<N>` | 自定义阈值（如 `auto:5` 表示 5%） |
-| `false`    | 禁用，所有工具预先加载            |
-
-```bash
-ENABLE_TOOL_SEARCH=auto:5 claude   # 5% 阈值
-ENABLE_TOOL_SEARCH=false claude    # 禁用
-ENABLE_TOOL_SEARCH=true claude     # 始终启用
-```
-
-#### 禁用 MCPSearch 工具
-
-```json
-{
-  "permissions": {
-    "deny": ["MCPSearch"]
-  }
-}
-```
-
----
-
-## plan 命令
+### plan 命令
 
 配置 AI Provider，支持 vault 加密存储。
 
@@ -291,7 +127,7 @@ cc-helper plan export --all-env -o config.json
 | `glm`      | (CN) Zhipu   |
 | `zai`      | (EN) Zhipu   |
 
-## vault 命令
+### vault 命令
 
 安全的密钥存储，加密存储在 `cc-helper.json` 中。
 
@@ -302,7 +138,7 @@ cc-helper vault get bailian default              # 获取并解密
 cc-helper vault delete bailian default          # 删除
 ```
 
-## env 命令
+### env 命令
 
 多环境配置（default、work、staging 等）。
 
@@ -312,7 +148,7 @@ cc-helper env create work   # 创建
 cc-helper env switch work   # 切换
 ```
 
-## sync 命令
+### sync 命令
 
 将配置导出/导入到 Git 仓库，支持 JWE 加密。
 
@@ -327,6 +163,144 @@ cc-helper sync export --workspace test
 
 # 导入
 cc-helper sync import
+```
+
+---
+
+## 核心功能详解
+
+### `/loop` - 定时重复提示
+
+定时重复提示，适用于轮询部署、监控 PR、设置提醒、定时执行工作流。
+
+```
+/loop [间隔时间] <提示内容>
+```
+
+**示例：**
+
+```
+/loop 5m check if the deployment finished
+/loop 30m /review-pr 1234
+/loop remind me to push the release at 3pm
+```
+
+| 形式       | 示例                        | 解析间隔     |
+| ---------- | --------------------------- | ------------ |
+| 前置时间   | `/loop 30m check`           | 每 30 分钟   |
+| 后置 every | `/loop check every 2 hours` | 每 2 小时    |
+| 无间隔     | `/loop check`               | 默认 10 分钟 |
+
+支持单位：`s`（秒）、`m`（分）、`h`（时）、`d`（天）
+
+**核心特性：**
+
+- **会话级别**：任务仅在当前会话中存在，退出即消失
+- **自动过期**：3 天后自动过期
+- **抖动保护**：小偏移量防止 API 惊群效应
+- **低优先级**：在你与 Claude 交互间隙触发
+
+```
+what scheduled tasks do I have?   # 列出所有任务
+cancel the deploy check job       # 按描述或 ID 取消
+```
+
+### `/btw` - 旁支问题
+
+在不打断主对话的情况下提问旁支问题。
+
+```
+/btw <问题>
+```
+
+**示例：**
+
+```
+/btw 这个函数是做什么的？
+/btw 解释一下这里的错误处理
+/btw 为什么这里要用 async/await？
+```
+
+### `/keybindings` - 自定义键盘快捷键
+
+在 `~/.claude/keybindings.json` 中配置：
+
+```json
+{
+  "submit": ["ctrl+s"],
+  "interrupt": ["ctrl+c"],
+  "custom_commands": {
+    "ctrl+shift+l": "/loop 5m check status"
+  }
+}
+```
+
+### `/context1m` - 1M 上下文
+
+为 Claude Opus 模型启用 1M token 上下文窗口。
+
+**要求：**
+
+- Claude Code v2.1.76 或更高版本
+- Claude Opus 4+ 模型
+- 可能需要 Pro 计划或官方 API
+
+![/context1m 启用](./docs/images/1m-1.png)
+
+**扩展思维与上下文长度：**
+
+| 模型                 | 最大思维链长度 | 上下文长度 |
+| -------------------- | -------------: | ---------: |
+| qwen3.5-plus         |         81,920 |  1,000,000 |
+| qwen3-coder-plus     |         不支持 |  1,000,000 |
+| qwen3-max-2026-01-23 |         81,920 |    262,144 |
+| qwen3-coder-next     |         不支持 |    262,144 |
+| kimi-k2.5            |         81,920 |    262,144 |
+| MiniMax-M2.5         |         32,768 |    204,800 |
+| glm-5                |         32,768 |    202,752 |
+| glm-4.7              |         32,768 |    202,752 |
+
+### 工具搜索
+
+在运行时动态搜索和加载工具，而非一次性发送所有工具定义。节省 token 并提高性能。
+
+**为什么为第三方 API 启用？** Claude Code 在使用第三方 API 代理时默认禁用工具搜索。此功能为这些代理启用工具搜索。
+
+**优势：**
+
+- **Token 效率**：减少大型 MCP 工具目录的上下文占用
+- **性能提升**：延迟加载，响应更快
+- **代理兼容**：支持 Kimi 和其他提供商
+
+**要求：**
+
+- 代理必须支持 API 响应中的 `tool_reference` 块
+- 仅支持 Claude Sonnet 4+ 和 Opus 4+ 模型（不支持 Haiku）
+
+通过 `ENABLE_TOOL_SEARCH` 环境变量控制：
+
+| 值         | 行为                              |
+| ---------- | --------------------------------- |
+| （未设置） | 默认启用，非第一方主机时禁用      |
+| `true`     | 始终启用                          |
+| `auto`     | MCP 工具超过上下文 10% 时激活     |
+| `auto:<N>` | 自定义阈值（如 `auto:5` 表示 5%） |
+| `false`    | 禁用，所有工具预先加载            |
+
+```bash
+ENABLE_TOOL_SEARCH=auto:5 claude   # 5% 阈值
+ENABLE_TOOL_SEARCH=false claude    # 禁用
+ENABLE_TOOL_SEARCH=true claude     # 始终启用
+```
+
+禁用 MCPSearch 工具：
+
+```json
+{
+  "permissions": {
+    "deny": ["MCPSearch"]
+  }
+}
 ```
 
 ---

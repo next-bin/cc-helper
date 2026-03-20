@@ -6,16 +6,6 @@
 
 > One command to unlock Claude Code's hidden superpowers: `/loop`, `/btw`, `/keybindings`, `/context1m`, and `MCPSearch`
 
-## Table of Contents
-
-| Category          | Content                                                                                                                         |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| **Quick Start**   | [Requirements](#requirements) · [Installation](#installation) · [Usage](#usage) · [Commands](#commands)                         |
-| **Core Features** | [`/loop`](#what-is-loop) · [`/btw`](#what-is-btw) · [`/keybindings`](#what-is-keybindings) · [`/context1m`](#what-is-context1m) |
-| **Tool Search**   | [Overview](#what-is-tool-search) · [Configuration](#configuration)                                                              |
-| **Commands**      | [plan](#plan-command) · [vault](#vault-command) · [env](#env-command) · [sync](#sync-command)                                   |
-| **More**          | [Features](#features) · [Platforms](#platforms) · [License](#license) · [Security](#security)                                   |
-
 ---
 
 ## Requirements
@@ -107,163 +97,9 @@ npx @unitsvc/cc-helper disable
 
 ---
 
-## What is `/loop`?
+## Configuration Commands
 
-Schedule recurring prompts for polling deployments, babysitting PRs, setting reminders, or running workflows on an interval.
-
-### Usage Syntax
-
-```
-/loop [interval] <prompt>
-```
-
-**Examples:**
-
-```
-/loop 5m check if the deployment finished
-/loop 30m /review-pr 1234
-/loop remind me to push the release at 3pm
-```
-
-### Interval Formats
-
-| Form             | Example                     | Parsed Interval        |
-| ---------------- | --------------------------- | ---------------------- |
-| Leading token    | `/loop 30m check`           | every 30 minutes       |
-| Trailing `every` | `/loop check every 2 hours` | every 2 hours          |
-| No interval      | `/loop check`               | defaults to 10 minutes |
-
-Supported units: `s` (seconds), `m` (minutes), `h` (hours), `d` (days)
-
-### Key Features
-
-- **Session-scoped**: Tasks live in the current session and disappear on exit
-- **Auto-expiry**: Tasks expire after 3 days
-- **Jitter protection**: Small offsets prevent API thundering herd
-- **Low priority**: Fires between your turns, not while Claude is busy
-
-### Managing Tasks
-
-```
-what scheduled tasks do I have?   # List all tasks
-cancel the deploy check job       # Cancel by description or ID
-```
-
-## What is `/btw`?
-
-Ask side questions without disrupting the main conversation flow.
-
-### Usage
-
-```
-/btw <question>
-```
-
-**Examples:**
-
-```
-/btw what does this function do?
-/btw explain the error handling here
-/btw why use async/await in this case?
-```
-
-## What is `/keybindings`?
-
-Custom keyboard shortcuts. Configure in `~/.claude/keybindings.json`:
-
-```json
-{
-  "submit": ["ctrl+s"],
-  "interrupt": ["ctrl+c"],
-  "custom_commands": {
-    "ctrl+shift+l": "/loop 5m check status"
-  }
-}
-```
-
-## What is `/context1m`?
-
-Enable 1M token context window for Claude Opus models.
-
-### Requirements
-
-- Claude Code v2.1.76 or higher
-- Claude Opus 4+ model
-- May require Pro plan or first-party API
-
-### Usage
-
-```bash
-npx @unitsvc/cc-helper enable context1m  # or: 1m, 1M
-```
-
-![/context1m enable](./docs/images/1m-1.png)
-
-### Extended Thinking & Context Length
-
-| Model                | Max Thinking Tokens | Context Length |
-| -------------------- | ------------------- | -------------- |
-| qwen3.5-plus         | 81,920              | 1,000,000      |
-| qwen3-coder-plus     | Not supported       | 1,000,000      |
-| qwen3-max-2026-01-23 | 81,920              | 262,144        |
-| qwen3-coder-next     | Not supported       | 262,144        |
-| kimi-k2.5            | 81,920              | 262,144        |
-| MiniMax-M2.5         | 32,768              | 204,800        |
-| glm-5                | 32,768              | 202,752        |
-| glm-4.7              | 32,768              | 202,752        |
-
----
-
-## What is Tool Search?
-
-Dynamically search and load tools at runtime instead of sending all tool definitions upfront. Saves tokens and improves performance.
-
-### Why Third-Party APIs?
-
-Claude Code disables Tool Search for third-party proxies by default. This feature enables it.
-
-### Benefits
-
-- **Token efficiency**: Reduces context usage for large MCP tool catalogs
-- **Better performance**: Faster response with deferred loading
-- **Proxy compatibility**: Works with Kimi and other providers
-
-### Requirements
-
-- Proxy must support `tool_reference` blocks
-- Claude Sonnet 4+ or Opus 4+ models only (not Haiku)
-
-### Configuration
-
-Control via `ENABLE_TOOL_SEARCH` environment variable:
-
-| Value      | Behavior                                            |
-| ---------- | --------------------------------------------------- |
-| (unset)    | Default enabled, disabled for non-first-party hosts |
-| `true`     | Always enabled                                      |
-| `auto`     | Activates when MCP tools exceed 10% of context      |
-| `auto:<N>` | Custom threshold (e.g., `auto:5` for 5%)            |
-| `false`    | Disabled, all tools loaded upfront                  |
-
-```bash
-ENABLE_TOOL_SEARCH=auto:5 claude   # 5% threshold
-ENABLE_TOOL_SEARCH=false claude   # Disable
-ENABLE_TOOL_SEARCH=true claude    # Always enable
-```
-
-#### Disable MCPSearch Tool
-
-```json
-{
-  "permissions": {
-    "deny": ["MCPSearch"]
-  }
-}
-```
-
----
-
-## plan Command
+### plan Command
 
 Configure AI providers with vault-based secret storage.
 
@@ -291,7 +127,7 @@ cc-helper plan export --all-env -o config.json
 | `glm`      | (CN) Zhipu   |
 | `zai`      | (EN) Zhipu   |
 
-## vault Command
+### vault Command
 
 Secure API key storage, encrypted in `cc-helper.json`.
 
@@ -302,7 +138,7 @@ cc-helper vault get bailian default             # Get & decrypt
 cc-helper vault delete bailian default          # Delete
 ```
 
-## env Command
+### env Command
 
 Multiple environments (default, work, staging, etc.).
 
@@ -312,7 +148,7 @@ cc-helper env create work   # Create
 cc-helper env switch work   # Switch
 ```
 
-## sync Command
+### sync Command
 
 Export/import config to Git repository with JWE encryption.
 
@@ -327,6 +163,144 @@ cc-helper sync export --workspace test
 
 # Import
 cc-helper sync import
+```
+
+---
+
+## Core Features
+
+### `/loop` - Scheduled Recurring Prompts
+
+Schedule prompts for polling deployments, babysitting PRs, setting reminders, or running workflows on an interval.
+
+```
+/loop [interval] <prompt>
+```
+
+**Examples:**
+
+```
+/loop 5m check if the deployment finished
+/loop 30m /review-pr 1234
+/loop remind me to push the release at 3pm
+```
+
+| Form             | Example                     | Parsed Interval        |
+| ---------------- | --------------------------- | ---------------------- |
+| Leading token    | `/loop 30m check`           | every 30 minutes       |
+| Trailing `every` | `/loop check every 2 hours` | every 2 hours          |
+| No interval      | `/loop check`               | defaults to 10 minutes |
+
+Supported units: `s` (seconds), `m` (minutes), `h` (hours), `d` (days)
+
+**Key Features:**
+
+- **Session-scoped**: Tasks live in the current session and disappear on exit
+- **Auto-expiry**: Tasks expire after 3 days
+- **Jitter protection**: Small offsets prevent API thundering herd
+- **Low priority**: Fires between your turns, not while Claude is busy
+
+```
+what scheduled tasks do I have?   # List all tasks
+cancel the deploy check job       # Cancel by description or ID
+```
+
+### `/btw` - Side Questions
+
+Ask side questions without disrupting the main conversation flow.
+
+```
+/btw <question>
+```
+
+**Examples:**
+
+```
+/btw what does this function do?
+/btw explain the error handling here
+/btw why use async/await in this case?
+```
+
+### `/keybindings` - Custom Keyboard Shortcuts
+
+Configure in `~/.claude/keybindings.json`:
+
+```json
+{
+  "submit": ["ctrl+s"],
+  "interrupt": ["ctrl+c"],
+  "custom_commands": {
+    "ctrl+shift+l": "/loop 5m check status"
+  }
+}
+```
+
+### `/context1m` - 1M Token Context
+
+Enable 1M token context window for Claude Opus models.
+
+**Requirements:**
+
+- Claude Code v2.1.76 or higher
+- Claude Opus 4+ model
+- May require Pro plan or first-party API
+
+![/context1m enable](./docs/images/1m-1.png)
+
+**Extended Thinking & Context Length:**
+
+| Model                | Max Thinking Tokens | Context Length |
+| -------------------- | ------------------: | -------------: |
+| qwen3.5-plus         |              81,920 |      1,000,000 |
+| qwen3-coder-plus     |       Not supported |      1,000,000 |
+| qwen3-max-2026-01-23 |              81,920 |        262,144 |
+| qwen3-coder-next     |       Not supported |        262,144 |
+| kimi-k2.5            |              81,920 |        262,144 |
+| MiniMax-M2.5         |              32,768 |        204,800 |
+| glm-5                |              32,768 |        202,752 |
+| glm-4.7              |              32,768 |        202,752 |
+
+### Tool Search
+
+Dynamically search and load tools at runtime instead of sending all tool definitions upfront. Saves tokens and improves performance.
+
+**Why Third-Party APIs?** Claude Code disables Tool Search for third-party proxies by default. This feature enables it.
+
+**Benefits:**
+
+- **Token efficiency**: Reduces context usage for large MCP tool catalogs
+- **Better performance**: Faster response with deferred loading
+- **Proxy compatibility**: Works with Kimi and other providers
+
+**Requirements:**
+
+- Proxy must support `tool_reference` blocks
+- Claude Sonnet 4+ or Opus 4+ models only (not Haiku)
+
+Control via `ENABLE_TOOL_SEARCH` environment variable:
+
+| Value      | Behavior                                            |
+| ---------- | --------------------------------------------------- |
+| (unset)    | Default enabled, disabled for non-first-party hosts |
+| `true`     | Always enabled                                      |
+| `auto`     | Activates when MCP tools exceed 10% of context      |
+| `auto:<N>` | Custom threshold (e.g., `auto:5` for 5%)            |
+| `false`    | Disabled, all tools loaded upfront                  |
+
+```bash
+ENABLE_TOOL_SEARCH=auto:5 claude   # 5% threshold
+ENABLE_TOOL_SEARCH=false claude   # Disable
+ENABLE_TOOL_SEARCH=true claude    # Always enable
+```
+
+Disable MCPSearch Tool:
+
+```json
+{
+  "permissions": {
+    "deny": ["MCPSearch"]
+  }
+}
 ```
 
 ---
