@@ -4,7 +4,7 @@
 
 [**English**](./README.md) | [**简体中文**](./README-zh.md)
 
-> 一键解锁 Claude Code 隐藏超能力：`/loop`、`/btw`、`/keybindings`、`/context1m` 和 `MCPSearch`
+> 一键解锁 Claude Code 隐藏超能力：`/loop`、`/btw`、`/keybindings`、`/context1m`、`automode` 和 `MCPSearch`
 
 ---
 
@@ -16,7 +16,7 @@
 | Claude Code | v2.1.71+  |
 
 ```bash
-npm install -g @anthropic-ai/claude-code@v2.1.76
+npm install -g @anthropic-ai/claude-code@v2.1.85
 ```
 
 ## 安装
@@ -55,6 +55,7 @@ npx @unitsvc/cc-helper enable btw
 npx @unitsvc/cc-helper enable keybindings
 npx @unitsvc/cc-helper enable toolsearch
 npx @unitsvc/cc-helper enable context1m   # 别名: 1m, 1M
+npx @unitsvc/cc-helper enable automode    # 所有模型的自动模式
 
 # 查看状态
 npx @unitsvc/cc-helper status
@@ -73,6 +74,7 @@ npx @unitsvc/cc-helper disable
 | `enable keybindings` | 仅启用 `/keybindings`                        |
 | `enable toolsearch`  | 启用 toolsearch（需要显式激活）              |
 | `enable context1m`   | 启用 1M 上下文（v2.1.76+）                   |
+| `enable automode`    | 启用所有模型的自动模式（v2.1.75+）           |
 | `disable`            | 恢复原始状态                                 |
 | `status`             | 查看当前状态及版本要求                       |
 
@@ -111,6 +113,12 @@ cc-helper plan add -p minimaxi -k YOUR_API_KEY --mcp
 # 切换 Provider
 cc-helper plan switch -p zai
 
+# 切换模型配置（当前 Provider）
+cc-helper plan switch --profile 1m
+
+# 切换 Provider 并指定配置
+cc-helper plan switch -p bailian -k YOUR_KEY --profile 1m
+
 # 列出 Provider
 cc-helper plan list
 
@@ -126,6 +134,47 @@ cc-helper plan export --all-env -o config.json
 | `minimaxi` | (CN) MiniMax |
 | `glm`      | (CN) Zhipu   |
 | `zai`      | (EN) Zhipu   |
+
+**模型配置（Model Profiles）：**
+
+每个 Provider 支持多个模型配置。一个配置定义了所有模型层级的映射：
+
+| 字段     | 说明                                |
+| -------- | ----------------------------------- |
+| Model    | 默认模型 (`ANTHROPIC_MODEL`)        |
+| Haiku    | 快速模型 (`ANTHROPIC_DEFAULT_HAIKU_MODEL`) |
+| Sonnet   | 均衡模型 (`ANTHROPIC_DEFAULT_SONNET_MODEL`) |
+| Opus     | 强力模型 (`ANTHROPIC_DEFAULT_OPUS_MODEL`) |
+| Reasoning| 扩展思维 (`ANTHROPIC_REASONING_MODEL`) |
+
+**bailian 配置：**
+
+| Profile  | Model    | Haiku    | Sonnet         | Opus           | Reasoning |
+| -------- | -------- | -------- | -------------- | -------------- | --------- |
+| default  | glm-5    | glm-4.7  | glm-5          | glm-5          | glm-5     |
+| 1m       | glm-5    | glm-4.7  | qwen3.5-plus   | qwen3.5-plus   | glm-5     |
+| kimi     | kimi-k2.5| kimi-k2.5| kimi-k2.5     | kimi-k2.5      | kimi-k2.5 |
+| minimax  | MiniMax-M2.5 | MiniMax-M2.5 | MiniMax-M2.5 | MiniMax-M2.5 | MiniMax-M2.5 |
+
+**glm / zai 配置：**
+
+| Profile  | Model    | Haiku         | Sonnet   | Opus   | Reasoning |
+| -------- | -------- | ------------- | -------- | ------ | --------- |
+| default  | glm-5    | glm-4.7       | glm-5    | glm-5  | glm-5     |
+| new      | glm-5    | glm-5-turbo   | glm-5    | glm-5  | glm-5     |
+| 5.1      | glm-5.1  | glm-4.7       | glm-4.7  | glm-5  | glm-5.1   |
+
+**minimaxi 配置：**
+
+| Profile  | Model        | Haiku        | Sonnet       | Opus         | Reasoning    |
+| -------- | ------------ | ------------ | ------------ | ------------ | ------------ |
+| default  | MiniMax-M2.7 | MiniMax-M2.5 | MiniMax-M2.7 | MiniMax-M2.7 | MiniMax-M2.7 |
+
+```bash
+# 示例：在 bailian 上使用 1M 上下文
+cc-helper plan add -p bailian -k YOUR_KEY
+cc-helper plan switch --profile 1m
+```
 
 ### vault 命令
 
@@ -303,6 +352,33 @@ ENABLE_TOOL_SEARCH=true claude     # 始终启用
 }
 ```
 
+### 自动模式
+
+为所有模型和 API 类型启用自动模式，绕过模型限制。
+
+**为什么启用？** Claude Code 限制自动模式仅适用于特定模型（Opus/Sonnet 4.6）和官方 API。此功能为所有模型和第三方代理启用自动模式。
+
+**优势：**
+
+- **通用访问**：自动模式适用于任意模型
+- **代理支持**：兼容 Bedrock、Vertex 和第三方 API
+- **无限制**：绕过远程配置控制
+
+**要求：**
+
+- Claude Code v2.1.75 或更高版本
+
+```bash
+npx @unitsvc/cc-helper enable automode
+```
+
+**环境变量：**
+
+| 变量                            | 说明               |
+| ------------------------------- | ------------------ |
+| `CC_HELPER_AUTO_MODE_MODEL`     | 自定义分类器模型   |
+| `ANTHROPIC_DEFAULT_HAIKU_MODEL` | 未指定时的回退模型 |
+
 ---
 
 ## 功能特点
@@ -312,6 +388,7 @@ ENABLE_TOOL_SEARCH=true claude     # 始终启用
 | 一键启用      | 启用 `/loop`、`/btw`、`/keybindings`         |
 | 工具搜索      | 可选 `/toolsearch` 用于第三方 API 代理       |
 | 1M 上下文     | 可选 `/context1m` 用于 1M 上下文（v2.1.76+） |
+| 自动模式      | 可选 `automode` 用于所有模型（v2.1.75+）     |
 | Provider 配置 | `plan` 命令支持 vault 加密存储               |
 | 密钥管理      | `vault` 命令安全管理密钥                     |
 | 多环境支持    | `env` 命令环境切换                           |

@@ -4,7 +4,7 @@
 
 [**English**](./README.md) | [**简体中文**](./README-zh.md)
 
-> One command to unlock Claude Code's hidden superpowers: `/loop`, `/btw`, `/keybindings`, `/context1m`, and `MCPSearch`
+> One command to unlock Claude Code's hidden superpowers: `/loop`, `/btw`, `/keybindings`, `/context1m`, `automode`, and `MCPSearch`
 
 ---
 
@@ -16,7 +16,7 @@
 | Claude Code | v2.1.71+  |
 
 ```bash
-npm install -g @anthropic-ai/claude-code@v2.1.76
+npm install -g @anthropic-ai/claude-code@v2.1.85
 ```
 
 ## Installation
@@ -55,6 +55,7 @@ npx @unitsvc/cc-helper enable btw
 npx @unitsvc/cc-helper enable keybindings
 npx @unitsvc/cc-helper enable toolsearch
 npx @unitsvc/cc-helper enable context1m   # or: 1m, 1M
+npx @unitsvc/cc-helper enable automode    # auto-mode for all models
 
 # Check status
 npx @unitsvc/cc-helper status
@@ -73,6 +74,7 @@ npx @unitsvc/cc-helper disable
 | `enable keybindings` | Enable only `/keybindings`                           |
 | `enable toolsearch`  | Enable toolsearch (requires explicit activation)     |
 | `enable context1m`   | Enable 1M context for Claude Opus (v2.1.76+)         |
+| `enable automode`    | Enable auto-mode for all models (v2.1.75+)           |
 | `disable`            | Restore original                                     |
 | `status`             | Check current status with version requirements       |
 
@@ -111,6 +113,12 @@ cc-helper plan add -p minimaxi -k YOUR_API_KEY --mcp
 # Switch provider
 cc-helper plan switch -p zai
 
+# Switch model profile (on current provider)
+cc-helper plan switch --profile 1m
+
+# Switch provider with profile
+cc-helper plan switch -p bailian -k YOUR_KEY --profile 1m
+
 # List providers
 cc-helper plan list
 
@@ -126,6 +134,47 @@ cc-helper plan export --all-env -o config.json
 | `minimaxi` | (CN) MiniMax |
 | `glm`      | (CN) Zhipu   |
 | `zai`      | (EN) Zhipu   |
+
+**Model Profiles:**
+
+Each provider supports multiple model profiles. A profile defines mappings for all model tiers:
+
+| Field     | Description                          |
+| --------- | ------------------------------------ |
+| Model     | Default model (`ANTHROPIC_MODEL`)    |
+| Haiku     | Fast model (`ANTHROPIC_DEFAULT_HAIKU_MODEL`) |
+| Sonnet    | Balanced model (`ANTHROPIC_DEFAULT_SONNET_MODEL`) |
+| Opus      | Powerful model (`ANTHROPIC_DEFAULT_OPUS_MODEL`) |
+| Reasoning | Extended thinking (`ANTHROPIC_REASONING_MODEL`) |
+
+**bailian Profiles:**
+
+| Profile  | Model    | Haiku    | Sonnet         | Opus           | Reasoning |
+| -------- | -------- | -------- | -------------- | -------------- | --------- |
+| default  | glm-5    | glm-4.7  | glm-5          | glm-5          | glm-5     |
+| 1m       | glm-5    | glm-4.7  | qwen3.5-plus   | qwen3.5-plus   | glm-5     |
+| kimi     | kimi-k2.5| kimi-k2.5| kimi-k2.5     | kimi-k2.5      | kimi-k2.5 |
+| minimax  | MiniMax-M2.5 | MiniMax-M2.5 | MiniMax-M2.5 | MiniMax-M2.5 | MiniMax-M2.5 |
+
+**glm / zai Profiles:**
+
+| Profile  | Model    | Haiku         | Sonnet   | Opus   | Reasoning |
+| -------- | -------- | ------------- | -------- | ------ | --------- |
+| default  | glm-5    | glm-4.7       | glm-5    | glm-5  | glm-5     |
+| new      | glm-5    | glm-5-turbo   | glm-5    | glm-5  | glm-5     |
+| 5.1      | glm-5.1  | glm-4.7       | glm-4.7  | glm-5  | glm-5.1   |
+
+**minimaxi Profiles:**
+
+| Profile  | Model        | Haiku        | Sonnet       | Opus         | Reasoning    |
+| -------- | ------------ | ------------ | ------------ | ------------ | ------------ |
+| default  | MiniMax-M2.7 | MiniMax-M2.5 | MiniMax-M2.7 | MiniMax-M2.7 | MiniMax-M2.7 |
+
+```bash
+# Example: Use 1M context on bailian
+cc-helper plan add -p bailian -k YOUR_KEY
+cc-helper plan switch --profile 1m
+```
 
 ### vault Command
 
@@ -303,6 +352,33 @@ Disable MCPSearch Tool:
 }
 ```
 
+### Auto Mode
+
+Enable auto-mode for all models and API types, bypassing model restrictions.
+
+**Why Enable?** Claude Code restricts auto-mode to specific models (Opus/Sonnet 4.6) and first-party APIs only. This feature enables it for all models and third-party proxies.
+
+**Benefits:**
+
+- **Universal access**: Auto-mode works with any model
+- **Proxy support**: Compatible with Bedrock, Vertex, and third-party APIs
+- **No restrictions**: Bypasses remote config control
+
+**Requirements:**
+
+- Claude Code v2.1.75 or higher
+
+```bash
+npx @unitsvc/cc-helper enable automode
+```
+
+**Environment Variables:**
+
+| Variable                        | Description                     |
+| ------------------------------- | ------------------------------- |
+| `CC_HELPER_AUTO_MODE_MODEL`     | Custom classifier model         |
+| `ANTHROPIC_DEFAULT_HAIKU_MODEL` | Fallback model if not specified |
+
 ---
 
 ## Features
@@ -312,6 +388,7 @@ Disable MCPSearch Tool:
 | One-command enable | Enable `/loop`, `/btw`, `/keybindings` with one command |
 | Tool Search        | Optional `/toolsearch` for third-party API proxies      |
 | 1M Context         | Optional `/context1m` for 1M context (v2.1.76+)         |
+| Auto Mode          | Optional `automode` for all models (v2.1.75+)           |
 | Provider config    | `plan` command with vault-based API key storage         |
 | Secret management  | `vault` command for secure secret storage               |
 | Multi-environment  | `env` command for environment switching                 |
