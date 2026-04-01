@@ -92,6 +92,8 @@ npx @unitsvc/cc-helper disable
 >     "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1",
 >     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
 >     "CLAUDE_CODE_HIDE_ACCOUNT_INFO": "1",
+>     "CLAUDE_CODE_NEW_INIT": "1",
+>     "CLAUDE_CODE_ATTRIBUTION_HEADER": "0",
 >     "API_TIMEOUT_MS": "3000000"
 >   }
 > }
@@ -158,11 +160,12 @@ cc-helper plan export --all-env -o config.json
 
 **glm / zai 配置：**
 
-| Profile | Model   | Haiku       | Sonnet  | Opus  | Reasoning |
-| ------- | ------- | ----------- | ------- | ----- | --------- |
-| default | glm-5   | glm-4.7     | glm-5   | glm-5 | glm-5     |
-| new     | glm-5   | glm-5-turbo | glm-5   | glm-5 | glm-5     |
-| 5.1     | glm-5.1 | glm-4.7     | glm-4.7 | glm-5 | glm-5.1   |
+| Profile | Model        | Haiku       | Sonnet  | Opus         | Reasoning    |
+| ------- | ------------ | ----------- | ------- | ------------ | ------------ |
+| default | glm-5        | glm-4.7     | glm-5   | glm-5        | glm-5        |
+| new     | glm-5        | glm-5-turbo | glm-5   | glm-5        | glm-5        |
+| 5.1     | glm-5.1      | glm-4.7     | glm-4.7 | glm-5        | glm-5.1      |
+| 5v      | glm-5v-turbo | glm-5-turbo | glm-5.1 | glm-5v-turbo | glm-5v-turbo |
 
 **minimaxi 配置：**
 
