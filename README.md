@@ -16,7 +16,7 @@
 | Claude Code | v2.1.71+  |
 
 ```bash
-npm install -g @anthropic-ai/claude-code@v2.1.85
+npm install -g @anthropic-ai/claude-code@v2.1.89
 ```
 
 ## Installation
@@ -139,36 +139,36 @@ cc-helper plan export --all-env -o config.json
 
 Each provider supports multiple model profiles. A profile defines mappings for all model tiers:
 
-| Field     | Description                          |
-| --------- | ------------------------------------ |
-| Model     | Default model (`ANTHROPIC_MODEL`)    |
-| Haiku     | Fast model (`ANTHROPIC_DEFAULT_HAIKU_MODEL`) |
+| Field     | Description                                       |
+| --------- | ------------------------------------------------- |
+| Model     | Default model (`ANTHROPIC_MODEL`)                 |
+| Haiku     | Fast model (`ANTHROPIC_DEFAULT_HAIKU_MODEL`)      |
 | Sonnet    | Balanced model (`ANTHROPIC_DEFAULT_SONNET_MODEL`) |
-| Opus      | Powerful model (`ANTHROPIC_DEFAULT_OPUS_MODEL`) |
-| Reasoning | Extended thinking (`ANTHROPIC_REASONING_MODEL`) |
+| Opus      | Powerful model (`ANTHROPIC_DEFAULT_OPUS_MODEL`)   |
+| Reasoning | Extended thinking (`ANTHROPIC_REASONING_MODEL`)   |
 
 **bailian Profiles:**
 
-| Profile  | Model    | Haiku    | Sonnet         | Opus           | Reasoning |
-| -------- | -------- | -------- | -------------- | -------------- | --------- |
-| default  | glm-5    | glm-4.7  | glm-5          | glm-5          | glm-5     |
-| 1m       | glm-5    | glm-4.7  | qwen3.5-plus   | qwen3.5-plus   | glm-5     |
-| kimi     | kimi-k2.5| kimi-k2.5| kimi-k2.5     | kimi-k2.5      | kimi-k2.5 |
-| minimax  | MiniMax-M2.5 | MiniMax-M2.5 | MiniMax-M2.5 | MiniMax-M2.5 | MiniMax-M2.5 |
+| Profile | Model        | Haiku        | Sonnet       | Opus         | Reasoning    |
+| ------- | ------------ | ------------ | ------------ | ------------ | ------------ |
+| default | glm-5        | glm-4.7      | glm-5        | glm-5        | glm-5        |
+| 1m      | glm-5        | glm-4.7      | qwen3.5-plus | qwen3.5-plus | glm-5        |
+| kimi    | kimi-k2.5    | kimi-k2.5    | kimi-k2.5    | kimi-k2.5    | kimi-k2.5    |
+| minimax | MiniMax-M2.5 | MiniMax-M2.5 | MiniMax-M2.5 | MiniMax-M2.5 | MiniMax-M2.5 |
 
 **glm / zai Profiles:**
 
-| Profile  | Model    | Haiku         | Sonnet   | Opus   | Reasoning |
-| -------- | -------- | ------------- | -------- | ------ | --------- |
-| default  | glm-5    | glm-4.7       | glm-5    | glm-5  | glm-5     |
-| new      | glm-5    | glm-5-turbo   | glm-5    | glm-5  | glm-5     |
-| 5.1      | glm-5.1  | glm-4.7       | glm-4.7  | glm-5  | glm-5.1   |
+| Profile | Model   | Haiku       | Sonnet  | Opus  | Reasoning |
+| ------- | ------- | ----------- | ------- | ----- | --------- |
+| default | glm-5   | glm-4.7     | glm-5   | glm-5 | glm-5     |
+| new     | glm-5   | glm-5-turbo | glm-5   | glm-5 | glm-5     |
+| 5.1     | glm-5.1 | glm-4.7     | glm-4.7 | glm-5 | glm-5.1   |
 
 **minimaxi Profiles:**
 
-| Profile  | Model        | Haiku        | Sonnet       | Opus         | Reasoning    |
-| -------- | ------------ | ------------ | ------------ | ------------ | ------------ |
-| default  | MiniMax-M2.7 | MiniMax-M2.5 | MiniMax-M2.7 | MiniMax-M2.7 | MiniMax-M2.7 |
+| Profile | Model        | Haiku        | Sonnet       | Opus         | Reasoning    |
+| ------- | ------------ | ------------ | ------------ | ------------ | ------------ |
+| default | MiniMax-M2.7 | MiniMax-M2.5 | MiniMax-M2.7 | MiniMax-M2.7 | MiniMax-M2.7 |
 
 ```bash
 # Example: Use 1M context on bailian

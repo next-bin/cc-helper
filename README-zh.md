@@ -16,7 +16,7 @@
 | Claude Code | v2.1.71+  |
 
 ```bash
-npm install -g @anthropic-ai/claude-code@v2.1.85
+npm install -g @anthropic-ai/claude-code@v2.1.89
 ```
 
 ## 安装
@@ -139,36 +139,36 @@ cc-helper plan export --all-env -o config.json
 
 每个 Provider 支持多个模型配置。一个配置定义了所有模型层级的映射：
 
-| 字段     | 说明                                |
-| -------- | ----------------------------------- |
-| Model    | 默认模型 (`ANTHROPIC_MODEL`)        |
-| Haiku    | 快速模型 (`ANTHROPIC_DEFAULT_HAIKU_MODEL`) |
-| Sonnet   | 均衡模型 (`ANTHROPIC_DEFAULT_SONNET_MODEL`) |
-| Opus     | 强力模型 (`ANTHROPIC_DEFAULT_OPUS_MODEL`) |
-| Reasoning| 扩展思维 (`ANTHROPIC_REASONING_MODEL`) |
+| 字段      | 说明                                        |
+| --------- | ------------------------------------------- |
+| Model     | 默认模型 (`ANTHROPIC_MODEL`)                |
+| Haiku     | 快速模型 (`ANTHROPIC_DEFAULT_HAIKU_MODEL`)  |
+| Sonnet    | 均衡模型 (`ANTHROPIC_DEFAULT_SONNET_MODEL`) |
+| Opus      | 强力模型 (`ANTHROPIC_DEFAULT_OPUS_MODEL`)   |
+| Reasoning | 扩展思维 (`ANTHROPIC_REASONING_MODEL`)      |
 
 **bailian 配置：**
 
-| Profile  | Model    | Haiku    | Sonnet         | Opus           | Reasoning |
-| -------- | -------- | -------- | -------------- | -------------- | --------- |
-| default  | glm-5    | glm-4.7  | glm-5          | glm-5          | glm-5     |
-| 1m       | glm-5    | glm-4.7  | qwen3.5-plus   | qwen3.5-plus   | glm-5     |
-| kimi     | kimi-k2.5| kimi-k2.5| kimi-k2.5     | kimi-k2.5      | kimi-k2.5 |
-| minimax  | MiniMax-M2.5 | MiniMax-M2.5 | MiniMax-M2.5 | MiniMax-M2.5 | MiniMax-M2.5 |
+| Profile | Model        | Haiku        | Sonnet       | Opus         | Reasoning    |
+| ------- | ------------ | ------------ | ------------ | ------------ | ------------ |
+| default | glm-5        | glm-4.7      | glm-5        | glm-5        | glm-5        |
+| 1m      | glm-5        | glm-4.7      | qwen3.5-plus | qwen3.5-plus | glm-5        |
+| kimi    | kimi-k2.5    | kimi-k2.5    | kimi-k2.5    | kimi-k2.5    | kimi-k2.5    |
+| minimax | MiniMax-M2.5 | MiniMax-M2.5 | MiniMax-M2.5 | MiniMax-M2.5 | MiniMax-M2.5 |
 
 **glm / zai 配置：**
 
-| Profile  | Model    | Haiku         | Sonnet   | Opus   | Reasoning |
-| -------- | -------- | ------------- | -------- | ------ | --------- |
-| default  | glm-5    | glm-4.7       | glm-5    | glm-5  | glm-5     |
-| new      | glm-5    | glm-5-turbo   | glm-5    | glm-5  | glm-5     |
-| 5.1      | glm-5.1  | glm-4.7       | glm-4.7  | glm-5  | glm-5.1   |
+| Profile | Model   | Haiku       | Sonnet  | Opus  | Reasoning |
+| ------- | ------- | ----------- | ------- | ----- | --------- |
+| default | glm-5   | glm-4.7     | glm-5   | glm-5 | glm-5     |
+| new     | glm-5   | glm-5-turbo | glm-5   | glm-5 | glm-5     |
+| 5.1     | glm-5.1 | glm-4.7     | glm-4.7 | glm-5 | glm-5.1   |
 
 **minimaxi 配置：**
 
-| Profile  | Model        | Haiku        | Sonnet       | Opus         | Reasoning    |
-| -------- | ------------ | ------------ | ------------ | ------------ | ------------ |
-| default  | MiniMax-M2.7 | MiniMax-M2.5 | MiniMax-M2.7 | MiniMax-M2.7 | MiniMax-M2.7 |
+| Profile | Model        | Haiku        | Sonnet       | Opus         | Reasoning    |
+| ------- | ------------ | ------------ | ------------ | ------------ | ------------ |
+| default | MiniMax-M2.7 | MiniMax-M2.5 | MiniMax-M2.7 | MiniMax-M2.7 | MiniMax-M2.7 |
 
 ```bash
 # 示例：在 bailian 上使用 1M 上下文
