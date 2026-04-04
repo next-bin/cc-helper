@@ -16,7 +16,7 @@
 | Claude Code | v2.1.71+  |
 
 ```bash
-npm install -g @anthropic-ai/claude-code@v2.1.89
+npm install -g @anthropic-ai/claude-code@v2.1.91
 ```
 
 ## Installation
@@ -163,7 +163,7 @@ Each provider supports multiple model profiles. A profile defines mappings for a
 | Profile | Model        | Haiku       | Sonnet  | Opus         | Reasoning    |
 | ------- | ------------ | ----------- | ------- | ------------ | ------------ |
 | default | glm-5        | glm-4.7     | glm-5   | glm-5        | glm-5        |
-| new     | glm-5        | glm-5-turbo | glm-5   | glm-5        | glm-5        |
+| 5       | glm-5        | glm-5-turbo | glm-5   | glm-5        | glm-5        |
 | 5.1     | glm-5.1      | glm-4.7     | glm-4.7 | glm-5        | glm-5.1      |
 | 5v      | glm-5v-turbo | glm-5-turbo | glm-5.1 | glm-5v-turbo | glm-5v-turbo |
 
