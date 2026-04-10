@@ -16,7 +16,7 @@
 | Claude Code | v2.1.71+  |
 
 ```bash
-npm install -g @anthropic-ai/claude-code@v2.1.92
+npm install -g @anthropic-ai/claude-code@v2.1.100
 ```
 
 ## Installation
@@ -154,7 +154,9 @@ Each provider supports multiple model profiles. A profile defines mappings for a
 | Profile | Model        | Haiku        | Sonnet       | Opus         | Reasoning    |
 | ------- | ------------ | ------------ | ------------ | ------------ | ------------ |
 | default | glm-5        | glm-4.7      | glm-5        | glm-5        | glm-5        |
+| 5       | glm-5        | glm-5        | glm-5        | qwen3.6-plus | glm-5        |
 | 1m      | glm-5        | glm-4.7      | qwen3.5-plus | qwen3.5-plus | glm-5        |
+| 3.6     | qwen3.6-plus | qwen3.6-plus | qwen3.6-plus | qwen3.6-plus | qwen3.6-plus |
 | kimi    | kimi-k2.5    | kimi-k2.5    | kimi-k2.5    | kimi-k2.5    | kimi-k2.5    |
 | minimax | MiniMax-M2.5 | MiniMax-M2.5 | MiniMax-M2.5 | MiniMax-M2.5 | MiniMax-M2.5 |
 
@@ -303,6 +305,7 @@ Enable 1M token context window for Claude Opus models.
 
 | Model                | Max Thinking Tokens | Context Length |
 | -------------------- | ------------------: | -------------: |
+| qwen3.6-plus         |              81,920 |      1,000,000 |
 | qwen3.5-plus         |              81,920 |      1,000,000 |
 | qwen3-coder-plus     |       Not supported |      1,000,000 |
 | qwen3-max-2026-01-23 |              81,920 |        262,144 |

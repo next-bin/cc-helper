@@ -16,7 +16,7 @@
 | Claude Code | v2.1.71+  |
 
 ```bash
-npm install -g @anthropic-ai/claude-code@v2.1.92
+npm install -g @anthropic-ai/claude-code@v2.1.100
 ```
 
 ## 安装
@@ -154,7 +154,9 @@ cc-helper plan export --all-env -o config.json
 | Profile | Model        | Haiku        | Sonnet       | Opus         | Reasoning    |
 | ------- | ------------ | ------------ | ------------ | ------------ | ------------ |
 | default | glm-5        | glm-4.7      | glm-5        | glm-5        | glm-5        |
+| 5       | glm-5        | glm-5        | glm-5        | qwen3.6-plus | glm-5        |
 | 1m      | glm-5        | glm-4.7      | qwen3.5-plus | qwen3.5-plus | glm-5        |
+| 3.6     | qwen3.6-plus | qwen3.6-plus | qwen3.6-plus | qwen3.6-plus | qwen3.6-plus |
 | kimi    | kimi-k2.5    | kimi-k2.5    | kimi-k2.5    | kimi-k2.5    | kimi-k2.5    |
 | minimax | MiniMax-M2.5 | MiniMax-M2.5 | MiniMax-M2.5 | MiniMax-M2.5 | MiniMax-M2.5 |
 
@@ -303,6 +305,7 @@ cancel the deploy check job       # 按描述或 ID 取消
 
 | 模型                 | 最大思维链长度 | 上下文长度 |
 | -------------------- | -------------: | ---------: |
+| qwen3.6-plus         |         81,920 |  1,000,000 |
 | qwen3.5-plus         |         81,920 |  1,000,000 |
 | qwen3-coder-plus     |         不支持 |  1,000,000 |
 | qwen3-max-2026-01-23 |         81,920 |    262,144 |
