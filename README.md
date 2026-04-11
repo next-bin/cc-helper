@@ -4,7 +4,7 @@
 
 [**English**](./README.md) | [**简体中文**](./README-zh.md)
 
-> One command to unlock Claude Code's hidden superpowers: `/loop`, `/btw`, `/keybindings`, `/context1m`, `automode`, and `MCPSearch`
+> One command to unlock Claude Code's hidden superpowers: `/loop`, `/btw`, `/keybindings`, `/context1m`, `automode`, `monitor`, and `MCPSearch`
 
 ---
 
@@ -56,6 +56,7 @@ npx @unitsvc/cc-helper enable keybindings
 npx @unitsvc/cc-helper enable toolsearch
 npx @unitsvc/cc-helper enable context1m   # or: 1m, 1M
 npx @unitsvc/cc-helper enable automode    # auto-mode for all models
+npx @unitsvc/cc-helper enable monitor     # streaming event monitoring (v2.1.100+)
 
 # Check status
 npx @unitsvc/cc-helper status
@@ -75,6 +76,7 @@ npx @unitsvc/cc-helper disable
 | `enable toolsearch`  | Enable toolsearch (requires explicit activation)     |
 | `enable context1m`   | Enable 1M context for Claude Opus (v2.1.76+)         |
 | `enable automode`    | Enable auto-mode for all models (v2.1.75+)           |
+| `enable monitor`     | Enable Monitor tool for streaming events (v2.1.100+) |
 | `disable`            | Restore original                                     |
 | `status`             | Check current status with version requirements       |
 
@@ -385,6 +387,42 @@ npx @unitsvc/cc-helper enable automode
 | `CC_HELPER_AUTO_MODE_MODEL`     | Custom classifier model         |
 | `ANTHROPIC_DEFAULT_HAIKU_MODEL` | Fallback model if not specified |
 
+### Monitor
+
+Enable the Monitor tool for streaming event monitoring.
+
+**Why Enable?** Claude Code controls the Monitor feature via remote config (`tengu_amber_sentinel` flag). This patch bypasses remote control and enables it locally.
+
+**Benefits:**
+
+- **Streaming monitoring**: Watch logs, file changes, API events in real-time
+- **Event-driven workflow**: Respond to events as they arrive
+- **Persistent monitoring**: Run long-lived monitors during the session
+
+**Requirements:**
+
+- Claude Code v2.1.100 or higher
+
+```bash
+npx @unitsvc/cc-helper enable monitor
+```
+
+**Examples:**
+
+```bash
+# Monitor log file for errors
+tail -f /var/log/app.log | grep --line-buffered "ERROR"
+
+# Watch for file changes
+inotifywait -m --format '%e %f' /watched/dir
+
+# Poll GitHub for new PR comments
+while true; do
+  gh api "repos/owner/repo/issues/123/comments?since=$last" --jq '.[].body'
+  sleep 30
+done
+```
+
 ---
 
 ## Features
@@ -395,6 +433,7 @@ npx @unitsvc/cc-helper enable automode
 | Tool Search        | Optional `/toolsearch` for third-party API proxies      |
 | 1M Context         | Optional `/context1m` for 1M context (v2.1.76+)         |
 | Auto Mode          | Optional `automode` for all models (v2.1.75+)           |
+| Monitor            | Optional `monitor` for streaming event monitoring (v2.1.100+) |
 | Provider config    | `plan` command with vault-based API key storage         |
 | Secret management  | `vault` command for secure secret storage               |
 | Multi-environment  | `env` command for environment switching                 |

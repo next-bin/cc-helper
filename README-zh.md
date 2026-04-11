@@ -4,7 +4,7 @@
 
 [**English**](./README.md) | [**简体中文**](./README-zh.md)
 
-> 一键解锁 Claude Code 隐藏超能力：`/loop`、`/btw`、`/keybindings`、`/context1m`、`automode` 和 `MCPSearch`
+> 一键解锁 Claude Code 隐藏超能力：`/loop`、`/btw`、`/keybindings`、`/context1m`、`automode`、`monitor` 和 `MCPSearch`
 
 ---
 
@@ -56,6 +56,7 @@ npx @unitsvc/cc-helper enable keybindings
 npx @unitsvc/cc-helper enable toolsearch
 npx @unitsvc/cc-helper enable context1m   # 别名: 1m, 1M
 npx @unitsvc/cc-helper enable automode    # 所有模型的自动模式
+npx @unitsvc/cc-helper enable monitor     # 流式事件监控（v2.1.100+）
 
 # 查看状态
 npx @unitsvc/cc-helper status
@@ -75,6 +76,7 @@ npx @unitsvc/cc-helper disable
 | `enable toolsearch`  | 启用 toolsearch（需要显式激活）              |
 | `enable context1m`   | 启用 1M 上下文（v2.1.76+）                   |
 | `enable automode`    | 启用所有模型的自动模式（v2.1.75+）           |
+| `enable monitor`     | 启用 Monitor 流式事件监控（v2.1.100+）       |
 | `disable`            | 恢复原始状态                                 |
 | `status`             | 查看当前状态及版本要求                       |
 
@@ -385,6 +387,42 @@ npx @unitsvc/cc-helper enable automode
 | `CC_HELPER_AUTO_MODE_MODEL`     | 自定义分类器模型   |
 | `ANTHROPIC_DEFAULT_HAIKU_MODEL` | 未指定时的回退模型 |
 
+### Monitor
+
+启用 Monitor 工具用于流式事件监控。
+
+**为什么启用？** Claude Code 通过远程配置（`tengu_amber_sentinel` 标志）控制 Monitor 功能。此 patch 绕过远程控制，在本地启用该功能。
+
+**优势：**
+
+- **流式监控**：实时监控日志、文件变化、API 事件
+- **事件驱动工作流**：事件到达时立即响应
+- **持久监控**：在会话期间运行长期监控任务
+
+**要求：**
+
+- Claude Code v2.1.100 或更高版本
+
+```bash
+npx @unitsvc/cc-helper enable monitor
+```
+
+**示例：**
+
+```bash
+# 监控日志文件中的错误
+tail -f /var/log/app.log | grep --line-buffered "ERROR"
+
+# 监控文件变化
+inotifywait -m --format '%e %f' /watched/dir
+
+# 轮询 GitHub 获取新的 PR 评论
+while true; do
+  gh api "repos/owner/repo/issues/123/comments?since=$last" --jq '.[].body'
+  sleep 30
+done
+```
+
 ---
 
 ## 功能特点
@@ -395,6 +433,7 @@ npx @unitsvc/cc-helper enable automode
 | 工具搜索      | 可选 `/toolsearch` 用于第三方 API 代理       |
 | 1M 上下文     | 可选 `/context1m` 用于 1M 上下文（v2.1.76+） |
 | 自动模式      | 可选 `automode` 用于所有模型（v2.1.75+）     |
+| Monitor       | 可选 `monitor` 用于流式事件监控（v2.1.100+） |
 | Provider 配置 | `plan` 命令支持 vault 加密存储               |
 | 密钥管理      | `vault` 命令安全管理密钥                     |
 | 多环境支持    | `env` 命令环境切换                           |
