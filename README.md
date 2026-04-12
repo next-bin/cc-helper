@@ -399,7 +399,7 @@ Enable the Monitor tool for streaming event monitoring.
 
 **Requirements:**
 
-- Claude Code v2.1.100 or higher
+- Claude Code v2.1.98 or higher
 
 ```bash
 npx @unitsvc/cc-helper enable monitor

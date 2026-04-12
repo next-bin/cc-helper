@@ -399,7 +399,7 @@ npx @unitsvc/cc-helper enable automode
 
 **要求：**
 
-- Claude Code v2.1.100 或更高版本
+- Claude Code v2.1.98 或更高版本
 
 ```bash
 npx @unitsvc/cc-helper enable monitor
