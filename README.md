@@ -16,7 +16,7 @@
 | Claude Code | v2.1.71+  |
 
 ```bash
-npm install -g @anthropic-ai/claude-code@v2.1.101
+npm install -g @anthropic-ai/claude-code@v2.1.104
 ```
 
 ## Installation
@@ -427,19 +427,19 @@ done
 
 ## Features
 
-| Feature            | Description                                             |
-| ------------------ | ------------------------------------------------------- |
-| One-command enable | Enable `/loop`, `/btw`, `/keybindings` with one command |
-| Tool Search        | Optional `/toolsearch` for third-party API proxies      |
-| 1M Context         | Optional `/context1m` for 1M context (v2.1.76+)         |
-| Auto Mode          | Optional `automode` for all models (v2.1.75+)           |
+| Feature            | Description                                                   |
+| ------------------ | ------------------------------------------------------------- |
+| One-command enable | Enable `/loop`, `/btw`, `/keybindings` with one command       |
+| Tool Search        | Optional `/toolsearch` for third-party API proxies            |
+| 1M Context         | Optional `/context1m` for 1M context (v2.1.76+)               |
+| Auto Mode          | Optional `automode` for all models (v2.1.75+)                 |
 | Monitor            | Optional `monitor` for streaming event monitoring (v2.1.100+) |
-| Provider config    | `plan` command with vault-based API key storage         |
-| Secret management  | `vault` command for secure secret storage               |
-| Multi-environment  | `env` command for environment switching                 |
-| Git sync           | `sync` command for configuration sync                   |
-| Easy restore       | Automatic backup and restore                            |
-| Zero dependencies  | No runtime dependencies                                 |
+| Provider config    | `plan` command with vault-based API key storage               |
+| Secret management  | `vault` command for secure secret storage                     |
+| Multi-environment  | `env` command for environment switching                       |
+| Git sync           | `sync` command for configuration sync                         |
+| Easy restore       | Automatic backup and restore                                  |
+| Zero dependencies  | No runtime dependencies                                       |
 
 ### Screenshots
 
