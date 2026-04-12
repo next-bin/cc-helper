@@ -56,7 +56,7 @@ npx @unitsvc/cc-helper enable keybindings
 npx @unitsvc/cc-helper enable toolsearch
 npx @unitsvc/cc-helper enable context1m   # 别名: 1m, 1M
 npx @unitsvc/cc-helper enable automode    # 所有模型的自动模式
-npx @unitsvc/cc-helper enable monitor     # 流式事件监控（v2.1.100+）
+npx @unitsvc/cc-helper enable monitor     # 流式事件监控（v2.1.98+）
 
 # 查看状态
 npx @unitsvc/cc-helper status

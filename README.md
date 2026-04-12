@@ -56,7 +56,7 @@ npx @unitsvc/cc-helper enable keybindings
 npx @unitsvc/cc-helper enable toolsearch
 npx @unitsvc/cc-helper enable context1m   # or: 1m, 1M
 npx @unitsvc/cc-helper enable automode    # auto-mode for all models
-npx @unitsvc/cc-helper enable monitor     # streaming event monitoring (v2.1.100+)
+npx @unitsvc/cc-helper enable monitor     # streaming event monitoring (v2.1.98+)
 
 # Check status
 npx @unitsvc/cc-helper status
