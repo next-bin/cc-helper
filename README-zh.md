@@ -391,8 +391,6 @@ npx @unitsvc/cc-helper enable automode
 
 启用 Monitor 工具用于流式事件监控。
 
-**为什么启用？** Claude Code 通过远程配置（`tengu_amber_sentinel` 标志）控制 Monitor 功能。此 patch 绕过远程控制，在本地启用该功能。
-
 **优势：**
 
 - **流式监控**：实时监控日志、文件变化、API 事件

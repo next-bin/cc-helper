@@ -391,8 +391,6 @@ npx @unitsvc/cc-helper enable automode
 
 Enable the Monitor tool for streaming event monitoring.
 
-**Why Enable?** Claude Code controls the Monitor feature via remote config (`tengu_amber_sentinel` flag). This patch bypasses remote control and enables it locally.
-
 **Benefits:**
 
 - **Streaming monitoring**: Watch logs, file changes, API events in real-time
