@@ -16,7 +16,7 @@
 | Claude Code | v2.1.71+  |
 
 ```bash
-npm install -g @anthropic-ai/claude-code@v2.1.104
+npm install -g @anthropic-ai/claude-code@v2.1.107
 ```
 
 ## Installation
