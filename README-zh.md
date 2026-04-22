@@ -132,12 +132,13 @@ cc-helper plan export --all-env -o config.json
 
 **支持的 Provider：**
 
-| Provider   | 说明         |
-| ---------- | ------------ |
-| `bailian`  | (CN) Aliyun  |
-| `minimaxi` | (CN) MiniMax |
-| `glm`      | (CN) Zhipu   |
-| `zai`      | (EN) Zhipu   |
+| Provider   | 说明                  |
+| ---------- | --------------------- |
+| `bailian`  | (CN) Aliyun           |
+| `minimaxi` | (CN) MiniMax          |
+| `glm`      | (CN) Zhipu            |
+| `zai`      | (EN) Zhipu            |
+| `ark`      | (CN) Ark (Volcengine) |
 
 **模型配置（Model Profiles）：**
 
@@ -177,10 +178,26 @@ cc-helper plan export --all-env -o config.json
 | ------- | ------------ | ------------ | ------------ | ------------ | ------------ |
 | default | MiniMax-M2.7 | MiniMax-M2.5 | MiniMax-M2.7 | MiniMax-M2.7 | MiniMax-M2.7 |
 
+**ark 配置：**
+
+| Profile  | Model            | Haiku                | Sonnet           | Opus                | Reasoning        |
+| -------- | ---------------- | -------------------- | ---------------- | ------------------- | ---------------- |
+| default  | kimi-k2.6        | kimi-k2.5            | kimi-k2.6        | kimi-k2.6           | kimi-k2.6        |
+| kimi     | kimi-k2.6        | kimi-k2.5            | kimi-k2.6        | kimi-k2.6           | kimi-k2.6        |
+| doubao   | doubao-seed-code | doubao-seed-2.0-code | doubao-seed-code | doubao-seed-2.0-pro | doubao-seed-code |
+| minimax  | minimax-m2.7     | minimax-m2.7         | minimax-m2.7     | minimax-m2.7        | minimax-m2.7     |
+| glm      | glm-5.1          | glm-4.7              | glm-5.1          | glm-5.1             | glm-5.1          |
+| deepseek | deepseek-v3.2    | deepseek-v3.2        | deepseek-v3.2    | deepseek-v3.2       | deepseek-v3.2    |
+| auto     | glm-5.1          | ark-code-latest      | minimax-m2.7     | glm-5.1             | kimi-k2.6        |
+
 ```bash
 # 示例：在 bailian 上使用 1M 上下文
 cc-helper plan add -p bailian -k YOUR_KEY
 cc-helper plan switch --profile 1m
+
+# 示例：配置 Ark 使用 auto 配置
+cc-helper plan add -p ark -k YOUR_KEY
+cc-helper plan switch --profile auto
 ```
 
 ### vault 命令
