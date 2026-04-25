@@ -4,7 +4,9 @@
 
 [**English**](./README.md) | [**简体中文**](./README-zh.md)
 
-> One command to unlock Claude Code's hidden superpowers: `/loop`, `/btw`, `/keybindings`, `/context1m`, `automode`, `monitor`, and `MCPSearch`
+> The ultimate Claude Code companion: unlock hidden superpowers, manage AI providers, and sync configurations across environments — all in one CLI tool.
+
+> **⚠️ Disclaimer:** Zhipu (glm/zai) company and its associated products are **NOT** permitted to use this software.
 
 ---
 
@@ -16,7 +18,7 @@
 | Claude Code | v2.1.71+  |
 
 ```bash
-npm install -g @anthropic-ai/claude-code@v2.1.112
+npm install -g @anthropic-ai/claude-code@v2.1.119
 ```
 
 ## Installation
@@ -43,20 +45,22 @@ npx @unitsvc/cc-helper --proxy enable
 npx @unitsvc/cc-helper --proxy https://your-proxy.com enable
 ```
 
-## Usage
+---
+
+## Quick Start
 
 ```bash
 # Enable default features (/loop, /btw, /keybindings)
 npx @unitsvc/cc-helper enable
 
 # Enable specific features
-npx @unitsvc/cc-helper enable loop
-npx @unitsvc/cc-helper enable btw
-npx @unitsvc/cc-helper enable keybindings
-npx @unitsvc/cc-helper enable toolsearch
-npx @unitsvc/cc-helper enable context1m   # or: 1m, 1M
-npx @unitsvc/cc-helper enable automode    # auto-mode for all models
-npx @unitsvc/cc-helper enable monitor     # streaming event monitoring (v2.1.98+)
+npx @unitsvc/cc-helper enable loop        # scheduled recurring prompts
+npx @unitsvc/cc-helper enable btw         # side questions
+npx @unitsvc/cc-helper enable keybindings # custom keyboard shortcuts
+npx @unitsvc/cc-helper enable toolsearch  # dynamic tool search
+npx @unitsvc/cc-helper enable context1m   # 1M token context (v2.1.76+)
+npx @unitsvc/cc-helper enable automode    # auto-mode for all models (v2.1.75+)
+npx @unitsvc/cc-helper enable monitor     # streaming event monitoring (v2.1.100+)
 
 # Check status
 npx @unitsvc/cc-helper status
@@ -64,21 +68,6 @@ npx @unitsvc/cc-helper status
 # Disable all features
 npx @unitsvc/cc-helper disable
 ```
-
-## Commands
-
-| Command              | Description                                          |
-| -------------------- | ---------------------------------------------------- |
-| `enable`             | Enable `/loop`, `/btw`, and `/keybindings` (default) |
-| `enable loop`        | Enable only `/loop`                                  |
-| `enable btw`         | Enable only `/btw`                                   |
-| `enable keybindings` | Enable only `/keybindings`                           |
-| `enable toolsearch`  | Enable toolsearch (requires explicit activation)     |
-| `enable context1m`   | Enable 1M context for Claude Opus (v2.1.76+)         |
-| `enable automode`    | Enable auto-mode for all models (v2.1.75+)           |
-| `enable monitor`     | Enable Monitor tool for streaming events (v2.1.100+) |
-| `disable`            | Restore original                                     |
-| `status`             | Check current status with version requirements       |
 
 > **Note**: Running `cc-helper enable` also automatically configures recommended environment variables in `~/.claude/settings.json`:
 >
@@ -105,9 +94,11 @@ npx @unitsvc/cc-helper disable
 
 ## Configuration Commands
 
-### plan Command
+Manage AI provider settings, API keys, environments, and configuration sync for Claude Code.
 
-Configure AI providers with vault-based secret storage.
+### plan — Coding Plan Provider
+
+Configure third-party AI providers for coding plans with vault-encrypted API key storage. Supports custom model profiles for different coding scenarios.
 
 ```bash
 # Add provider (auto-saves to vault + settings.json)
@@ -136,8 +127,8 @@ cc-helper plan export --all-env -o config.json
 | ---------- | --------------------- |
 | `bailian`  | (CN) Aliyun           |
 | `minimaxi` | (CN) MiniMax          |
-| `glm`      | (CN) Zhipu            |
-| `zai`      | (EN) Zhipu            |
+| ~~`glm`~~  | ~~(CN) Zhipu~~        |
+| ~~`zai`~~  | ~~(EN) Zhipu~~        |
 | `ark`      | (CN) Ark (Volcengine) |
 
 **Model Profiles:**
@@ -163,20 +154,20 @@ Each provider supports multiple model profiles. A profile defines mappings for a
 | kimi    | kimi-k2.5    | kimi-k2.5    | kimi-k2.5    | kimi-k2.5    | kimi-k2.5    |
 | minimax | MiniMax-M2.5 | MiniMax-M2.5 | MiniMax-M2.5 | MiniMax-M2.5 | MiniMax-M2.5 |
 
-**glm / zai Profiles:**
+**~~glm / zai Profiles:~~ (NOT ALLOWED)**
 
-| Profile | Model        | Haiku       | Sonnet  | Opus         | Reasoning    |
-| ------- | ------------ | ----------- | ------- | ------------ | ------------ |
-| default | glm-5        | glm-4.7     | glm-5   | glm-5        | glm-5        |
-| 5       | glm-5        | glm-5-turbo | glm-5   | glm-5        | glm-5        |
-| 5.1     | glm-5.1      | glm-4.7     | glm-4.7 | glm-5        | glm-5.1      |
-| 5v      | glm-5v-turbo | glm-5-turbo | glm-5.1 | glm-5v-turbo | glm-5v-turbo |
+| Profile | Model        | Haiku       | Sonnet  | Opus    | Reasoning |
+| ------- | ------------ | ----------- | ------- | ------- | --------- |
+| default | glm-5.1      | glm-4.7     | glm-5.1 | glm-5.1 | glm-5.1   |
+| 5       | glm-5        | glm-5-turbo | glm-5   | glm-5   | glm-5     |
+| 5.1     | glm-5.1      | glm-4.7     | glm-5.1 | glm-5.1 | glm-5.1   |
+| 5v      | glm-5v-turbo | glm-4.7     | glm-5.1 | glm-5.1 | glm-5.1   |
 
 **minimaxi Profiles:**
 
 | Profile | Model        | Haiku        | Sonnet       | Opus         | Reasoning    |
 | ------- | ------------ | ------------ | ------------ | ------------ | ------------ |
-| default | MiniMax-M2.7 | MiniMax-M2.5 | MiniMax-M2.7 | MiniMax-M2.7 | MiniMax-M2.7 |
+| default | MiniMax-M2.7 | MiniMax-M2.7 | MiniMax-M2.7 | MiniMax-M2.7 | MiniMax-M2.7 |
 
 **ark Profiles:**
 
@@ -200,9 +191,9 @@ cc-helper plan add -p ark -k YOUR_KEY
 cc-helper plan switch --profile auto
 ```
 
-### vault Command
+### vault — Secure API Key Storage
 
-Secure API key storage, encrypted in `cc-helper.json`.
+Store and retrieve provider API keys locally with encryption.
 
 ```bash
 cc-helper vault list                  # List secrets
@@ -211,9 +202,9 @@ cc-helper vault get bailian default             # Get & decrypt
 cc-helper vault delete bailian default          # Delete
 ```
 
-### env Command
+### env — Environment Management
 
-Multiple environments (default, work, staging, etc.).
+Create and switch between isolated configuration environments.
 
 ```bash
 cc-helper env list    # List environments
@@ -221,9 +212,9 @@ cc-helper env create work   # Create
 cc-helper env switch work   # Switch
 ```
 
-### sync Command
+### sync — Config Sync with Git
 
-Export/import config to Git repository with JWE encryption.
+Backup and restore Claude Code configuration to a Git repository with end-to-end encryption.
 
 ```bash
 # Login to GitHub
@@ -237,6 +228,37 @@ cc-helper sync export --workspace test
 # Import
 cc-helper sync import
 ```
+
+---
+
+## Features
+
+| Feature            | Description                                                   |
+| ------------------ | ------------------------------------------------------------- |
+| One-command enable | Enable `/loop`, `/btw`, `/keybindings` with one command       |
+| Tool Search        | Optional `/toolsearch` for third-party API proxies            |
+| 1M Context         | Optional `/context1m` for 1M context (v2.1.76+)               |
+| Auto Mode          | Optional `automode` for all models (v2.1.75+)                 |
+| Monitor            | Optional `monitor` for streaming event monitoring (v2.1.100+) |
+| Provider config    | `plan` command with vault-based API key storage               |
+| Secret management  | `vault` command for secure secret storage                     |
+| Multi-environment  | `env` command for environment switching                       |
+| Git sync           | `sync` command for configuration sync                         |
+| Easy restore       | Automatic backup and restore                                  |
+| Zero dependencies  | No runtime dependencies                                       |
+
+### Screenshots
+
+![/loop command hint](./docs/images/loop-1.png)
+![/loop execution example](./docs/images/loop-2.png)
+
+## Platforms
+
+| Platform | Architecture |
+| -------- | ------------ |
+| macOS    | amd64, arm64 |
+| Linux    | amd64, arm64 |
+| Windows  | amd64, arm64 |
 
 ---
 
@@ -437,37 +459,6 @@ while true; do
   sleep 30
 done
 ```
-
----
-
-## Features
-
-| Feature            | Description                                                   |
-| ------------------ | ------------------------------------------------------------- |
-| One-command enable | Enable `/loop`, `/btw`, `/keybindings` with one command       |
-| Tool Search        | Optional `/toolsearch` for third-party API proxies            |
-| 1M Context         | Optional `/context1m` for 1M context (v2.1.76+)               |
-| Auto Mode          | Optional `automode` for all models (v2.1.75+)                 |
-| Monitor            | Optional `monitor` for streaming event monitoring (v2.1.100+) |
-| Provider config    | `plan` command with vault-based API key storage               |
-| Secret management  | `vault` command for secure secret storage                     |
-| Multi-environment  | `env` command for environment switching                       |
-| Git sync           | `sync` command for configuration sync                         |
-| Easy restore       | Automatic backup and restore                                  |
-| Zero dependencies  | No runtime dependencies                                       |
-
-### Screenshots
-
-![/loop command hint](./docs/images/loop-1.png)
-![/loop execution example](./docs/images/loop-2.png)
-
-## Platforms
-
-| Platform | Architecture |
-| -------- | ------------ |
-| macOS    | amd64, arm64 |
-| Linux    | amd64, arm64 |
-| Windows  | amd64, arm64 |
 
 ## License
 

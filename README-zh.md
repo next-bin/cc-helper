@@ -4,7 +4,9 @@
 
 [**English**](./README.md) | [**简体中文**](./README-zh.md)
 
-> 一键解锁 Claude Code 隐藏超能力：`/loop`、`/btw`、`/keybindings`、`/context1m`、`automode`、`monitor` 和 `MCPSearch`
+> Claude Code 终极增强工具：一键解锁隐藏功能、管理多 AI 提供商、安全存储密钥、多环境配置同步 —— 全部集成在一个 CLI 工具中。
+
+> **⚠️ 声明：智谱（glm/zai）公司及其关联产品禁止使用本软件。**
 
 ---
 
@@ -16,7 +18,7 @@
 | Claude Code | v2.1.71+  |
 
 ```bash
-npm install -g @anthropic-ai/claude-code@v2.1.112
+npm install -g @anthropic-ai/claude-code@v2.1.119
 ```
 
 ## 安装
@@ -43,20 +45,22 @@ npx @unitsvc/cc-helper --proxy enable
 npx @unitsvc/cc-helper --proxy https://your-proxy.com enable
 ```
 
-## 使用方法
+---
+
+## 快速开始
 
 ```bash
 # 启用默认功能（/loop, /btw, /keybindings）
 npx @unitsvc/cc-helper enable
 
 # 启用特定功能
-npx @unitsvc/cc-helper enable loop
-npx @unitsvc/cc-helper enable btw
-npx @unitsvc/cc-helper enable keybindings
-npx @unitsvc/cc-helper enable toolsearch
-npx @unitsvc/cc-helper enable context1m   # 别名: 1m, 1M
-npx @unitsvc/cc-helper enable automode    # 所有模型的自动模式
-npx @unitsvc/cc-helper enable monitor     # 流式事件监控（v2.1.98+）
+npx @unitsvc/cc-helper enable loop        # 定时重复提示
+npx @unitsvc/cc-helper enable btw         # 旁支问题
+npx @unitsvc/cc-helper enable keybindings # 自定义键盘快捷键
+npx @unitsvc/cc-helper enable toolsearch  # 动态工具搜索
+npx @unitsvc/cc-helper enable context1m   # 1M 上下文（v2.1.76+）
+npx @unitsvc/cc-helper enable automode    # 所有模型的自动模式（v2.1.75+）
+npx @unitsvc/cc-helper enable monitor     # 流式事件监控（v2.1.100+）
 
 # 查看状态
 npx @unitsvc/cc-helper status
@@ -64,21 +68,6 @@ npx @unitsvc/cc-helper status
 # 禁用所有功能
 npx @unitsvc/cc-helper disable
 ```
-
-## 命令说明
-
-| 命令                 | 说明                                         |
-| -------------------- | -------------------------------------------- |
-| `enable`             | 启用 `/loop`、`/btw`、`/keybindings`（默认） |
-| `enable loop`        | 仅启用 `/loop`                               |
-| `enable btw`         | 仅启用 `/btw`                                |
-| `enable keybindings` | 仅启用 `/keybindings`                        |
-| `enable toolsearch`  | 启用 toolsearch（需要显式激活）              |
-| `enable context1m`   | 启用 1M 上下文（v2.1.76+）                   |
-| `enable automode`    | 启用所有模型的自动模式（v2.1.75+）           |
-| `enable monitor`     | 启用 Monitor 流式事件监控（v2.1.100+）       |
-| `disable`            | 恢复原始状态                                 |
-| `status`             | 查看当前状态及版本要求                       |
 
 > **注意**: 运行 `cc-helper enable` 时会自动在 `~/.claude/settings.json` 中配置推荐的环境变量：
 >
@@ -105,9 +94,11 @@ npx @unitsvc/cc-helper disable
 
 ## 配置命令
 
-### plan 命令
+管理 Claude Code 的 AI Provider 设置、API 密钥、多环境配置以及配置同步。
 
-配置 AI Provider，支持 vault 加密存储。
+### plan — 编码计划配置
+
+配置编码计划的第三方 AI Provider，支持 vault 加密存储 API 密钥，并可自定义模型配置以适应不同编码场景。
 
 ```bash
 # 添加 Provider（自动保存到 vault + settings.json）
@@ -136,8 +127,8 @@ cc-helper plan export --all-env -o config.json
 | ---------- | --------------------- |
 | `bailian`  | (CN) Aliyun           |
 | `minimaxi` | (CN) MiniMax          |
-| `glm`      | (CN) Zhipu            |
-| `zai`      | (EN) Zhipu            |
+| ~~`glm`~~  | ~~(CN) Zhipu~~        |
+| ~~`zai`~~  | ~~(EN) Zhipu~~        |
 | `ark`      | (CN) Ark (Volcengine) |
 
 **模型配置（Model Profiles）：**
@@ -163,20 +154,20 @@ cc-helper plan export --all-env -o config.json
 | kimi    | kimi-k2.5    | kimi-k2.5    | kimi-k2.5    | kimi-k2.5    | kimi-k2.5    |
 | minimax | MiniMax-M2.5 | MiniMax-M2.5 | MiniMax-M2.5 | MiniMax-M2.5 | MiniMax-M2.5 |
 
-**glm / zai 配置：**
+**~~glm / zai 配置~~（禁止使用）**
 
-| Profile | Model        | Haiku       | Sonnet  | Opus         | Reasoning    |
-| ------- | ------------ | ----------- | ------- | ------------ | ------------ |
-| default | glm-5        | glm-4.7     | glm-5   | glm-5        | glm-5        |
-| 5       | glm-5        | glm-5-turbo | glm-5   | glm-5        | glm-5        |
-| 5.1     | glm-5.1      | glm-4.7     | glm-4.7 | glm-5        | glm-5.1      |
-| 5v      | glm-5v-turbo | glm-5-turbo | glm-5.1 | glm-5v-turbo | glm-5v-turbo |
+| Profile | Model        | Haiku       | Sonnet  | Opus    | Reasoning |
+| ------- | ------------ | ----------- | ------- | ------- | --------- |
+| default | glm-5.1      | glm-4.7     | glm-5.1 | glm-5.1 | glm-5.1   |
+| 5       | glm-5        | glm-5-turbo | glm-5   | glm-5   | glm-5     |
+| 5.1     | glm-5.1      | glm-4.7     | glm-5.1 | glm-5.1 | glm-5.1   |
+| 5v      | glm-5v-turbo | glm-4.7     | glm-5.1 | glm-5.1 | glm-5.1   |
 
 **minimaxi 配置：**
 
 | Profile | Model        | Haiku        | Sonnet       | Opus         | Reasoning    |
 | ------- | ------------ | ------------ | ------------ | ------------ | ------------ |
-| default | MiniMax-M2.7 | MiniMax-M2.5 | MiniMax-M2.7 | MiniMax-M2.7 | MiniMax-M2.7 |
+| default | MiniMax-M2.7 | MiniMax-M2.7 | MiniMax-M2.7 | MiniMax-M2.7 | MiniMax-M2.7 |
 
 **ark 配置：**
 
@@ -200,9 +191,9 @@ cc-helper plan add -p ark -k YOUR_KEY
 cc-helper plan switch --profile auto
 ```
 
-### vault 命令
+### vault — 安全密钥存储
 
-安全的密钥存储，加密存储在 `cc-helper.json` 中。
+使用本地加密方式安全存储和读取 Provider 的 API 密钥。
 
 ```bash
 cc-helper vault list                    # 列出密钥
@@ -211,9 +202,9 @@ cc-helper vault get bailian default              # 获取并解密
 cc-helper vault delete bailian default          # 删除
 ```
 
-### env 命令
+### env — 多环境管理
 
-多环境配置（default、work、staging 等）。
+创建并切换相互隔离的配置环境。
 
 ```bash
 cc-helper env list    # 列出环境
@@ -221,9 +212,9 @@ cc-helper env create work   # 创建
 cc-helper env switch work   # 切换
 ```
 
-### sync 命令
+### sync — Git 配置同步
 
-将配置导出/导入到 Git 仓库，支持 JWE 加密。
+将 Claude Code 配置备份和恢复到 Git 仓库，全程加密保护。
 
 ```bash
 # 登录 GitHub
@@ -237,6 +228,37 @@ cc-helper sync export --workspace test
 # 导入
 cc-helper sync import
 ```
+
+---
+
+## 功能特点
+
+| 功能          | 说明                                         |
+| ------------- | -------------------------------------------- |
+| 一键启用      | 启用 `/loop`、`/btw`、`/keybindings`         |
+| 工具搜索      | 可选 `/toolsearch` 用于第三方 API 代理       |
+| 1M 上下文     | 可选 `/context1m` 用于 1M 上下文（v2.1.76+） |
+| 自动模式      | 可选 `automode` 用于所有模型（v2.1.75+）     |
+| Monitor       | 可选 `monitor` 用于流式事件监控（v2.1.100+） |
+| Provider 配置 | `plan` 命令支持 vault 加密存储               |
+| 密钥管理      | `vault` 命令安全管理密钥                     |
+| 多环境支持    | `env` 命令环境切换                           |
+| Git 同步      | `sync` 命令配置同步                          |
+| 轻松恢复      | 自动备份和恢复                               |
+| 零依赖        | 无运行时依赖                                 |
+
+### 截图
+
+![/loop 命令提示](./docs/images/loop-1.png)
+![/loop 执行示例](./docs/images/loop-2.png)
+
+## 支持平台
+
+| 平台    | 架构         |
+| ------- | ------------ |
+| macOS   | amd64, arm64 |
+| Linux   | amd64, arm64 |
+| Windows | amd64, arm64 |
 
 ---
 
@@ -437,37 +459,6 @@ while true; do
   sleep 30
 done
 ```
-
----
-
-## 功能特点
-
-| 功能          | 说明                                         |
-| ------------- | -------------------------------------------- |
-| 一键启用      | 启用 `/loop`、`/btw`、`/keybindings`         |
-| 工具搜索      | 可选 `/toolsearch` 用于第三方 API 代理       |
-| 1M 上下文     | 可选 `/context1m` 用于 1M 上下文（v2.1.76+） |
-| 自动模式      | 可选 `automode` 用于所有模型（v2.1.75+）     |
-| Monitor       | 可选 `monitor` 用于流式事件监控（v2.1.100+） |
-| Provider 配置 | `plan` 命令支持 vault 加密存储               |
-| 密钥管理      | `vault` 命令安全管理密钥                     |
-| 多环境支持    | `env` 命令环境切换                           |
-| Git 同步      | `sync` 命令配置同步                          |
-| 轻松恢复      | 自动备份和恢复                               |
-| 零依赖        | 无运行时依赖                                 |
-
-### 截图
-
-![/loop 命令提示](./docs/images/loop-1.png)
-![/loop 执行示例](./docs/images/loop-2.png)
-
-## 支持平台
-
-| 平台    | 架构         |
-| ------- | ------------ |
-| macOS   | amd64, arm64 |
-| Linux   | amd64, arm64 |
-| Windows | amd64, arm64 |
 
 ## 许可证
 
