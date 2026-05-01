@@ -18,7 +18,7 @@
 | Claude Code | v2.1.71+  |
 
 ```bash
-npm install -g @anthropic-ai/claude-code@v2.1.120
+npm install -g @anthropic-ai/claude-code@v2.1.123
 ```
 
 ## 安装
@@ -130,6 +130,7 @@ cc-helper plan export --all-env -o config.json
 | ~~`glm`~~  | ~~(CN) Zhipu~~        |
 | ~~`zai`~~  | ~~(EN) Zhipu~~        |
 | `ark`      | (CN) Ark (Volcengine) |
+| `xiaomi`   | (CN) Xiaomi MiMo      |
 
 **模型配置（Model Profiles）：**
 
@@ -180,6 +181,17 @@ cc-helper plan export --all-env -o config.json
 | glm      | glm-5.1          | glm-4.7              | glm-5.1          | glm-5.1             | glm-5.1          |
 | deepseek | deepseek-v3.2    | deepseek-v3.2        | deepseek-v3.2    | deepseek-v3.2       | deepseek-v3.2    |
 | auto     | glm-5.1          | ark-code-latest      | minimax-m2.7     | glm-5.1             | kimi-k2.6        |
+
+**xiaomi 配置：**
+
+| Profile    | Model            | Haiku              | Sonnet           | Opus             | Reasoning        |
+| ---------- | ---------------- | ------------------ | ---------------- | ---------------- | ---------------- |
+| default    | mimo-v2.5-pro    | mimo-v2.5-flash    | mimo-v2.5-pro    | mimo-v2.5-pro    | mimo-v2.5-pro    |
+| pro        | mimo-v2.5-pro    | mimo-v2.5-pro      | mimo-v2.5-pro    | mimo-v2.5-pro    | mimo-v2.5-pro    |
+| v2.5       | mimo-v2.5        | mimo-v2.5          | mimo-v2.5        | mimo-v2.5        | mimo-v2.5        |
+| v2.5-flash | mimo-v2.5-flash  | mimo-v2.5-flash    | mimo-v2.5-flash  | mimo-v2.5-flash  | mimo-v2.5-flash  |
+| v2         | mimo-v2-pro      | mimo-v2-omni       | mimo-v2-pro      | mimo-v2-pro      | mimo-v2-pro      |
+| omni       | mimo-v2.5        | mimo-v2-omni       | mimo-v2.5        | mimo-v2.5        | mimo-v2.5        |
 
 ```bash
 # 示例：在 bailian 上使用 1M 上下文
