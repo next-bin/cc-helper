@@ -1,10 +1,17 @@
-# cc-helper
+<div align="center">
 
-[![npm version](https://img.shields.io/npm/v/@unitsvc/cc-helper.svg)](https://www.npmjs.com/package/@unitsvc/cc-helper) [![License](https://img.shields.io/badge/License-AGPL%203.0-blue.svg)](https://github.com/next-bin/cc-helper/blob/master/LICENSE) [![Node](https://img.shields.io/badge/Node-%3E%3D14.0.0-green.svg)](https://nodejs.org) [![CLAUDE](https://img.shields.io/badge/Claude%20Code-v2.1.71%2B-green.svg)](https://docs.anthropic.com/en/docs/claude-code)
+# CC-Helper
 
-[**English**](./README.md) | [**简体中文**](./README-zh.md)
+### Claude Code 的全能助手与AI供应商管理工具
 
-> Claude Code 终极增强工具：一键解锁隐藏功能、管理多 AI 提供商、安全存储密钥、多环境配置同步 —— 全部集成在一个 CLI 工具中。
+[![npm version](https://img.shields.io/npm/v/@unitsvc/cc-helper.svg?color=blue&label=version)](https://www.npmjs.com/package/@unitsvc/cc-helper)
+[![npm downloads](https://img.shields.io/npm/dt/@unitsvc/cc-helper.svg?color=green&label=downloads)](https://www.npmjs.com/package/@unitsvc/cc-helper)
+[![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Linux%20%7C%20Windows-orange.svg)](https://github.com/next-bin/cc-helper)
+[![License](https://img.shields.io/badge/License-AGPL%203.0-blue.svg)](https://github.com/next-bin/cc-helper/blob/master/LICENSE)
+
+[English](README.md) | 简体中文
+
+</div>
 
 > **⚠️ 声明：智谱（glm/zai）公司及其关联产品禁止使用本软件。**
 
@@ -23,14 +30,16 @@ npm install -g @anthropic-ai/claude-code@v2.1.126
 
 ## 安装
 
-两种使用方式（二选一）：
+```bash
+npm install -g @unitsvc/cc-helper@latest
+```
+
+## 更新
 
 ```bash
-# 全局安装（可选）
 npm install -g @unitsvc/cc-helper@latest
-
-# 或直接运行，无需安装
-npx @unitsvc/cc-helper@latest enable
+# 或
+cc-helper update
 ```
 
 ### 代理支持
@@ -39,10 +48,10 @@ npx @unitsvc/cc-helper@latest enable
 
 ```bash
 # 使用默认代理
-npx @unitsvc/cc-helper --proxy enable
+cc-helper --proxy enable
 
 # 使用自定义代理
-npx @unitsvc/cc-helper --proxy https://your-proxy.com enable
+cc-helper --proxy https://your-proxy.com enable
 ```
 
 ---
@@ -51,25 +60,28 @@ npx @unitsvc/cc-helper --proxy https://your-proxy.com enable
 
 ```bash
 # 启用默认功能（/loop, /btw, /keybindings）
-npx @unitsvc/cc-helper enable
+cc-helper enable
 
 # 启用特定功能
-npx @unitsvc/cc-helper enable loop        # 定时重复提示
-npx @unitsvc/cc-helper enable btw         # 旁支问题
-npx @unitsvc/cc-helper enable keybindings # 自定义键盘快捷键
-npx @unitsvc/cc-helper enable toolsearch  # 动态工具搜索
-npx @unitsvc/cc-helper enable context1m   # 1M 上下文（v2.1.76+）
-npx @unitsvc/cc-helper enable automode    # 所有模型的自动模式（v2.1.75+）
-npx @unitsvc/cc-helper enable monitor     # 流式事件监控（v2.1.100+）
+cc-helper enable loop        # 定时重复提示
+cc-helper enable btw         # 旁支问题
+cc-helper enable keybindings # 自定义键盘快捷键
+cc-helper enable toolsearch  # 动态工具搜索
+cc-helper enable context1m   # 1M 上下文（v2.1.76+）
+cc-helper enable automode    # 所有模型的自动模式（v2.1.75+）
+cc-helper enable monitor     # 流式事件监控（v2.1.100+）
 
 # 查看状态
-npx @unitsvc/cc-helper status
+cc-helper status
 
 # 禁用所有功能
-npx @unitsvc/cc-helper disable
+cc-helper disable
 ```
 
 > **注意**: 运行 `cc-helper enable` 时会自动在 `~/.claude/settings.json` 中配置推荐的环境变量：
+>
+> <details>
+> <summary>查看环境变量</summary>
 >
 > ```json
 > {
@@ -89,6 +101,8 @@ npx @unitsvc/cc-helper disable
 >   }
 > }
 > ```
+>
+> </details>
 
 ---
 
@@ -106,7 +120,7 @@ cc-helper plan add -p bailian -k YOUR_API_KEY
 cc-helper plan add -p minimaxi -k YOUR_API_KEY --mcp
 
 # 切换 Provider
-cc-helper plan switch -p zai
+cc-helper plan switch -p bailian
 
 # 切换模型配置（当前 Provider）
 cc-helper plan switch --profile 1m
@@ -121,16 +135,42 @@ cc-helper plan list
 cc-helper plan export --all-env -o config.json
 ```
 
+**1M 上下文标签：**
+
+使用 `--1m` 参数为模型字段添加 `[1m]` 上下文标签，表示支持 1M token 上下文窗口的模型。
+
+> **注意**: `[1m]` 标签需要 Claude Code v2.1.118 或更高版本。
+
+| 参数 | 行为 |
+|------|------|
+| 无 `--1m` | 不添加 `[1m]` 标签 |
+| `--1m d` | 使用配置中的 `Context1M` 字段 |
+| `--1m o` | 覆盖配置，仅标记 opus |
+| `--1m s,o` | 覆盖配置，标记 sonnet 和 opus |
+
+简写：`m=model, h=haiku, s=sonnet, o=opus, r=reasoning`，`d=default（使用配置）`
+
+```bash
+# 示例：切换到 1m 配置并使用默认 1M 字段
+cc-helper plan switch --profile 1m --1m d
+
+# 示例：切换到 3.6 配置，仅标记 opus
+cc-helper plan switch --profile 3.6 --1m o
+
+# 示例：切换 Provider 并标记 sonnet 和 opus
+cc-helper plan switch -p bailian --profile 1m --1m s,o
+```
+
 **支持的 Provider：**
 
 | Provider   | 说明                  |
 | ---------- | --------------------- |
 | `bailian`  | (CN) Aliyun           |
 | `minimaxi` | (CN) MiniMax          |
-| ~~`glm`~~  | ~~(CN) Zhipu~~        |
-| ~~`zai`~~  | ~~(EN) Zhipu~~        |
 | `ark`      | (CN) Ark (Volcengine) |
 | `xiaomi`   | (CN) Xiaomi MiMo      |
+| ~~`glm`~~  | ~~(CN) Zhipu~~        |
+| ~~`zai`~~  | ~~(EN) Zhipu~~        |
 
 **模型配置（Model Profiles）：**
 
@@ -146,16 +186,68 @@ cc-helper plan export --all-env -o config.json
 
 **bailian 配置：**
 
+<details>
+<summary>查看 bailian 模型配置</summary>
+
+| Profile | Model        | Haiku        | Sonnet       | Opus         | Reasoning    | Context1M   |
+| ------- | ------------ | ------------ | ------------ | ------------ | ------------ | ----------- |
+| default | glm-5        | glm-4.7      | glm-5        | glm-5        | glm-5        | -           |
+| 5       | glm-5        | glm-5        | glm-5        | qwen3.6-plus | glm-5        | -           |
+| 1m      | glm-5        | glm-4.7      | qwen3.5-plus | qwen3.5-plus | glm-5        | sonnet,opus |
+| 3.6     | qwen3.6-plus | qwen3.6-plus | qwen3.6-plus | qwen3.6-plus | qwen3.6-plus | sonnet,opus |
+| kimi    | kimi-k2.5    | kimi-k2.5    | kimi-k2.5    | kimi-k2.5    | kimi-k2.5    | -           |
+| minimax | MiniMax-M2.5 | MiniMax-M2.5 | MiniMax-M2.5 | MiniMax-M2.5 | MiniMax-M2.5 | -           |
+
+</details>
+
+**minimaxi 配置：**
+
+<details>
+<summary>查看 minimaxi 模型配置</summary>
+
 | Profile | Model        | Haiku        | Sonnet       | Opus         | Reasoning    |
 | ------- | ------------ | ------------ | ------------ | ------------ | ------------ |
-| default | glm-5        | glm-4.7      | glm-5        | glm-5        | glm-5        |
-| 5       | glm-5        | glm-5        | glm-5        | qwen3.6-plus | glm-5        |
-| 1m      | glm-5        | glm-4.7      | qwen3.5-plus | qwen3.5-plus | glm-5        |
-| 3.6     | qwen3.6-plus | qwen3.6-plus | qwen3.6-plus | qwen3.6-plus | qwen3.6-plus |
-| kimi    | kimi-k2.5    | kimi-k2.5    | kimi-k2.5    | kimi-k2.5    | kimi-k2.5    |
-| minimax | MiniMax-M2.5 | MiniMax-M2.5 | MiniMax-M2.5 | MiniMax-M2.5 | MiniMax-M2.5 |
+| default | MiniMax-M2.7 | MiniMax-M2.7 | MiniMax-M2.7 | MiniMax-M2.7 | MiniMax-M2.7 |
+
+</details>
+
+**ark 配置：**
+
+<details>
+<summary>查看 ark 模型配置</summary>
+
+| Profile  | Model            | Haiku                | Sonnet           | Opus                | Reasoning        |
+| -------- | ---------------- | -------------------- | ---------------- | ------------------- | ---------------- |
+| default  | kimi-k2.6        | kimi-k2.5            | kimi-k2.6        | kimi-k2.6           | kimi-k2.6        |
+| kimi     | kimi-k2.6        | kimi-k2.5            | kimi-k2.6        | kimi-k2.6           | kimi-k2.6        |
+| doubao   | doubao-seed-code | doubao-seed-2.0-code | doubao-seed-code | doubao-seed-2.0-pro | doubao-seed-code |
+| minimax  | minimax-m2.7     | minimax-m2.7         | minimax-m2.7     | minimax-m2.7        | minimax-m2.7     |
+| deepseek | deepseek-v3.2    | deepseek-v3.2        | deepseek-v3.2    | deepseek-v3.2       | deepseek-v3.2    |
+| auto     | glm-5.1          | ark-code-latest      | minimax-m2.7     | glm-5.1             | kimi-k2.6        |
+| glm      | glm-5.1          | glm-4.7              | glm-5.1          | glm-5.1             | glm-5.1          |
+
+</details>
+
+**xiaomi 配置：**
+
+<details>
+<summary>查看 xiaomi 模型配置</summary>
+
+| Profile    | Model            | Haiku              | Sonnet           | Opus             | Reasoning        | Context1M   |
+| ---------- | ---------------- | ------------------ | ---------------- | ---------------- | ---------------- | ----------- |
+| default    | mimo-v2.5-pro    | mimo-v2.5-flash    | mimo-v2.5-pro    | mimo-v2.5-pro    | mimo-v2.5-pro    | sonnet,opus |
+| pro        | mimo-v2.5-pro    | mimo-v2.5-pro      | mimo-v2.5-pro    | mimo-v2.5-pro    | mimo-v2.5-pro    | sonnet,opus |
+| v2.5       | mimo-v2.5        | mimo-v2.5          | mimo-v2.5        | mimo-v2.5        | mimo-v2.5        | -           |
+| v2.5-flash | mimo-v2.5-flash  | mimo-v2.5-flash    | mimo-v2.5-flash  | mimo-v2.5-flash  | mimo-v2.5-flash  | -           |
+| v2         | mimo-v2-pro      | mimo-v2-omni       | mimo-v2-pro      | mimo-v2-pro      | mimo-v2-pro      | sonnet,opus |
+| omni       | mimo-v2.5        | mimo-v2-omni       | mimo-v2.5        | mimo-v2.5        | mimo-v2.5        | -           |
+
+</details>
 
 **~~glm / zai 配置~~（禁止使用）**
+
+<details>
+<summary>查看 glm/zai 模型配置（已废弃）</summary>
 
 | Profile | Model        | Haiku       | Sonnet  | Opus    | Reasoning |
 | ------- | ------------ | ----------- | ------- | ------- | --------- |
@@ -164,34 +256,7 @@ cc-helper plan export --all-env -o config.json
 | 5.1     | glm-5.1      | glm-4.7     | glm-5.1 | glm-5.1 | glm-5.1   |
 | 5v      | glm-5v-turbo | glm-4.7     | glm-5.1 | glm-5.1 | glm-5.1   |
 
-**minimaxi 配置：**
-
-| Profile | Model        | Haiku        | Sonnet       | Opus         | Reasoning    |
-| ------- | ------------ | ------------ | ------------ | ------------ | ------------ |
-| default | MiniMax-M2.7 | MiniMax-M2.7 | MiniMax-M2.7 | MiniMax-M2.7 | MiniMax-M2.7 |
-
-**ark 配置：**
-
-| Profile  | Model            | Haiku                | Sonnet           | Opus                | Reasoning        |
-| -------- | ---------------- | -------------------- | ---------------- | ------------------- | ---------------- |
-| default  | kimi-k2.6        | kimi-k2.5            | kimi-k2.6        | kimi-k2.6           | kimi-k2.6        |
-| kimi     | kimi-k2.6        | kimi-k2.5            | kimi-k2.6        | kimi-k2.6           | kimi-k2.6        |
-| doubao   | doubao-seed-code | doubao-seed-2.0-code | doubao-seed-code | doubao-seed-2.0-pro | doubao-seed-code |
-| minimax  | minimax-m2.7     | minimax-m2.7         | minimax-m2.7     | minimax-m2.7        | minimax-m2.7     |
-| glm      | glm-5.1          | glm-4.7              | glm-5.1          | glm-5.1             | glm-5.1          |
-| deepseek | deepseek-v3.2    | deepseek-v3.2        | deepseek-v3.2    | deepseek-v3.2       | deepseek-v3.2    |
-| auto     | glm-5.1          | ark-code-latest      | minimax-m2.7     | glm-5.1             | kimi-k2.6        |
-
-**xiaomi 配置：**
-
-| Profile    | Model            | Haiku              | Sonnet           | Opus             | Reasoning        |
-| ---------- | ---------------- | ------------------ | ---------------- | ---------------- | ---------------- |
-| default    | mimo-v2.5-pro    | mimo-v2.5-flash    | mimo-v2.5-pro    | mimo-v2.5-pro    | mimo-v2.5-pro    |
-| pro        | mimo-v2.5-pro    | mimo-v2.5-pro      | mimo-v2.5-pro    | mimo-v2.5-pro    | mimo-v2.5-pro    |
-| v2.5       | mimo-v2.5        | mimo-v2.5          | mimo-v2.5        | mimo-v2.5        | mimo-v2.5        |
-| v2.5-flash | mimo-v2.5-flash  | mimo-v2.5-flash    | mimo-v2.5-flash  | mimo-v2.5-flash  | mimo-v2.5-flash  |
-| v2         | mimo-v2-pro      | mimo-v2-omni       | mimo-v2-pro      | mimo-v2-pro      | mimo-v2-pro      |
-| omni       | mimo-v2.5        | mimo-v2-omni       | mimo-v2.5        | mimo-v2.5        | mimo-v2.5        |
+</details>
 
 ```bash
 # 示例：在 bailian 上使用 1M 上下文
@@ -356,6 +421,9 @@ cancel the deploy check job       # 按描述或 ID 取消
 
 **扩展思维与上下文长度：**
 
+<details>
+<summary>查看上下文长度表格</summary>
+
 | 模型                 | 最大思维链长度 | 上下文长度 |
 | -------------------- | -------------: | ---------: |
 | qwen3.6-plus         |         81,920 |  1,000,000 |
@@ -367,6 +435,8 @@ cancel the deploy check job       # 按描述或 ID 取消
 | MiniMax-M2.5         |         32,768 |    204,800 |
 | glm-5                |         32,768 |    202,752 |
 | glm-4.7              |         32,768 |    202,752 |
+
+</details>
 
 ### 工具搜索
 
@@ -428,7 +498,7 @@ ENABLE_TOOL_SEARCH=true claude     # 始终启用
 - Claude Code v2.1.75 或更高版本
 
 ```bash
-npx @unitsvc/cc-helper enable automode
+cc-helper enable automode
 ```
 
 **环境变量：**
@@ -453,7 +523,7 @@ npx @unitsvc/cc-helper enable automode
 - Claude Code v2.1.98 或更高版本
 
 ```bash
-npx @unitsvc/cc-helper enable monitor
+cc-helper enable monitor
 ```
 
 **示例：**

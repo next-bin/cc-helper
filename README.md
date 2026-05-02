@@ -1,10 +1,17 @@
-# cc-helper
+<div align="center">
 
-[![npm version](https://img.shields.io/npm/v/@unitsvc/cc-helper.svg)](https://www.npmjs.com/package/@unitsvc/cc-helper) [![License](https://img.shields.io/badge/License-AGPL%203.0-blue.svg)](https://github.com/next-bin/cc-helper/blob/master/LICENSE) [![Node](https://img.shields.io/badge/Node-%3E%3D14.0.0-green.svg)](https://nodejs.org) [![CLAUDE](https://img.shields.io/badge/Claude%20Code-v2.1.71%2B-green.svg)](https://docs.anthropic.com/en/docs/claude-code)
+# CC-Helper
 
-[**English**](./README.md) | [**简体中文**](./README-zh.md)
+### The All-in-One Assistant & Provider Manager for Claude Code
 
-> The ultimate Claude Code companion: unlock hidden superpowers, manage AI providers, and sync configurations across environments — all in one CLI tool.
+[![npm version](https://img.shields.io/npm/v/@unitsvc/cc-helper.svg?color=blue&label=version)](https://www.npmjs.com/package/@unitsvc/cc-helper)
+[![npm downloads](https://img.shields.io/npm/dt/@unitsvc/cc-helper.svg?color=green&label=downloads)](https://www.npmjs.com/package/@unitsvc/cc-helper)
+[![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Linux%20%7C%20Windows-orange.svg)](https://github.com/next-bin/cc-helper)
+[![License](https://img.shields.io/badge/License-AGPL%203.0-blue.svg)](https://github.com/next-bin/cc-helper/blob/master/LICENSE)
+
+English | [简体中文](README-zh.md)
+
+</div>
 
 > **⚠️ Disclaimer:** Zhipu (glm/zai) company and its associated products are **NOT** permitted to use this software.
 
@@ -23,14 +30,16 @@ npm install -g @anthropic-ai/claude-code@v2.1.126
 
 ## Installation
 
-Two ways to use (choose one):
+```bash
+npm install -g @unitsvc/cc-helper@latest
+```
+
+## Update
 
 ```bash
-# Install globally (optional)
 npm install -g @unitsvc/cc-helper@latest
-
-# Or run directly without installation
-npx @unitsvc/cc-helper@latest enable
+# or
+cc-helper update
 ```
 
 ### Proxy Support
@@ -39,10 +48,10 @@ If download fails, use `--proxy` flag:
 
 ```bash
 # Use default proxy
-npx @unitsvc/cc-helper --proxy enable
+cc-helper --proxy enable
 
 # Use custom proxy
-npx @unitsvc/cc-helper --proxy https://your-proxy.com enable
+cc-helper --proxy https://your-proxy.com enable
 ```
 
 ---
@@ -51,25 +60,28 @@ npx @unitsvc/cc-helper --proxy https://your-proxy.com enable
 
 ```bash
 # Enable default features (/loop, /btw, /keybindings)
-npx @unitsvc/cc-helper enable
+cc-helper enable
 
 # Enable specific features
-npx @unitsvc/cc-helper enable loop        # scheduled recurring prompts
-npx @unitsvc/cc-helper enable btw         # side questions
-npx @unitsvc/cc-helper enable keybindings # custom keyboard shortcuts
-npx @unitsvc/cc-helper enable toolsearch  # dynamic tool search
-npx @unitsvc/cc-helper enable context1m   # 1M token context (v2.1.76+)
-npx @unitsvc/cc-helper enable automode    # auto-mode for all models (v2.1.75+)
-npx @unitsvc/cc-helper enable monitor     # streaming event monitoring (v2.1.100+)
+cc-helper enable loop        # scheduled recurring prompts
+cc-helper enable btw         # side questions
+cc-helper enable keybindings # custom keyboard shortcuts
+cc-helper enable toolsearch  # dynamic tool search
+cc-helper enable context1m   # 1M token context (v2.1.76+)
+cc-helper enable automode    # auto-mode for all models (v2.1.75+)
+cc-helper enable monitor     # streaming event monitoring (v2.1.100+)
 
 # Check status
-npx @unitsvc/cc-helper status
+cc-helper status
 
 # Disable all features
-npx @unitsvc/cc-helper disable
+cc-helper disable
 ```
 
 > **Note**: Running `cc-helper enable` also automatically configures recommended environment variables in `~/.claude/settings.json`:
+>
+> <details>
+> <summary>View environment variables</summary>
 >
 > ```json
 > {
@@ -89,6 +101,8 @@ npx @unitsvc/cc-helper disable
 >   }
 > }
 > ```
+>
+> </details>
 
 ---
 
@@ -106,7 +120,7 @@ cc-helper plan add -p bailian -k YOUR_API_KEY
 cc-helper plan add -p minimaxi -k YOUR_API_KEY --mcp
 
 # Switch provider
-cc-helper plan switch -p zai
+cc-helper plan switch -p bailian
 
 # Switch model profile (on current provider)
 cc-helper plan switch --profile 1m
@@ -121,16 +135,42 @@ cc-helper plan list
 cc-helper plan export --all-env -o config.json
 ```
 
+**1M Context Tag:**
+
+Use `--1m` flag to add `[1m]` context tag to model fields, indicating models with 1M token context window support.
+
+> **Note**: `[1m]` tag requires Claude Code v2.1.118 or later.
+
+| Flag | Behavior |
+|------|----------|
+| No `--1m` | No `[1m]` tags added |
+| `--1m d` | Use `Context1M` from profile config |
+| `--1m o` | Override config, tag only opus |
+| `--1m s,o` | Override config, tag sonnet and opus |
+
+Shorthand: `m=model, h=haiku, s=sonnet, o=opus, r=reasoning`, `d=default (use config)`
+
+```bash
+# Example: Switch to 1m profile with default 1M fields
+cc-helper plan switch --profile 1m --1m d
+
+# Example: Switch to 3.6 profile, tag only opus
+cc-helper plan switch --profile 3.6 --1m o
+
+# Example: Switch provider and tag sonnet, opus
+cc-helper plan switch -p bailian --profile 1m --1m s,o
+```
+
 **Supported Providers:**
 
 | Provider   | Description           |
 | ---------- | --------------------- |
 | `bailian`  | (CN) Aliyun           |
 | `minimaxi` | (CN) MiniMax          |
-| ~~`glm`~~  | ~~(CN) Zhipu~~        |
-| ~~`zai`~~  | ~~(EN) Zhipu~~        |
 | `ark`      | (CN) Ark (Volcengine) |
 | `xiaomi`   | (CN) Xiaomi MiMo      |
+| ~~`glm`~~  | ~~(CN) Zhipu~~        |
+| ~~`zai`~~  | ~~(EN) Zhipu~~        |
 
 **Model Profiles:**
 
@@ -146,16 +186,68 @@ Each provider supports multiple model profiles. A profile defines mappings for a
 
 **bailian Profiles:**
 
+<details>
+<summary>View bailian model profiles</summary>
+
+| Profile | Model        | Haiku        | Sonnet       | Opus         | Reasoning    | Context1M   |
+| ------- | ------------ | ------------ | ------------ | ------------ | ------------ | ----------- |
+| default | glm-5        | glm-4.7      | glm-5        | glm-5        | glm-5        | -           |
+| 5       | glm-5        | glm-5        | glm-5        | qwen3.6-plus | glm-5        | -           |
+| 1m      | glm-5        | glm-4.7      | qwen3.5-plus | qwen3.5-plus | glm-5        | sonnet,opus |
+| 3.6     | qwen3.6-plus | qwen3.6-plus | qwen3.6-plus | qwen3.6-plus | qwen3.6-plus | sonnet,opus |
+| kimi    | kimi-k2.5    | kimi-k2.5    | kimi-k2.5    | kimi-k2.5    | kimi-k2.5    | -           |
+| minimax | MiniMax-M2.5 | MiniMax-M2.5 | MiniMax-M2.5 | MiniMax-M2.5 | MiniMax-M2.5 | -           |
+
+</details>
+
+**minimaxi Profiles:**
+
+<details>
+<summary>View minimaxi model profiles</summary>
+
 | Profile | Model        | Haiku        | Sonnet       | Opus         | Reasoning    |
 | ------- | ------------ | ------------ | ------------ | ------------ | ------------ |
-| default | glm-5        | glm-4.7      | glm-5        | glm-5        | glm-5        |
-| 5       | glm-5        | glm-5        | glm-5        | qwen3.6-plus | glm-5        |
-| 1m      | glm-5        | glm-4.7      | qwen3.5-plus | qwen3.5-plus | glm-5        |
-| 3.6     | qwen3.6-plus | qwen3.6-plus | qwen3.6-plus | qwen3.6-plus | qwen3.6-plus |
-| kimi    | kimi-k2.5    | kimi-k2.5    | kimi-k2.5    | kimi-k2.5    | kimi-k2.5    |
-| minimax | MiniMax-M2.5 | MiniMax-M2.5 | MiniMax-M2.5 | MiniMax-M2.5 | MiniMax-M2.5 |
+| default | MiniMax-M2.7 | MiniMax-M2.7 | MiniMax-M2.7 | MiniMax-M2.7 | MiniMax-M2.7 |
+
+</details>
+
+**ark Profiles:**
+
+<details>
+<summary>View ark model profiles</summary>
+
+| Profile  | Model            | Haiku                | Sonnet           | Opus                | Reasoning        |
+| -------- | ---------------- | -------------------- | ---------------- | ------------------- | ---------------- |
+| default  | kimi-k2.6        | kimi-k2.5            | kimi-k2.6        | kimi-k2.6           | kimi-k2.6        |
+| kimi     | kimi-k2.6        | kimi-k2.5            | kimi-k2.6        | kimi-k2.6           | kimi-k2.6        |
+| doubao   | doubao-seed-code | doubao-seed-2.0-code | doubao-seed-code | doubao-seed-2.0-pro | doubao-seed-code |
+| minimax  | minimax-m2.7     | minimax-m2.7         | minimax-m2.7     | minimax-m2.7        | minimax-m2.7     |
+| deepseek | deepseek-v3.2    | deepseek-v3.2        | deepseek-v3.2    | deepseek-v3.2       | deepseek-v3.2    |
+| auto     | glm-5.1          | ark-code-latest      | minimax-m2.7     | glm-5.1             | kimi-k2.6        |
+| glm      | glm-5.1          | glm-4.7              | glm-5.1          | glm-5.1             | glm-5.1          |
+
+</details>
+
+**xiaomi Profiles:**
+
+<details>
+<summary>View xiaomi model profiles</summary>
+
+| Profile    | Model            | Haiku              | Sonnet           | Opus             | Reasoning        | Context1M   |
+| ---------- | ---------------- | ------------------ | ---------------- | ---------------- | ---------------- | ----------- |
+| default    | mimo-v2.5-pro    | mimo-v2.5-flash    | mimo-v2.5-pro    | mimo-v2.5-pro    | mimo-v2.5-pro    | sonnet,opus |
+| pro        | mimo-v2.5-pro    | mimo-v2.5-pro      | mimo-v2.5-pro    | mimo-v2.5-pro    | mimo-v2.5-pro    | sonnet,opus |
+| v2.5       | mimo-v2.5        | mimo-v2.5          | mimo-v2.5        | mimo-v2.5        | mimo-v2.5        | -           |
+| v2.5-flash | mimo-v2.5-flash  | mimo-v2.5-flash    | mimo-v2.5-flash  | mimo-v2.5-flash  | mimo-v2.5-flash  | -           |
+| v2         | mimo-v2-pro      | mimo-v2-omni       | mimo-v2-pro      | mimo-v2-pro      | mimo-v2-pro      | sonnet,opus |
+| omni       | mimo-v2.5        | mimo-v2-omni       | mimo-v2.5        | mimo-v2.5        | mimo-v2.5        | -           |
+
+</details>
 
 **~~glm / zai Profiles:~~ (NOT ALLOWED)**
+
+<details>
+<summary>View glm/zai model profiles (deprecated)</summary>
 
 | Profile | Model        | Haiku       | Sonnet  | Opus    | Reasoning |
 | ------- | ------------ | ----------- | ------- | ------- | --------- |
@@ -164,34 +256,7 @@ Each provider supports multiple model profiles. A profile defines mappings for a
 | 5.1     | glm-5.1      | glm-4.7     | glm-5.1 | glm-5.1 | glm-5.1   |
 | 5v      | glm-5v-turbo | glm-4.7     | glm-5.1 | glm-5.1 | glm-5.1   |
 
-**minimaxi Profiles:**
-
-| Profile | Model        | Haiku        | Sonnet       | Opus         | Reasoning    |
-| ------- | ------------ | ------------ | ------------ | ------------ | ------------ |
-| default | MiniMax-M2.7 | MiniMax-M2.7 | MiniMax-M2.7 | MiniMax-M2.7 | MiniMax-M2.7 |
-
-**ark Profiles:**
-
-| Profile  | Model            | Haiku                | Sonnet           | Opus                | Reasoning        |
-| -------- | ---------------- | -------------------- | ---------------- | ------------------- | ---------------- |
-| default  | kimi-k2.6        | kimi-k2.5            | kimi-k2.6        | kimi-k2.6           | kimi-k2.6        |
-| kimi     | kimi-k2.6        | kimi-k2.5            | kimi-k2.6        | kimi-k2.6           | kimi-k2.6        |
-| doubao   | doubao-seed-code | doubao-seed-2.0-code | doubao-seed-code | doubao-seed-2.0-pro | doubao-seed-code |
-| minimax  | minimax-m2.7     | minimax-m2.7         | minimax-m2.7     | minimax-m2.7        | minimax-m2.7     |
-| glm      | glm-5.1          | glm-4.7              | glm-5.1          | glm-5.1             | glm-5.1          |
-| deepseek | deepseek-v3.2    | deepseek-v3.2        | deepseek-v3.2    | deepseek-v3.2       | deepseek-v3.2    |
-| auto     | glm-5.1          | ark-code-latest      | minimax-m2.7     | glm-5.1             | kimi-k2.6        |
-
-**xiaomi Profiles:**
-
-| Profile    | Model            | Haiku              | Sonnet           | Opus             | Reasoning        |
-| ---------- | ---------------- | ------------------ | ---------------- | ---------------- | ---------------- |
-| default    | mimo-v2.5-pro    | mimo-v2.5-flash    | mimo-v2.5-pro    | mimo-v2.5-pro    | mimo-v2.5-pro    |
-| pro        | mimo-v2.5-pro    | mimo-v2.5-pro      | mimo-v2.5-pro    | mimo-v2.5-pro    | mimo-v2.5-pro    |
-| v2.5       | mimo-v2.5        | mimo-v2.5          | mimo-v2.5        | mimo-v2.5        | mimo-v2.5        |
-| v2.5-flash | mimo-v2.5-flash  | mimo-v2.5-flash    | mimo-v2.5-flash  | mimo-v2.5-flash  | mimo-v2.5-flash  |
-| v2         | mimo-v2-pro      | mimo-v2-omni       | mimo-v2-pro      | mimo-v2-pro      | mimo-v2-pro      |
-| omni       | mimo-v2.5        | mimo-v2-omni       | mimo-v2.5        | mimo-v2.5        | mimo-v2.5        |
+</details>
 
 ```bash
 # Example: Use 1M context on bailian
@@ -356,6 +421,9 @@ Enable 1M token context window for Claude Opus models.
 
 **Extended Thinking & Context Length:**
 
+<details>
+<summary>View context length table</summary>
+
 | Model                | Max Thinking Tokens | Context Length |
 | -------------------- | ------------------: | -------------: |
 | qwen3.6-plus         |              81,920 |      1,000,000 |
@@ -367,6 +435,8 @@ Enable 1M token context window for Claude Opus models.
 | MiniMax-M2.5         |              32,768 |        204,800 |
 | glm-5                |              32,768 |        202,752 |
 | glm-4.7              |              32,768 |        202,752 |
+
+</details>
 
 ### Tool Search
 
@@ -428,7 +498,7 @@ Enable auto-mode for all models and API types, bypassing model restrictions.
 - Claude Code v2.1.75 or higher
 
 ```bash
-npx @unitsvc/cc-helper enable automode
+cc-helper enable automode
 ```
 
 **Environment Variables:**
@@ -453,7 +523,7 @@ Enable the Monitor tool for streaming event monitoring.
 - Claude Code v2.1.98 or higher
 
 ```bash
-npx @unitsvc/cc-helper enable monitor
+cc-helper enable monitor
 ```
 
 **Examples:**
