@@ -44,15 +44,17 @@ cc-helper update
 
 ### 代理支持
 
-如果下载失败，使用 `--proxy` 参数：
+如果下载失败，使用 `--dl-proxy` 参数：
 
 ```bash
 # 使用默认代理
-cc-helper --proxy enable
+cc-helper --dl-proxy enable
 
 # 使用自定义代理
-cc-helper --proxy https://your-proxy.com enable
+cc-helper --dl-proxy https://your-proxy.com enable
 ```
+
+> **注意**：`--proxy` 仍为向后兼容而支持，但已废弃。请使用 `--dl-proxy`。
 
 ---
 
