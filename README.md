@@ -44,15 +44,17 @@ cc-helper update
 
 ### Proxy Support
 
-If download fails, use `--proxy` flag:
+If download fails, use `--dl-proxy` flag:
 
 ```bash
 # Use default proxy
-cc-helper --proxy enable
+cc-helper --dl-proxy enable
 
 # Use custom proxy
-cc-helper --proxy https://your-proxy.com enable
+cc-helper --dl-proxy https://your-proxy.com enable
 ```
+
+> **Note**: `--proxy` is still supported for backward compatibility but is deprecated. Use `--dl-proxy` instead.
 
 ---
 
