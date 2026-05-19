@@ -270,15 +270,40 @@ cc-helper plan add -p ark -k YOUR_KEY
 cc-helper plan switch --profile auto
 ```
 
+### Multi-Window Configuration
+
+Use `config claude` to generate temporary settings for running multiple Claude Code windows with different providers/models:
+
+```bash
+eval "$(cc-helper config claude -p bailian)"                                        # Window 1: bailian
+eval "$(cc-helper config claude -p minimaxi)"                                       # Window 2: minimaxi
+eval "$(cc-helper config claude -p glm --profile 5.1 --permission-mode auto)"       # Window 3: glm + auto permission
+eval "$(cc-helper config claude -p bailian --proxy --profile 1m)"                   # Window 4: bailian via proxy
+```
+
+**Parameters:**
+
+| Parameter | Description |
+|-----------|-------------|
+| `-p, --provider` | Provider ID (bailian, minimaxi, glm, zai, ark, xiaomi) |
+| `--profile` | Model profile (e.g., 5.1, default, kimi) |
+| `--name` | Key name |
+| `--api` | Use API key mode |
+| `--1m` | 1M context tag |
+| `--proxy` | Use proxy mode (localhost:12315) |
+| `--port` | Custom proxy port (default: 12315, range: 1-65535) |
+| `--permission-mode` | Permission mode (bypass, auto, acceptEdits, plan) |
+| `--json` | JSON format output |
+
 ### vault — Secure API Key Storage
 
 Store and retrieve provider API keys locally with encryption.
 
 ```bash
-cc-helper vault list                  # List secrets
-cc-helper vault set bailian default -k "KEY"   # Set
-cc-helper vault get bailian default             # Get & decrypt
-cc-helper vault delete bailian default          # Delete
+cc-helper vault list                              # List secrets
+cc-helper vault set bailian default -k "KEY"      # Set
+cc-helper vault get bailian default               # Get & decrypt
+cc-helper vault delete bailian default            # Delete
 ```
 
 ### env — Environment Management
@@ -286,9 +311,9 @@ cc-helper vault delete bailian default          # Delete
 Create and switch between isolated configuration environments.
 
 ```bash
-cc-helper env list    # List environments
-cc-helper env create work   # Create
-cc-helper env switch work   # Switch
+cc-helper env list                     # List environments
+cc-helper env create work              # Create
+cc-helper env switch work              # Switch
 ```
 
 ### sync — Config Sync with Git

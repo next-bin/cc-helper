@@ -270,15 +270,40 @@ cc-helper plan add -p ark -k YOUR_KEY
 cc-helper plan switch --profile auto
 ```
 
+### 多窗口配置
+
+使用 `config claude` 生成临时配置，支持多个终端窗口同时使用不同的供应商/模型：
+
+```bash
+eval "$(cc-helper config claude -p bailian)"                                        # 窗口 1：bailian
+eval "$(cc-helper config claude -p minimaxi)"                                       # 窗口 2：minimaxi
+eval "$(cc-helper config claude -p glm --profile 5.1 --permission-mode auto)"       # 窗口 3：glm + auto 权限
+eval "$(cc-helper config claude -p bailian --proxy --profile 1m)"                   # 窗口 4：bailian 通过代理
+```
+
+**参数说明：**
+
+| 参数 | 说明 |
+|------|------|
+| `-p, --provider` | 供应商 ID（bailian, minimaxi, glm, zai, ark, xiaomi） |
+| `--profile` | 模型 profile（如 5.1, default, kimi） |
+| `--name` | key 名称 |
+| `--api` | 使用 API key 模式 |
+| `--1m` | 1M context 标签 |
+| `--proxy` | 使用代理模式（localhost:12315） |
+| `--port` | 自定义代理端口（默认：12315，范围：1-65535） |
+| `--permission-mode` | 权限模式（bypass, auto, acceptEdits, plan） |
+| `--json` | JSON 格式输出 |
+
 ### vault — 安全密钥存储
 
 使用本地加密方式安全存储和读取 Provider 的 API 密钥。
 
 ```bash
-cc-helper vault list                    # 列出密钥
-cc-helper vault set bailian default -k "KEY"   # 设置
-cc-helper vault get bailian default              # 获取并解密
-cc-helper vault delete bailian default          # 删除
+cc-helper vault list                              # 列出密钥
+cc-helper vault set bailian default -k "KEY"      # 设置
+cc-helper vault get bailian default               # 获取并解密
+cc-helper vault delete bailian default            # 删除
 ```
 
 ### env — 多环境管理
@@ -286,9 +311,9 @@ cc-helper vault delete bailian default          # 删除
 创建并切换相互隔离的配置环境。
 
 ```bash
-cc-helper env list    # 列出环境
-cc-helper env create work   # 创建
-cc-helper env switch work   # 切换
+cc-helper env list                     # 列出环境
+cc-helper env create work              # 创建
+cc-helper env switch work              # 切换
 ```
 
 ### sync — Git 配置同步
