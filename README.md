@@ -194,7 +194,7 @@ Each provider supports multiple model profiles. A profile defines mappings for a
 | Profile | Model        | Haiku        | Sonnet       | Opus         | Reasoning    | Context1M   |
 | ------- | ------------ | ------------ | ------------ | ------------ | ------------ | ----------- |
 | default | glm-5        | glm-4.7      | glm-5        | glm-5        | glm-5        | -           |
-| 5       | glm-5        | glm-5        | glm-5        | qwen3.6-plus | glm-5        | -           |
+| 5       | glm-5        | glm-5        | glm-5        | qwen3.6-plus | glm-5        | opus        |
 | 1m      | glm-5        | glm-4.7      | qwen3.5-plus | qwen3.5-plus | glm-5        | sonnet,opus |
 | 3.6     | qwen3.6-plus | qwen3.6-plus | qwen3.6-plus | qwen3.6-plus | qwen3.6-plus | sonnet,opus |
 | kimi    | kimi-k2.5    | kimi-k2.5    | kimi-k2.5    | kimi-k2.5    | kimi-k2.5    | -           |
