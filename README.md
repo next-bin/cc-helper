@@ -2,7 +2,7 @@
 
 # CC-Helper
 
-### The All-in-One Assistant & Provider Manager for Claude Code
+### The All-in-One Assistant & Provider Manager for Claude Code & Codex
 
 [![npm version](https://img.shields.io/npm/v/@unitsvc/cc-helper.svg?color=blue&label=version)](https://www.npmjs.com/package/@unitsvc/cc-helper)
 [![npm downloads](https://img.shields.io/npm/dt/@unitsvc/cc-helper.svg?color=green&label=downloads)](https://www.npmjs.com/package/@unitsvc/cc-helper)
@@ -171,6 +171,7 @@ cc-helper plan switch -p bailian --profile 1m --1m s,o
 | `minimaxi` | (CN) MiniMax          |
 | `ark`      | (CN) Ark (Volcengine) |
 | `xiaomi`   | (CN) Xiaomi MiMo      |
+| `deepseek` | DeepSeek              |
 | ~~`glm`~~  | ~~(CN) Zhipu~~        |
 | ~~`zai`~~  | ~~(EN) Zhipu~~        |
 
@@ -220,13 +221,14 @@ Each provider supports multiple model profiles. A profile defines mappings for a
 
 | Profile  | Model            | Haiku                | Sonnet           | Opus                | Reasoning        |
 | -------- | ---------------- | -------------------- | ---------------- | ------------------- | ---------------- |
-| default  | kimi-k2.6        | kimi-k2.5            | kimi-k2.6        | kimi-k2.6           | kimi-k2.6        |
-| kimi     | kimi-k2.6        | kimi-k2.5            | kimi-k2.6        | kimi-k2.6           | kimi-k2.6        |
-| doubao   | doubao-seed-code | doubao-seed-2.0-code | doubao-seed-code | doubao-seed-2.0-pro | doubao-seed-code |
+| default  | kimi-k2.6            | kimi-k2.6            | kimi-k2.6            | kimi-k2.6           | kimi-k2.6        |
+| kimi     | kimi-k2.6            | kimi-k2.6            | kimi-k2.6            | kimi-k2.6           | kimi-k2.6        |
+| doubao   | doubao-seed-2.0-pro | doubao-seed-2.0-lite | doubao-seed-2.0-code | doubao-seed-2.0-pro | doubao-seed-2.0-pro |
 | minimax  | minimax-m2.7     | minimax-m2.7         | minimax-m2.7     | minimax-m2.7        | minimax-m2.7     |
-| deepseek | deepseek-v3.2    | deepseek-v3.2        | deepseek-v3.2    | deepseek-v3.2       | deepseek-v3.2    |
+| glm      | glm-5.1          | glm-5.1              | glm-5.1          | glm-5.1             | glm-5.1          |
+| deepseek | deepseek-v4-pro  | deepseek-v4-flash    | deepseek-v4-pro  | deepseek-v4-pro     | deepseek-v4-pro  |
+| deepseek-v3 | deepseek-v3.2 | deepseek-v3.2       | deepseek-v3.2    | deepseek-v3.2       | deepseek-v3.2    |
 | auto     | glm-5.1          | ark-code-latest      | minimax-m2.7     | glm-5.1             | kimi-k2.6        |
-| glm      | glm-5.1          | glm-4.7              | glm-5.1          | glm-5.1             | glm-5.1          |
 
 </details>
 
@@ -243,6 +245,19 @@ Each provider supports multiple model profiles. A profile defines mappings for a
 | v2.5-flash | mimo-v2.5-flash  | mimo-v2.5-flash    | mimo-v2.5-flash  | mimo-v2.5-flash  | mimo-v2.5-flash  | -           |
 | v2         | mimo-v2-pro      | mimo-v2-omni       | mimo-v2-pro      | mimo-v2-pro      | mimo-v2-pro      | sonnet,opus |
 | omni       | mimo-v2.5        | mimo-v2-omni       | mimo-v2.5        | mimo-v2.5        | mimo-v2.5        | -           |
+
+</details>
+
+**deepseek Profiles:**
+
+<details>
+<summary>View deepseek model profiles</summary>
+
+| Profile | Model           | Haiku             | Sonnet            | Opus             | Reasoning        |
+| ------- | --------------- | ----------------- | ----------------- | ---------------- | ---------------- |
+| default | deepseek-v4-pro | deepseek-v4-flash | deepseek-v4-pro   | deepseek-v4-pro  | deepseek-v4-pro  |
+| flash   | deepseek-v4-flash | deepseek-v4-flash | deepseek-v4-flash | deepseek-v4-flash | deepseek-v4-flash |
+| pro     | deepseek-v4-pro | deepseek-v4-pro   | deepseek-v4-pro   | deepseek-v4-pro  | deepseek-v4-pro  |
 
 </details>
 
