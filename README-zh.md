@@ -23,9 +23,11 @@
 | ----------- | --------- |
 | Node.js     | >= 14.0.0 |
 | Claude Code | v2.1.71+  |
+| Codex       | 0.80.0+   |
 
 ```bash
-npm install -g @anthropic-ai/claude-code@v2.1.126
+npm install -g @anthropic-ai/claude-code@v2.1.112
+npm install -g @openai/codex@latest
 ```
 
 ## 安装
@@ -143,11 +145,11 @@ cc-helper plan export --all-env -o config.json
 
 > **注意**: `[1m]` 标签需要 Claude Code v2.1.118 或更高版本。
 
-| 参数 | 行为 |
-|------|------|
-| 无 `--1m` | 不添加 `[1m]` 标签 |
-| `--1m d` | 使用配置中的 `Context1M` 字段 |
-| `--1m o` | 覆盖配置，仅标记 opus |
+| 参数       | 行为                          |
+| ---------- | ----------------------------- |
+| 无 `--1m`  | 不添加 `[1m]` 标签            |
+| `--1m d`   | 使用配置中的 `Context1M` 字段 |
+| `--1m o`   | 覆盖配置，仅标记 opus         |
 | `--1m s,o` | 覆盖配置，标记 sonnet 和 opus |
 
 简写：`m=model, h=haiku, s=sonnet, o=opus, r=reasoning`，`d=default（使用配置）`
@@ -165,15 +167,16 @@ cc-helper plan switch -p bailian --profile 1m --1m s,o
 
 **支持的 Provider：**
 
-| Provider   | 说明                  |
-| ---------- | --------------------- |
-| `bailian`  | (CN) Aliyun           |
-| `minimaxi` | (CN) MiniMax          |
-| `ark`      | (CN) Ark (Volcengine) |
-| `xiaomi`   | (CN) Xiaomi MiMo      |
-| `deepseek` | DeepSeek              |
-| ~~`glm`~~  | ~~(CN) Zhipu~~        |
-| ~~`zai`~~  | ~~(EN) Zhipu~~        |
+| Provider    | 说明                 |
+| ----------- | -------------------- |
+| `bailian`   | (CN) Aliyun          |
+| `minimaxi`  | (CN) MiniMax         |
+| `ark`       | (CN) Ark Coding Plan |
+| `ark-agent` | (CN) Ark Agent Plan  |
+| `xiaomi`    | (CN) Xiaomi MiMo     |
+| `deepseek`  | DeepSeek             |
+| ~~`glm`~~   | ~~(CN) Zhipu~~       |
+| ~~`zai`~~   | ~~(EN) Zhipu~~       |
 
 **模型配置（Model Profiles）：**
 
@@ -195,9 +198,12 @@ cc-helper plan switch -p bailian --profile 1m --1m s,o
 | Profile | Model        | Haiku        | Sonnet       | Opus         | Reasoning    | Context1M   |
 | ------- | ------------ | ------------ | ------------ | ------------ | ------------ | ----------- |
 | default | glm-5        | glm-4.7      | glm-5        | glm-5        | glm-5        | -           |
-| 5       | glm-5        | glm-5        | glm-5        | qwen3.6-plus | glm-5        | opus        |
-| 1m      | glm-5        | glm-4.7      | qwen3.5-plus | qwen3.5-plus | glm-5        | sonnet,opus |
+| 5       | glm-5        | glm-5        | glm-5        | qwen3.7-plus | glm-5        | opus        |
+| 1m      | glm-5        | glm-5        | qwen3.7-plus | qwen3.7-plus | glm-5        | sonnet,opus |
 | 3.6     | qwen3.6-plus | qwen3.6-plus | qwen3.6-plus | qwen3.6-plus | qwen3.6-plus | sonnet,opus |
+| 3.7     | qwen3.7-plus | qwen3.7-plus | qwen3.7-plus | qwen3.7-plus | qwen3.7-plus | sonnet,opus |
+| qwen    | qwen3.7-plus | qwen3.7-plus | qwen3.7-plus | qwen3.7-plus | qwen3.7-plus | sonnet,opus |
+| glm     | glm-5        | glm-5        | glm-5        | glm-5        | glm-5        | -           |
 | kimi    | kimi-k2.5    | kimi-k2.5    | kimi-k2.5    | kimi-k2.5    | kimi-k2.5    | -           |
 | minimax | MiniMax-M2.5 | MiniMax-M2.5 | MiniMax-M2.5 | MiniMax-M2.5 | MiniMax-M2.5 | -           |
 
@@ -208,9 +214,11 @@ cc-helper plan switch -p bailian --profile 1m --1m s,o
 <details>
 <summary>查看 minimaxi 模型配置</summary>
 
-| Profile | Model        | Haiku        | Sonnet       | Opus         | Reasoning    |
-| ------- | ------------ | ------------ | ------------ | ------------ | ------------ |
-| default | MiniMax-M2.7 | MiniMax-M2.7 | MiniMax-M2.7 | MiniMax-M2.7 | MiniMax-M2.7 |
+| Profile | Model        | Haiku                  | Sonnet       | Opus         | Reasoning    | Context1M   |
+| ------- | ------------ | ---------------------- | ------------ | ------------ | ------------ | ----------- |
+| default | MiniMax-M3   | MiniMax-M2.7-highspeed | MiniMax-M3   | MiniMax-M3   | MiniMax-M3   | sonnet,opus |
+| 2.7     | MiniMax-M2.7 | MiniMax-M2.7-highspeed | MiniMax-M2.7 | MiniMax-M2.7 | MiniMax-M2.7 | -           |
+| 3       | MiniMax-M3   | MiniMax-M3             | MiniMax-M3   | MiniMax-M3   | MiniMax-M3   | sonnet,opus |
 
 </details>
 
@@ -219,16 +227,31 @@ cc-helper plan switch -p bailian --profile 1m --1m s,o
 <details>
 <summary>查看 ark 模型配置</summary>
 
-| Profile  | Model            | Haiku                | Sonnet           | Opus                | Reasoning        |
-| -------- | ---------------- | -------------------- | ---------------- | ------------------- | ---------------- |
-| default  | kimi-k2.6            | kimi-k2.6            | kimi-k2.6            | kimi-k2.6           | kimi-k2.6        |
-| kimi     | kimi-k2.6            | kimi-k2.6            | kimi-k2.6            | kimi-k2.6           | kimi-k2.6        |
-| doubao   | doubao-seed-2.0-pro | doubao-seed-2.0-lite | doubao-seed-2.0-code | doubao-seed-2.0-pro | doubao-seed-2.0-pro |
-| minimax  | minimax-m2.7     | minimax-m2.7         | minimax-m2.7     | minimax-m2.7        | minimax-m2.7     |
-| glm      | glm-5.1          | glm-5.1              | glm-5.1          | glm-5.1             | glm-5.1          |
-| deepseek | deepseek-v4-pro  | deepseek-v4-flash    | deepseek-v4-pro  | deepseek-v4-pro     | deepseek-v4-pro  |
-| deepseek-v3 | deepseek-v3.2 | deepseek-v3.2       | deepseek-v3.2    | deepseek-v3.2       | deepseek-v3.2    |
-| auto     | glm-5.1          | ark-code-latest      | minimax-m2.7     | glm-5.1             | kimi-k2.6        |
+| Profile  | Model               | Haiku                | Sonnet               | Opus                | Reasoning           | Context1M   |
+| -------- | ------------------- | -------------------- | -------------------- | ------------------- | ------------------- | ----------- |
+| default  | kimi-k2.6           | kimi-k2.6            | kimi-k2.6            | kimi-k2.6           | kimi-k2.6           | -           |
+| kimi     | kimi-k2.6           | kimi-k2.6            | kimi-k2.6            | kimi-k2.6           | kimi-k2.6           | -           |
+| doubao   | doubao-seed-2.0-pro | doubao-seed-2.0-lite | doubao-seed-2.0-code | doubao-seed-2.0-pro | doubao-seed-2.0-pro | -           |
+| minimax  | minimax-m3          | minimax-m3           | minimax-m3           | minimax-m3          | minimax-m3          | sonnet,opus |
+| glm      | glm-5.1             | glm-5.1              | glm-5.1              | glm-5.1             | glm-5.1             | -           |
+| deepseek | deepseek-v4-pro     | deepseek-v4-flash    | deepseek-v4-pro      | deepseek-v4-pro     | deepseek-v4-pro     | sonnet,opus |
+| auto     | glm-5.1             | ark-code-latest      | minimax-m3           | glm-5.1             | kimi-k2.6           | -           |
+
+</details>
+
+**ark-agent 配置：**
+
+<details>
+<summary>查看 ark-agent 模型配置</summary>
+
+| Profile  | Model               | Haiku                | Sonnet               | Opus                | Reasoning           | Context1M   |
+| -------- | ------------------- | -------------------- | -------------------- | ------------------- | ------------------- | ----------- |
+| default  | glm-5.1             | glm-5.1              | glm-5.1              | glm-5.1             | glm-5.1             | -           |
+| deepseek | deepseek-v4-pro     | deepseek-v4-flash    | deepseek-v4-pro      | deepseek-v4-pro     | deepseek-v4-pro     | sonnet,opus |
+| doubao   | doubao-seed-2.0-pro | doubao-seed-2.0-lite | doubao-seed-2.0-code | doubao-seed-2.0-pro | doubao-seed-2.0-pro | -           |
+| glm      | glm-5.1             | glm-5.1              | glm-5.1              | glm-5.1             | glm-5.1             | -           |
+| kimi     | kimi-k2.6           | kimi-k2.6            | kimi-k2.6            | kimi-k2.6           | kimi-k2.6           | -           |
+| minimax  | minimax-m3          | minimax-m3           | minimax-m3           | minimax-m3          | minimax-m3          | sonnet,opus |
 
 </details>
 
@@ -237,14 +260,14 @@ cc-helper plan switch -p bailian --profile 1m --1m s,o
 <details>
 <summary>查看 xiaomi 模型配置</summary>
 
-| Profile    | Model            | Haiku              | Sonnet           | Opus             | Reasoning        | Context1M   |
-| ---------- | ---------------- | ------------------ | ---------------- | ---------------- | ---------------- | ----------- |
-| default    | mimo-v2.5-pro    | mimo-v2.5-flash    | mimo-v2.5-pro    | mimo-v2.5-pro    | mimo-v2.5-pro    | sonnet,opus |
-| pro        | mimo-v2.5-pro    | mimo-v2.5-pro      | mimo-v2.5-pro    | mimo-v2.5-pro    | mimo-v2.5-pro    | sonnet,opus |
-| v2.5       | mimo-v2.5        | mimo-v2.5          | mimo-v2.5        | mimo-v2.5        | mimo-v2.5        | -           |
-| v2.5-flash | mimo-v2.5-flash  | mimo-v2.5-flash    | mimo-v2.5-flash  | mimo-v2.5-flash  | mimo-v2.5-flash  | -           |
-| v2         | mimo-v2-pro      | mimo-v2-omni       | mimo-v2-pro      | mimo-v2-pro      | mimo-v2-pro      | sonnet,opus |
-| omni       | mimo-v2.5        | mimo-v2-omni       | mimo-v2.5        | mimo-v2.5        | mimo-v2.5        | -           |
+| Profile    | Model           | Haiku           | Sonnet          | Opus            | Reasoning       | Context1M   |
+| ---------- | --------------- | --------------- | --------------- | --------------- | --------------- | ----------- |
+| default    | mimo-v2.5-pro   | mimo-v2.5-flash | mimo-v2.5-pro   | mimo-v2.5-pro   | mimo-v2.5-pro   | sonnet,opus |
+| pro        | mimo-v2.5-pro   | mimo-v2.5-pro   | mimo-v2.5-pro   | mimo-v2.5-pro   | mimo-v2.5-pro   | sonnet,opus |
+| v2.5       | mimo-v2.5       | mimo-v2.5       | mimo-v2.5       | mimo-v2.5       | mimo-v2.5       | -           |
+| v2.5-flash | mimo-v2.5-flash | mimo-v2.5-flash | mimo-v2.5-flash | mimo-v2.5-flash | mimo-v2.5-flash | -           |
+| v2         | mimo-v2-pro     | mimo-v2-omni    | mimo-v2-pro     | mimo-v2-pro     | mimo-v2-pro     | sonnet,opus |
+| omni       | mimo-v2.5       | mimo-v2-omni    | mimo-v2.5       | mimo-v2.5       | mimo-v2.5       | -           |
 
 </details>
 
@@ -253,11 +276,11 @@ cc-helper plan switch -p bailian --profile 1m --1m s,o
 <details>
 <summary>查看 deepseek 模型配置</summary>
 
-| Profile | Model           | Haiku             | Sonnet            | Opus             | Reasoning        |
-| ------- | --------------- | ----------------- | ----------------- | ---------------- | ---------------- |
-| default | deepseek-v4-pro | deepseek-v4-flash | deepseek-v4-pro   | deepseek-v4-pro  | deepseek-v4-pro  |
+| Profile | Model             | Haiku             | Sonnet            | Opus              | Reasoning         |
+| ------- | ----------------- | ----------------- | ----------------- | ----------------- | ----------------- |
+| default | deepseek-v4-pro   | deepseek-v4-flash | deepseek-v4-pro   | deepseek-v4-pro   | deepseek-v4-pro   |
 | flash   | deepseek-v4-flash | deepseek-v4-flash | deepseek-v4-flash | deepseek-v4-flash | deepseek-v4-flash |
-| pro     | deepseek-v4-pro | deepseek-v4-pro   | deepseek-v4-pro   | deepseek-v4-pro  | deepseek-v4-pro  |
+| pro     | deepseek-v4-pro   | deepseek-v4-pro   | deepseek-v4-pro   | deepseek-v4-pro   | deepseek-v4-pro   |
 
 </details>
 
@@ -298,17 +321,17 @@ eval "$(cc-helper config claude -p bailian --proxy --profile 1m)"               
 
 **参数说明：**
 
-| 参数 | 说明 |
-|------|------|
-| `-p, --provider` | 供应商 ID（bailian, minimaxi, glm, zai, ark, xiaomi） |
-| `--profile` | 模型 profile（如 5.1, default, kimi） |
-| `--name` | key 名称 |
-| `--api` | 使用 API key 模式 |
-| `--1m` | 1M context 标签 |
-| `--proxy` | 使用代理模式（localhost:12315） |
-| `--port` | 自定义代理端口（默认：12315，范围：1-65535） |
-| `--permission-mode` | 权限模式（bypass, auto, acceptEdits, plan） |
-| `--json` | JSON 格式输出 |
+| 参数                | 说明                                                  |
+| ------------------- | ----------------------------------------------------- |
+| `-p, --provider`    | 供应商 ID（bailian, minimaxi, glm, zai, ark, xiaomi） |
+| `--profile`         | 模型 profile（如 5.1, default, kimi）                 |
+| `--name`            | key 名称                                              |
+| `--api`             | 使用 API key 模式                                     |
+| `--1m`              | 1M context 标签                                       |
+| `--proxy`           | 使用代理模式（localhost:12315）                       |
+| `--port`            | 自定义代理端口（默认：12315，范围：1-65535）          |
+| `--permission-mode` | 权限模式（bypass, auto, acceptEdits, plan）           |
+| `--json`            | JSON 格式输出                                         |
 
 ### vault — 安全密钥存储
 
@@ -468,6 +491,7 @@ cancel the deploy check job       # 按描述或 ID 取消
 
 | 模型                 | 最大思维链长度 | 上下文长度 |
 | -------------------- | -------------: | ---------: |
+| qwen3.7-plus         |        262,144 |  1,000,000 |
 | qwen3.6-plus         |         81,920 |  1,000,000 |
 | qwen3.5-plus         |         81,920 |  1,000,000 |
 | qwen3-coder-plus     |         不支持 |  1,000,000 |
