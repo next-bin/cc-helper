@@ -23,9 +23,11 @@ English | [简体中文](README-zh.md)
 | ----------- | --------- |
 | Node.js     | >= 14.0.0 |
 | Claude Code | v2.1.71+  |
+| Codex       | 0.80.0+   |
 
 ```bash
-npm install -g @anthropic-ai/claude-code@v2.1.126
+npm install -g @anthropic-ai/claude-code@v2.1.112
+npm install -g @openai/codex@latest
 ```
 
 ## Installation
@@ -143,11 +145,11 @@ Use `--1m` flag to add `[1m]` context tag to model fields, indicating models wit
 
 > **Note**: `[1m]` tag requires Claude Code v2.1.118 or later.
 
-| Flag | Behavior |
-|------|----------|
-| No `--1m` | No `[1m]` tags added |
-| `--1m d` | Use `Context1M` from profile config |
-| `--1m o` | Override config, tag only opus |
+| Flag       | Behavior                             |
+| ---------- | ------------------------------------ |
+| No `--1m`  | No `[1m]` tags added                 |
+| `--1m d`   | Use `Context1M` from profile config  |
+| `--1m o`   | Override config, tag only opus       |
 | `--1m s,o` | Override config, tag sonnet and opus |
 
 Shorthand: `m=model, h=haiku, s=sonnet, o=opus, r=reasoning`, `d=default (use config)`
@@ -165,15 +167,16 @@ cc-helper plan switch -p bailian --profile 1m --1m s,o
 
 **Supported Providers:**
 
-| Provider   | Description           |
-| ---------- | --------------------- |
-| `bailian`  | (CN) Aliyun           |
-| `minimaxi` | (CN) MiniMax          |
-| `ark`      | (CN) Ark (Volcengine) |
-| `xiaomi`   | (CN) Xiaomi MiMo      |
-| `deepseek` | DeepSeek              |
-| ~~`glm`~~  | ~~(CN) Zhipu~~        |
-| ~~`zai`~~  | ~~(EN) Zhipu~~        |
+| Provider    | Description          |
+| ----------- | -------------------- |
+| `bailian`   | (CN) Aliyun          |
+| `minimaxi`  | (CN) MiniMax         |
+| `ark`       | (CN) Ark Coding Plan |
+| `ark-agent` | (CN) Ark Agent Plan  |
+| `xiaomi`    | (CN) Xiaomi MiMo     |
+| `deepseek`  | DeepSeek             |
+| ~~`glm`~~   | ~~(CN) Zhipu~~       |
+| ~~`zai`~~   | ~~(EN) Zhipu~~       |
 
 **Model Profiles:**
 
@@ -195,9 +198,12 @@ Each provider supports multiple model profiles. A profile defines mappings for a
 | Profile | Model        | Haiku        | Sonnet       | Opus         | Reasoning    | Context1M   |
 | ------- | ------------ | ------------ | ------------ | ------------ | ------------ | ----------- |
 | default | glm-5        | glm-4.7      | glm-5        | glm-5        | glm-5        | -           |
-| 5       | glm-5        | glm-5        | glm-5        | qwen3.6-plus | glm-5        | opus        |
-| 1m      | glm-5        | glm-4.7      | qwen3.5-plus | qwen3.5-plus | glm-5        | sonnet,opus |
+| 5       | glm-5        | glm-5        | glm-5        | qwen3.7-plus | glm-5        | opus        |
+| 1m      | glm-5        | glm-5        | qwen3.7-plus | qwen3.7-plus | glm-5        | sonnet,opus |
 | 3.6     | qwen3.6-plus | qwen3.6-plus | qwen3.6-plus | qwen3.6-plus | qwen3.6-plus | sonnet,opus |
+| 3.7     | qwen3.7-plus | qwen3.7-plus | qwen3.7-plus | qwen3.7-plus | qwen3.7-plus | sonnet,opus |
+| qwen    | qwen3.7-plus | qwen3.7-plus | qwen3.7-plus | qwen3.7-plus | qwen3.7-plus | sonnet,opus |
+| glm     | glm-5        | glm-5        | glm-5        | glm-5        | glm-5        | -           |
 | kimi    | kimi-k2.5    | kimi-k2.5    | kimi-k2.5    | kimi-k2.5    | kimi-k2.5    | -           |
 | minimax | MiniMax-M2.5 | MiniMax-M2.5 | MiniMax-M2.5 | MiniMax-M2.5 | MiniMax-M2.5 | -           |
 
@@ -208,9 +214,11 @@ Each provider supports multiple model profiles. A profile defines mappings for a
 <details>
 <summary>View minimaxi model profiles</summary>
 
-| Profile | Model        | Haiku        | Sonnet       | Opus         | Reasoning    |
-| ------- | ------------ | ------------ | ------------ | ------------ | ------------ |
-| default | MiniMax-M2.7 | MiniMax-M2.7 | MiniMax-M2.7 | MiniMax-M2.7 | MiniMax-M2.7 |
+| Profile | Model        | Haiku                  | Sonnet       | Opus         | Reasoning    | Context1M   |
+| ------- | ------------ | ---------------------- | ------------ | ------------ | ------------ | ----------- |
+| default | MiniMax-M3   | MiniMax-M2.7-highspeed | MiniMax-M3   | MiniMax-M3   | MiniMax-M3   | sonnet,opus |
+| 2.7     | MiniMax-M2.7 | MiniMax-M2.7-highspeed | MiniMax-M2.7 | MiniMax-M2.7 | MiniMax-M2.7 | -           |
+| 3       | MiniMax-M3   | MiniMax-M3             | MiniMax-M3   | MiniMax-M3   | MiniMax-M3   | sonnet,opus |
 
 </details>
 
@@ -219,16 +227,31 @@ Each provider supports multiple model profiles. A profile defines mappings for a
 <details>
 <summary>View ark model profiles</summary>
 
-| Profile  | Model            | Haiku                | Sonnet           | Opus                | Reasoning        |
-| -------- | ---------------- | -------------------- | ---------------- | ------------------- | ---------------- |
-| default  | kimi-k2.6            | kimi-k2.6            | kimi-k2.6            | kimi-k2.6           | kimi-k2.6        |
-| kimi     | kimi-k2.6            | kimi-k2.6            | kimi-k2.6            | kimi-k2.6           | kimi-k2.6        |
-| doubao   | doubao-seed-2.0-pro | doubao-seed-2.0-lite | doubao-seed-2.0-code | doubao-seed-2.0-pro | doubao-seed-2.0-pro |
-| minimax  | minimax-m2.7     | minimax-m2.7         | minimax-m2.7     | minimax-m2.7        | minimax-m2.7     |
-| glm      | glm-5.1          | glm-5.1              | glm-5.1          | glm-5.1             | glm-5.1          |
-| deepseek | deepseek-v4-pro  | deepseek-v4-flash    | deepseek-v4-pro  | deepseek-v4-pro     | deepseek-v4-pro  |
-| deepseek-v3 | deepseek-v3.2 | deepseek-v3.2       | deepseek-v3.2    | deepseek-v3.2       | deepseek-v3.2    |
-| auto     | glm-5.1          | ark-code-latest      | minimax-m2.7     | glm-5.1             | kimi-k2.6        |
+| Profile  | Model               | Haiku                | Sonnet               | Opus                | Reasoning           | Context1M   |
+| -------- | ------------------- | -------------------- | -------------------- | ------------------- | ------------------- | ----------- |
+| default  | kimi-k2.6           | kimi-k2.6            | kimi-k2.6            | kimi-k2.6           | kimi-k2.6           | -           |
+| kimi     | kimi-k2.6           | kimi-k2.6            | kimi-k2.6            | kimi-k2.6           | kimi-k2.6           | -           |
+| doubao   | doubao-seed-2.0-pro | doubao-seed-2.0-lite | doubao-seed-2.0-code | doubao-seed-2.0-pro | doubao-seed-2.0-pro | -           |
+| minimax  | minimax-m3          | minimax-m3           | minimax-m3           | minimax-m3          | minimax-m3          | sonnet,opus |
+| glm      | glm-5.1             | glm-5.1              | glm-5.1              | glm-5.1             | glm-5.1             | -           |
+| deepseek | deepseek-v4-pro     | deepseek-v4-flash    | deepseek-v4-pro      | deepseek-v4-pro     | deepseek-v4-pro     | sonnet,opus |
+| auto     | glm-5.1             | ark-code-latest      | minimax-m3           | glm-5.1             | kimi-k2.6           | -           |
+
+</details>
+
+**ark-agent Profiles:**
+
+<details>
+<summary>View ark-agent model profiles</summary>
+
+| Profile  | Model               | Haiku                | Sonnet               | Opus                | Reasoning           | Context1M   |
+| -------- | ------------------- | -------------------- | -------------------- | ------------------- | ------------------- | ----------- |
+| default  | glm-5.1             | glm-5.1              | glm-5.1              | glm-5.1             | glm-5.1             | -           |
+| deepseek | deepseek-v4-pro     | deepseek-v4-flash    | deepseek-v4-pro      | deepseek-v4-pro     | deepseek-v4-pro     | sonnet,opus |
+| doubao   | doubao-seed-2.0-pro | doubao-seed-2.0-lite | doubao-seed-2.0-code | doubao-seed-2.0-pro | doubao-seed-2.0-pro | -           |
+| glm      | glm-5.1             | glm-5.1              | glm-5.1              | glm-5.1             | glm-5.1             | -           |
+| kimi     | kimi-k2.6           | kimi-k2.6            | kimi-k2.6            | kimi-k2.6           | kimi-k2.6           | -           |
+| minimax  | minimax-m3          | minimax-m3           | minimax-m3           | minimax-m3          | minimax-m3          | sonnet,opus |
 
 </details>
 
@@ -237,14 +260,14 @@ Each provider supports multiple model profiles. A profile defines mappings for a
 <details>
 <summary>View xiaomi model profiles</summary>
 
-| Profile    | Model            | Haiku              | Sonnet           | Opus             | Reasoning        | Context1M   |
-| ---------- | ---------------- | ------------------ | ---------------- | ---------------- | ---------------- | ----------- |
-| default    | mimo-v2.5-pro    | mimo-v2.5-flash    | mimo-v2.5-pro    | mimo-v2.5-pro    | mimo-v2.5-pro    | sonnet,opus |
-| pro        | mimo-v2.5-pro    | mimo-v2.5-pro      | mimo-v2.5-pro    | mimo-v2.5-pro    | mimo-v2.5-pro    | sonnet,opus |
-| v2.5       | mimo-v2.5        | mimo-v2.5          | mimo-v2.5        | mimo-v2.5        | mimo-v2.5        | -           |
-| v2.5-flash | mimo-v2.5-flash  | mimo-v2.5-flash    | mimo-v2.5-flash  | mimo-v2.5-flash  | mimo-v2.5-flash  | -           |
-| v2         | mimo-v2-pro      | mimo-v2-omni       | mimo-v2-pro      | mimo-v2-pro      | mimo-v2-pro      | sonnet,opus |
-| omni       | mimo-v2.5        | mimo-v2-omni       | mimo-v2.5        | mimo-v2.5        | mimo-v2.5        | -           |
+| Profile    | Model           | Haiku           | Sonnet          | Opus            | Reasoning       | Context1M   |
+| ---------- | --------------- | --------------- | --------------- | --------------- | --------------- | ----------- |
+| default    | mimo-v2.5-pro   | mimo-v2.5-flash | mimo-v2.5-pro   | mimo-v2.5-pro   | mimo-v2.5-pro   | sonnet,opus |
+| pro        | mimo-v2.5-pro   | mimo-v2.5-pro   | mimo-v2.5-pro   | mimo-v2.5-pro   | mimo-v2.5-pro   | sonnet,opus |
+| v2.5       | mimo-v2.5       | mimo-v2.5       | mimo-v2.5       | mimo-v2.5       | mimo-v2.5       | -           |
+| v2.5-flash | mimo-v2.5-flash | mimo-v2.5-flash | mimo-v2.5-flash | mimo-v2.5-flash | mimo-v2.5-flash | -           |
+| v2         | mimo-v2-pro     | mimo-v2-omni    | mimo-v2-pro     | mimo-v2-pro     | mimo-v2-pro     | sonnet,opus |
+| omni       | mimo-v2.5       | mimo-v2-omni    | mimo-v2.5       | mimo-v2.5       | mimo-v2.5       | -           |
 
 </details>
 
@@ -253,11 +276,11 @@ Each provider supports multiple model profiles. A profile defines mappings for a
 <details>
 <summary>View deepseek model profiles</summary>
 
-| Profile | Model           | Haiku             | Sonnet            | Opus             | Reasoning        |
-| ------- | --------------- | ----------------- | ----------------- | ---------------- | ---------------- |
-| default | deepseek-v4-pro | deepseek-v4-flash | deepseek-v4-pro   | deepseek-v4-pro  | deepseek-v4-pro  |
+| Profile | Model             | Haiku             | Sonnet            | Opus              | Reasoning         |
+| ------- | ----------------- | ----------------- | ----------------- | ----------------- | ----------------- |
+| default | deepseek-v4-pro   | deepseek-v4-flash | deepseek-v4-pro   | deepseek-v4-pro   | deepseek-v4-pro   |
 | flash   | deepseek-v4-flash | deepseek-v4-flash | deepseek-v4-flash | deepseek-v4-flash | deepseek-v4-flash |
-| pro     | deepseek-v4-pro | deepseek-v4-pro   | deepseek-v4-pro   | deepseek-v4-pro  | deepseek-v4-pro  |
+| pro     | deepseek-v4-pro   | deepseek-v4-pro   | deepseek-v4-pro   | deepseek-v4-pro   | deepseek-v4-pro   |
 
 </details>
 
@@ -298,17 +321,17 @@ eval "$(cc-helper config claude -p bailian --proxy --profile 1m)"               
 
 **Parameters:**
 
-| Parameter | Description |
-|-----------|-------------|
-| `-p, --provider` | Provider ID (bailian, minimaxi, glm, zai, ark, xiaomi) |
-| `--profile` | Model profile (e.g., 5.1, default, kimi) |
-| `--name` | Key name |
-| `--api` | Use API key mode |
-| `--1m` | 1M context tag |
-| `--proxy` | Use proxy mode (localhost:12315) |
-| `--port` | Custom proxy port (default: 12315, range: 1-65535) |
-| `--permission-mode` | Permission mode (bypass, auto, acceptEdits, plan) |
-| `--json` | JSON format output |
+| Parameter           | Description                                            |
+| ------------------- | ------------------------------------------------------ |
+| `-p, --provider`    | Provider ID (bailian, minimaxi, glm, zai, ark, xiaomi) |
+| `--profile`         | Model profile (e.g., 5.1, default, kimi)               |
+| `--name`            | Key name                                               |
+| `--api`             | Use API key mode                                       |
+| `--1m`              | 1M context tag                                         |
+| `--proxy`           | Use proxy mode (localhost:12315)                       |
+| `--port`            | Custom proxy port (default: 12315, range: 1-65535)     |
+| `--permission-mode` | Permission mode (bypass, auto, acceptEdits, plan)      |
+| `--json`            | JSON format output                                     |
 
 ### vault — Secure API Key Storage
 
@@ -468,6 +491,7 @@ Enable 1M token context window for Claude Opus models.
 
 | Model                | Max Thinking Tokens | Context Length |
 | -------------------- | ------------------: | -------------: |
+| qwen3.7-plus         |             262,144 |      1,000,000 |
 | qwen3.6-plus         |              81,920 |      1,000,000 |
 | qwen3.5-plus         |              81,920 |      1,000,000 |
 | qwen3-coder-plus     |       Not supported |      1,000,000 |
