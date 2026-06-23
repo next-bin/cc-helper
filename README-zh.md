@@ -2,7 +2,7 @@
 
 # CC-Helper
 
-### Claude Code & Codex 的全能助手与AI供应商管理工具
+### Claude Code & Codex 的全能助手与 Provider 管理工具
 
 [![npm version](https://img.shields.io/npm/v/@unitsvc/cc-helper.svg?color=blue&label=version)](https://www.npmjs.com/package/@unitsvc/cc-helper)
 [![npm downloads](https://img.shields.io/npm/dt/@unitsvc/cc-helper.svg?color=green&label=downloads)](https://www.npmjs.com/package/@unitsvc/cc-helper)
@@ -13,22 +13,30 @@
 
 </div>
 
-> **⚠️ 声明：智谱（glm/zai）公司及其关联产品禁止使用本软件。**
+多 Provider 管理、MCP 服务器、通道集成和 AI Provider 代理工具包，适用于 Claude Code 和 Codex CLI。
+
+> [!TIP]
+> **核心特性**
+>
+> - 一键配置 `cc-helper claude setup`
+> - 多 Provider 支持，vault 加密存储 API 密钥
+> - 内置 MCP 服务器（微信、MiniMax、小米 TTS）
+> - AI Provider 代理，支持请求日志和分析
+> - 环境隔离和 Git 配置同步
+> - 零运行时依赖
 
 ---
 
-## 环境要求
-
-| 项目        | 版本      |
-| ----------- | --------- |
-| Node.js     | >= 14.0.0 |
-| Claude Code | v2.1.71+  |
-| Codex       | 0.80.0+   |
-
-```bash
-npm install -g @anthropic-ai/claude-code@v2.1.112
-npm install -g @openai/codex@latest
-```
+- [安装](#安装)
+- [快速开始](#快速开始)
+- [通道与 MCP](#通道与-mcp)
+- [Agentic](#agentic)
+- [知识库](#知识库)
+- [常用命令](#常用命令)
+- [文档](#文档)
+- [许可证](#许可证)
+- [安全](#安全)
+- [声明](#声明)
 
 ## 安装
 
@@ -36,134 +44,45 @@ npm install -g @openai/codex@latest
 npm install -g @unitsvc/cc-helper@latest
 ```
 
-## 更新
+> [!NOTE]
+> 需要 Node.js >= 14.0.0，Claude Code v2.1.71+ 或 Codex 0.80.0+
+
+### 更新与代理
 
 ```bash
-npm install -g @unitsvc/cc-helper@latest
-# 或
+# 更新到最新版本
 cc-helper update
-```
 
-### 代理支持
-
-如果下载失败，使用 `--dl-proxy` 参数：
-
-```bash
-# 使用默认代理
+# 启用下载代理（如果 npm install 失败）
 cc-helper --dl-proxy enable
 
 # 使用自定义代理
 cc-helper --dl-proxy https://your-proxy.com enable
 ```
 
-> **注意**：`--proxy` 仍为向后兼容而支持，但已废弃。请使用 `--dl-proxy`。
-
----
-
 ## 快速开始
 
 ```bash
-# 启用默认功能（/loop, /btw, /keybindings）
-cc-helper enable
+# 1. 配置 Claude Code
+cc-helper claude setup
 
-# 启用特定功能
-cc-helper enable loop        # 定时重复提示
-cc-helper enable btw         # 旁支问题
-cc-helper enable keybindings # 自定义键盘快捷键
-cc-helper enable toolsearch  # 动态工具搜索
-cc-helper enable context1m   # 1M 上下文（v2.1.76+）
-cc-helper enable automode    # 所有模型的自动模式（v2.1.75+）
-cc-helper enable monitor     # 流式事件监控（v2.1.100+）
-
-# 查看状态
-cc-helper status
-
-# 禁用所有功能
-cc-helper disable
-```
-
-> **注意**: 运行 `cc-helper enable` 时会自动在 `~/.claude/settings.json` 中配置推荐的环境变量：
->
-> <details>
-> <summary>查看环境变量</summary>
->
-> ```json
-> {
->   "env": {
->     "DISABLE_INSTALLATION_CHECKS": "1",
->     "DISABLE_AUTOUPDATER": "1",
->     "DISABLE_BUG_COMMAND": "1",
->     "DISABLE_ERROR_REPORTING": "1",
->     "DISABLE_TELEMETRY": "1",
->     "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
->     "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1",
->     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
->     "CLAUDE_CODE_HIDE_ACCOUNT_INFO": "1",
->     "CLAUDE_CODE_NEW_INIT": "1",
->     "CLAUDE_CODE_ATTRIBUTION_HEADER": "0",
->     "API_TIMEOUT_MS": "3000000"
->   }
-> }
-> ```
->
-> </details>
-
----
-
-## 配置命令
-
-管理 Claude Code 的 AI Provider 设置、API 密钥、多环境配置以及配置同步。
-
-### plan — 编码计划配置
-
-配置编码计划的第三方 AI Provider，支持 vault 加密存储 API 密钥，并可自定义模型配置以适应不同编码场景。
-
-```bash
-# 添加 Provider（自动保存到 vault + settings.json）
+# 2. 配置 Provider
 cc-helper plan add -p bailian -k YOUR_API_KEY
-cc-helper plan add -p minimaxi -k YOUR_API_KEY --mcp
-
-# 切换 Provider
 cc-helper plan switch -p bailian
 
-# 切换模型配置（当前 Provider）
-cc-helper plan switch --profile 1m
+# 3. 检查状态
+cc-helper claude status
 
-# 切换 Provider 并指定配置
-cc-helper plan switch -p bailian -k YOUR_KEY --profile 1m
+# 4. 配置 Codex（可选）
+cc-helper codex setup
 
-# 列出 Provider
-cc-helper plan list
-
-# 导出配置
-cc-helper plan export --all-env -o config.json
+# 5. 备份配置到 Git（可选）
+cc-helper sync login -r https://github.com/user/repo -t ghp_xxx
+cc-helper sync export
 ```
 
-**1M 上下文标签：**
-
-使用 `--1m` 参数为模型字段添加 `[1m]` 上下文标签，表示支持 1M token 上下文窗口的模型。
-
-> **注意**: `[1m]` 标签需要 Claude Code v2.1.118 或更高版本。
-
-| 参数       | 行为                          |
-| ---------- | ----------------------------- |
-| 无 `--1m`  | 不添加 `[1m]` 标签            |
-| `--1m d`   | 使用配置中的 `Context1M` 字段 |
-| `--1m o`   | 覆盖配置，仅标记 opus         |
-| `--1m s,o` | 覆盖配置，标记 sonnet 和 opus |
-
-简写：`m=model, h=haiku, s=sonnet, o=opus, r=reasoning`，`d=default（使用配置）`
-
-```bash
-# 示例：切换到 1m 配置并使用默认 1M 字段
-cc-helper plan switch --profile 1m --1m d
-
-# 示例：切换到 3.6 配置，仅标记 opus
-cc-helper plan switch --profile 3.6 --1m o
-
-# 示例：切换 Provider 并标记 sonnet 和 opus
-cc-helper plan switch -p bailian --profile 1m --1m s,o
-```
+> [!NOTE]
+> 你也可以使用 `cc-helper claude patch` 启用额外的隐藏功能，如 `/loop`、`/btw`、`/keybindings` 等。
 
 **支持的 Provider：**
 
@@ -175,438 +94,123 @@ cc-helper plan switch -p bailian --profile 1m --1m s,o
 | `ark-agent` | (CN) Ark Agent Plan  |
 | `xiaomi`    | (CN) Xiaomi MiMo     |
 | `deepseek`  | DeepSeek             |
-| ~~`glm`~~   | ~~(CN) Zhipu~~       |
-| ~~`zai`~~   | ~~(EN) Zhipu~~       |
 
-**模型配置（Model Profiles）：**
+> [!TIP]
+> 每个 Provider 支持多个模型配置。使用 `cc-helper plan list` 查看可用配置。
 
-每个 Provider 支持多个模型配置。一个配置定义了所有模型层级的映射：
+详细 Provider 配置，请查看 [Provider 指南](docs/references/providers.md)。
 
-| 字段      | 说明                                        |
-| --------- | ------------------------------------------- |
-| Model     | 默认模型 (`ANTHROPIC_MODEL`)                |
-| Haiku     | 快速模型 (`ANTHROPIC_DEFAULT_HAIKU_MODEL`)  |
-| Sonnet    | 均衡模型 (`ANTHROPIC_DEFAULT_SONNET_MODEL`) |
-| Opus      | 强力模型 (`ANTHROPIC_DEFAULT_OPUS_MODEL`)   |
-| Reasoning | 扩展思维 (`ANTHROPIC_REASONING_MODEL`)      |
+## 通道与 MCP
 
-**bailian 配置：**
-
-<details>
-<summary>查看 bailian 模型配置</summary>
-
-| Profile | Model        | Haiku        | Sonnet       | Opus         | Reasoning    | Context1M   |
-| ------- | ------------ | ------------ | ------------ | ------------ | ------------ | ----------- |
-| default | glm-5        | glm-4.7      | glm-5        | glm-5        | glm-5        | -           |
-| 5       | glm-5        | glm-5        | glm-5        | qwen3.7-plus | glm-5        | opus        |
-| 1m      | glm-5        | glm-5        | qwen3.7-plus | qwen3.7-plus | glm-5        | sonnet,opus |
-| 3.6     | qwen3.6-plus | qwen3.6-plus | qwen3.6-plus | qwen3.6-plus | qwen3.6-plus | sonnet,opus |
-| 3.7     | qwen3.7-plus | qwen3.7-plus | qwen3.7-plus | qwen3.7-plus | qwen3.7-plus | sonnet,opus |
-| qwen    | qwen3.7-plus | qwen3.7-plus | qwen3.7-plus | qwen3.7-plus | qwen3.7-plus | sonnet,opus |
-| glm     | glm-5        | glm-5        | glm-5        | glm-5        | glm-5        | -           |
-| kimi    | kimi-k2.5    | kimi-k2.5    | kimi-k2.5    | kimi-k2.5    | kimi-k2.5    | -           |
-| minimax | MiniMax-M2.5 | MiniMax-M2.5 | MiniMax-M2.5 | MiniMax-M2.5 | MiniMax-M2.5 | -           |
-
-</details>
-
-**minimaxi 配置：**
-
-<details>
-<summary>查看 minimaxi 模型配置</summary>
-
-| Profile | Model        | Haiku                  | Sonnet       | Opus         | Reasoning    | Context1M   |
-| ------- | ------------ | ---------------------- | ------------ | ------------ | ------------ | ----------- |
-| default | MiniMax-M3   | MiniMax-M2.7-highspeed | MiniMax-M3   | MiniMax-M3   | MiniMax-M3   | sonnet,opus |
-| 2.7     | MiniMax-M2.7 | MiniMax-M2.7-highspeed | MiniMax-M2.7 | MiniMax-M2.7 | MiniMax-M2.7 | -           |
-| 3       | MiniMax-M3   | MiniMax-M3             | MiniMax-M3   | MiniMax-M3   | MiniMax-M3   | sonnet,opus |
-
-</details>
-
-**ark 配置：**
-
-<details>
-<summary>查看 ark 模型配置</summary>
-
-| Profile  | Model               | Haiku                | Sonnet               | Opus                | Reasoning           | Context1M   |
-| -------- | ------------------- | -------------------- | -------------------- | ------------------- | ------------------- | ----------- |
-| default  | kimi-k2.6           | kimi-k2.6            | kimi-k2.6            | kimi-k2.6           | kimi-k2.6           | -           |
-| kimi     | kimi-k2.6           | kimi-k2.6            | kimi-k2.6            | kimi-k2.6           | kimi-k2.6           | -           |
-| doubao   | doubao-seed-2.0-pro | doubao-seed-2.0-lite | doubao-seed-2.0-code | doubao-seed-2.0-pro | doubao-seed-2.0-pro | -           |
-| minimax  | minimax-m3          | minimax-m3           | minimax-m3           | minimax-m3          | minimax-m3          | sonnet,opus |
-| glm      | glm-5.2             | glm-5.2              | glm-5.2              | glm-5.2             | glm-5.2             | sonnet,opus |
-| deepseek | deepseek-v4-pro     | deepseek-v4-flash    | deepseek-v4-pro      | deepseek-v4-pro     | deepseek-v4-pro     | sonnet,opus |
-| auto     | glm-5.2             | ark-code-latest      | deepseek-v4-pro      | glm-5.2             | kimi-k2.7-code      | -           |
-
-</details>
-
-**ark-agent 配置：**
-
-<details>
-<summary>查看 ark-agent 模型配置</summary>
-
-| Profile  | Model               | Haiku                | Sonnet               | Opus                | Reasoning           | Context1M   |
-| -------- | ------------------- | -------------------- | -------------------- | ------------------- | ------------------- | ----------- |
-| default  | glm-5.2             | glm-5.2              | glm-5.2              | glm-5.2             | glm-5.2             | -           |
-| deepseek | deepseek-v4-pro     | deepseek-v4-flash    | deepseek-v4-pro      | deepseek-v4-pro     | deepseek-v4-pro     | sonnet,opus |
-| doubao   | doubao-seed-2.0-pro | doubao-seed-2.0-lite | doubao-seed-2.0-code | doubao-seed-2.0-pro | doubao-seed-2.0-pro | -           |
-| glm      | glm-5.2             | glm-5.2              | glm-5.2              | glm-5.2             | glm-5.2             | sonnet,opus |
-| kimi     | kimi-k2.6           | kimi-k2.6            | kimi-k2.6            | kimi-k2.6           | kimi-k2.6           | -           |
-| minimax  | minimax-m3          | minimax-m3           | minimax-m3           | minimax-m3          | minimax-m3          | sonnet,opus |
-
-</details>
-
-**xiaomi 配置：**
-
-<details>
-<summary>查看 xiaomi 模型配置</summary>
-
-| Profile    | Model           | Haiku           | Sonnet          | Opus            | Reasoning       | Context1M   |
-| ---------- | --------------- | --------------- | --------------- | --------------- | --------------- | ----------- |
-| default    | mimo-v2.5-pro   | mimo-v2.5-flash | mimo-v2.5-pro   | mimo-v2.5-pro   | mimo-v2.5-pro   | sonnet,opus |
-| pro        | mimo-v2.5-pro   | mimo-v2.5-pro   | mimo-v2.5-pro   | mimo-v2.5-pro   | mimo-v2.5-pro   | sonnet,opus |
-| v2.5       | mimo-v2.5       | mimo-v2.5       | mimo-v2.5       | mimo-v2.5       | mimo-v2.5       | -           |
-| v2.5-flash | mimo-v2.5-flash | mimo-v2.5-flash | mimo-v2.5-flash | mimo-v2.5-flash | mimo-v2.5-flash | -           |
-| v2         | mimo-v2-pro     | mimo-v2-omni    | mimo-v2-pro     | mimo-v2-pro     | mimo-v2-pro     | sonnet,opus |
-| omni       | mimo-v2.5       | mimo-v2-omni    | mimo-v2.5       | mimo-v2.5       | mimo-v2.5       | -           |
-
-</details>
-
-**deepseek 配置：**
-
-<details>
-<summary>查看 deepseek 模型配置</summary>
-
-| Profile | Model             | Haiku             | Sonnet            | Opus              | Reasoning         |
-| ------- | ----------------- | ----------------- | ----------------- | ----------------- | ----------------- |
-| default | deepseek-v4-pro   | deepseek-v4-flash | deepseek-v4-pro   | deepseek-v4-pro   | deepseek-v4-pro   |
-| flash   | deepseek-v4-flash | deepseek-v4-flash | deepseek-v4-flash | deepseek-v4-flash | deepseek-v4-flash |
-| pro     | deepseek-v4-pro   | deepseek-v4-pro   | deepseek-v4-pro   | deepseek-v4-pro   | deepseek-v4-pro   |
-
-</details>
-
-**~~glm / zai 配置~~（禁止使用）**
-
-<details>
-<summary>查看 glm/zai 模型配置（已废弃）</summary>
-
-| Profile | Model        | Haiku        | Sonnet  | Opus    | Reasoning |
-| ------- | ------------ | ------------ | ------- | ------- | --------- |
-| default | glm-5.1      | qwen3.7-plus | glm-5.1 | glm-5.1 | glm-5.1   |
-| 5       | glm-5        | glm-5-turbo  | glm-5   | glm-5   | glm-5     |
-| 5.1     | glm-5.1      | qwen3.7-plus | glm-5.1 | glm-5.1 | glm-5.1   |
-| 5v      | glm-5v-turbo | qwen3.7-plus | glm-5.1 | glm-5.1 | glm-5.1   |
-
-</details>
+### 内置 MCP 服务器
 
 ```bash
-# 示例：在 bailian 上使用 1M 上下文
-cc-helper plan add -p bailian -k YOUR_KEY
-cc-helper plan switch --profile 1m
+# 列出可用的 MCP 服务器
+cc-helper mcp list
 
-# 示例：配置 Ark 使用 auto 配置
-cc-helper plan add -p ark -k YOUR_KEY
-cc-helper plan switch --profile auto
+# 安装 MCP 服务器
+cc-helper mcp install weixin     # 微信通道
+cc-helper mcp install minimaxi   # MiniMax AI
+cc-helper mcp install xiaomi     # 小米 TTS
 ```
 
-### 多窗口配置
+### 微信通道
 
-使用 `config claude` 生成临时配置，支持多个终端窗口同时使用不同的供应商/模型：
+通过微信消息访问 Claude Code。
 
 ```bash
-eval "$(cc-helper config claude -p bailian)"                                        # 窗口 1：bailian
-eval "$(cc-helper config claude -p minimaxi)"                                       # 窗口 2：minimaxi
-eval "$(cc-helper config claude -p glm --profile 5.1 --permission-mode auto)"       # 窗口 3：glm + auto 权限
-eval "$(cc-helper config claude -p bailian --proxy --profile 1m)"                   # 窗口 4：bailian 通过代理
+# 安装微信 MCP
+cc-helper mcp install weixin
+
+# 登录（扫描二维码）
+cc-helper weixin login
 ```
 
-**参数说明：**
+### AI Provider 代理
 
-| 参数                | 说明                                                  |
-| ------------------- | ----------------------------------------------------- |
-| `-p, --provider`    | 供应商 ID（bailian, minimaxi, glm, zai, ark, xiaomi） |
-| `--profile`         | 模型 profile（如 5.1, default, kimi）                 |
-| `--name`            | key 名称                                              |
-| `--api`             | 使用 API key 模式                                     |
-| `--1m`              | 1M context 标签                                       |
-| `--proxy`           | 使用代理模式（localhost:12315）                       |
-| `--port`            | 自定义代理端口（默认：12315，范围：1-65535）          |
-| `--permission-mode` | 权限模式（bypass, auto, acceptEdits, plan）           |
-| `--json`            | JSON 格式输出                                         |
-
-### vault — 安全密钥存储
-
-使用本地加密方式安全存储和读取 Provider 的 API 密钥。
+网关服务器，支持请求日志、分析和密钥管理。
 
 ```bash
-cc-helper vault list                              # 列出密钥
-cc-helper vault set bailian default -k "KEY"      # 设置
-cc-helper vault get bailian default               # 获取并解密
-cc-helper vault delete bailian default            # 删除
+# 添加代理服务
+cc-helper svc add proxy
+
+# 查看端点
+cc-helper proxy endpoints
+
+# 查询代理统计
+cc-helper proxy stats
 ```
 
-### env — 多环境管理
+## Agentic
 
-创建并切换相互隔离的配置环境。
+查询 Provider 用量数据和访问 AI 服务。
 
 ```bash
-cc-helper env list                     # 列出环境
-cc-helper env create work              # 创建
-cc-helper env switch work              # 切换
+# Ark 用量查询
+cc-helper ark query
+
+# MiniMax 用量查询
+cc-helper minimaxi query
+
+# DeepSeek 用量查询
+cc-helper deepseek query
+
+# 小米 TTS
+cc-helper xiaomi tts "你好世界"
+
+# Ark 图片生成
+cc-helper ark image "美丽的日落"
+
+# Ark 视频生成
+cc-helper ark video "玩耍的猫"
 ```
 
-### sync — Git 配置同步
+## 知识库
 
-将 Claude Code 配置备份和恢复到 Git 仓库，全程加密保护。
+AI 代理的持久化存储后端。基于 SQLite 的知识库，支持 GraphQL 查询和向量相似度搜索。
 
 ```bash
-# 登录 GitHub
-cc-helper sync login -r https://github.com/user/repo -t ghp_xxx
+# 启动知识库 MCP 服务器
+cc-helper sqlite3 mcp
 
-# 导出
+# 执行 GraphQL 查询
+cc-helper sqlite3 query "{ documents { id title } }"
+
+# 显示 schema
+cc-helper sqlite3 schema
+```
+
+## 常用命令
+
+```bash
+# Claude Code 管理
+cc-helper claude check                    # 验证配置
+cc-helper claude status                   # 检查功能状态
+cc-helper claude vscode                   # 配置 VS Code
+
+# Provider 管理
+cc-helper plan list                       # 列出 Provider
+cc-helper plan verify -p ark -k KEY       # 验证凭证
+
+# Vault - 安全密钥存储
+cc-helper vault set bailian default -k "KEY"
+cc-helper vault get bailian default
+
+# Environment - 隔离配置
+cc-helper env create work
+cc-helper env switch work
+
+# Sync - Git 配置备份
 cc-helper sync export
-cc-helper sync export --file config.json
-cc-helper sync export --workspace test
-
-# 导入
 cc-helper sync import
 ```
 
----
-
-## 功能特点
-
-| 功能          | 说明                                         |
-| ------------- | -------------------------------------------- |
-| 一键启用      | 启用 `/loop`、`/btw`、`/keybindings`         |
-| 工具搜索      | 可选 `/toolsearch` 用于第三方 API 代理       |
-| 1M 上下文     | 可选 `/context1m` 用于 1M 上下文（v2.1.76+） |
-| 自动模式      | 可选 `automode` 用于所有模型（v2.1.75+）     |
-| Monitor       | 可选 `monitor` 用于流式事件监控（v2.1.100+） |
-| Provider 配置 | `plan` 命令支持 vault 加密存储               |
-| 密钥管理      | `vault` 命令安全管理密钥                     |
-| 多环境支持    | `env` 命令环境切换                           |
-| Git 同步      | `sync` 命令配置同步                          |
-| 轻松恢复      | 自动备份和恢复                               |
-| 零依赖        | 无运行时依赖                                 |
-
-### 截图
-
-![/loop 命令提示](./docs/images/loop-1.png)
-![/loop 执行示例](./docs/images/loop-2.png)
-
-## 支持平台
-
-| 平台    | 架构         |
-| ------- | ------------ |
-| macOS   | amd64, arm64 |
-| Linux   | amd64, arm64 |
-| Windows | amd64, arm64 |
-
----
-
-## 核心功能详解
-
-### `/loop` - 定时重复提示
-
-定时重复提示，适用于轮询部署、监控 PR、设置提醒、定时执行工作流。
-
-```
-/loop [间隔时间] <提示内容>
-```
-
-**示例：**
-
-```
-/loop 5m check if the deployment finished
-/loop 30m /review-pr 1234
-/loop remind me to push the release at 3pm
-```
-
-| 形式       | 示例                        | 解析间隔     |
-| ---------- | --------------------------- | ------------ |
-| 前置时间   | `/loop 30m check`           | 每 30 分钟   |
-| 后置 every | `/loop check every 2 hours` | 每 2 小时    |
-| 无间隔     | `/loop check`               | 默认 10 分钟 |
-
-支持单位：`s`（秒）、`m`（分）、`h`（时）、`d`（天）
-
-**核心特性：**
-
-- **会话级别**：任务仅在当前会话中存在，退出即消失
-- **自动过期**：3 天后自动过期
-- **抖动保护**：小偏移量防止 API 惊群效应
-- **低优先级**：在你与 Claude 交互间隙触发
-
-```
-what scheduled tasks do I have?   # 列出所有任务
-cancel the deploy check job       # 按描述或 ID 取消
-```
-
-### `/btw` - 旁支问题
-
-在不打断主对话的情况下提问旁支问题。
-
-```
-/btw <问题>
-```
-
-**示例：**
-
-```
-/btw 这个函数是做什么的？
-/btw 解释一下这里的错误处理
-/btw 为什么这里要用 async/await？
-```
-
-### `/keybindings` - 自定义键盘快捷键
-
-在 `~/.claude/keybindings.json` 中配置：
-
-```json
-{
-  "submit": ["ctrl+s"],
-  "interrupt": ["ctrl+c"],
-  "custom_commands": {
-    "ctrl+shift+l": "/loop 5m check status"
-  }
-}
-```
-
-### `/context1m` - 1M 上下文
-
-为 Claude Opus 模型启用 1M token 上下文窗口。
-
-**要求：**
-
-- Claude Code v2.1.76 或更高版本
-- Claude Opus 4+ 模型
-- 可能需要 Pro 计划或官方 API
-
-![/context1m 启用](./docs/images/1m-1.png)
-
-**扩展思维与上下文长度：**
-
-<details>
-<summary>查看上下文长度表格</summary>
-
-| 模型                 | 最大思维链长度 | 上下文长度 |
-| -------------------- | -------------: | ---------: |
-| qwen3.7-plus         |        262,144 |  1,000,000 |
-| qwen3.6-plus         |         81,920 |  1,000,000 |
-| qwen3.5-plus         |         81,920 |  1,000,000 |
-| qwen3-coder-plus     |         不支持 |  1,000,000 |
-| qwen3-max-2026-01-23 |         81,920 |    262,144 |
-| qwen3-coder-next     |         不支持 |    262,144 |
-| kimi-k2.5            |         81,920 |    262,144 |
-| MiniMax-M2.5         |         32,768 |    204,800 |
-| glm-5                |         32,768 |    202,752 |
-| glm-4.7              |         32,768 |    202,752 |
-
-</details>
-
-### 工具搜索
-
-在运行时动态搜索和加载工具，而非一次性发送所有工具定义。节省 token 并提高性能。
-
-**为什么为第三方 API 启用？** Claude Code 在使用第三方 API 代理时默认禁用工具搜索。此功能为这些代理启用工具搜索。
-
-**优势：**
-
-- **Token 效率**：减少大型 MCP 工具目录的上下文占用
-- **性能提升**：延迟加载，响应更快
-- **代理兼容**：支持 Kimi 和其他提供商
-
-**要求：**
-
-- 代理必须支持 API 响应中的 `tool_reference` 块
-- 仅支持 Claude Sonnet 4+ 和 Opus 4+ 模型（不支持 Haiku）
-
-通过 `ENABLE_TOOL_SEARCH` 环境变量控制：
-
-| 值         | 行为                              |
-| ---------- | --------------------------------- |
-| （未设置） | 默认启用，非第一方主机时禁用      |
-| `true`     | 始终启用                          |
-| `auto`     | MCP 工具超过上下文 10% 时激活     |
-| `auto:<N>` | 自定义阈值（如 `auto:5` 表示 5%） |
-| `false`    | 禁用，所有工具预先加载            |
-
-```bash
-ENABLE_TOOL_SEARCH=auto:5 claude   # 5% 阈值
-ENABLE_TOOL_SEARCH=false claude    # 禁用
-ENABLE_TOOL_SEARCH=true claude     # 始终启用
-```
-
-禁用 MCPSearch 工具：
-
-```json
-{
-  "permissions": {
-    "deny": ["MCPSearch"]
-  }
-}
-```
-
-### 自动模式
-
-为所有模型和 API 类型启用自动模式，绕过模型限制。
-
-**为什么启用？** Claude Code 限制自动模式仅适用于特定模型（Opus/Sonnet 4.6）和官方 API。此功能为所有模型和第三方代理启用自动模式。
-
-**优势：**
-
-- **通用访问**：自动模式适用于任意模型
-- **代理支持**：兼容 Bedrock、Vertex 和第三方 API
-- **无限制**：绕过远程配置控制
-
-**要求：**
-
-- Claude Code v2.1.75 或更高版本
-
-```bash
-cc-helper enable automode
-```
-
-**环境变量：**
-
-| 变量                            | 说明               |
-| ------------------------------- | ------------------ |
-| `CC_HELPER_AUTO_MODE_MODEL`     | 自定义分类器模型   |
-| `ANTHROPIC_DEFAULT_HAIKU_MODEL` | 未指定时的回退模型 |
-
-### Monitor
-
-启用 Monitor 工具用于流式事件监控。
-
-**优势：**
-
-- **流式监控**：实时监控日志、文件变化、API 事件
-- **事件驱动工作流**：事件到达时立即响应
-- **持久监控**：在会话期间运行长期监控任务
-
-**要求：**
-
-- Claude Code v2.1.98 或更高版本
-
-```bash
-cc-helper enable monitor
-```
-
-**示例：**
-
-```bash
-# 监控日志文件中的错误
-tail -f /var/log/app.log | grep --line-buffered "ERROR"
-
-# 监控文件变化
-inotifywait -m --format '%e %f' /watched/dir
-
-# 轮询 GitHub 获取新的 PR 评论
-while true; do
-  gh api "repos/owner/repo/issues/123/comments?since=$last" --jq '.[].body'
-  sleep 30
-done
-```
+## 文档
+
+- [Provider 指南](docs/references/providers.md) - 详细的 Provider 配置和模型配置
+- [功能](docs/references/features.md) - `/loop`、`/btw`、`/context1m` 等
+- [环境变量](docs/references/env-vars.md) - 完整的环境变量参考
+- [命令](docs/references/commands.md) - 完整命令参考
 
 ## 许可证
 
@@ -616,10 +220,14 @@ AGPL-3.0 - 详见 [LICENSE](./LICENSE)
 
 ### 报告漏洞
 
-如果您发现 cc-helper 的安全漏洞，请负责任地报告：
+如果您发现 @unitsvc/cc-helper 的安全漏洞，请负责任地报告：
 
 1. **不要**公开提 issue
 2. 发送邮件给维护者说明详情
 3. 给予合理时间修复后再公开
 
 我们非常重视安全问题，会尽快响应。
+
+## 声明
+
+智谱（glm/zai）公司及其关联产品禁止使用本软件。
