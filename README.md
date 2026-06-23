@@ -233,9 +233,9 @@ Each provider supports multiple model profiles. A profile defines mappings for a
 | kimi     | kimi-k2.6           | kimi-k2.6            | kimi-k2.6            | kimi-k2.6           | kimi-k2.6           | -           |
 | doubao   | doubao-seed-2.0-pro | doubao-seed-2.0-lite | doubao-seed-2.0-code | doubao-seed-2.0-pro | doubao-seed-2.0-pro | -           |
 | minimax  | minimax-m3          | minimax-m3           | minimax-m3           | minimax-m3          | minimax-m3          | sonnet,opus |
-| glm      | glm-5.1             | glm-5.1              | glm-5.1              | glm-5.1             | glm-5.1             | -           |
+| glm      | glm-5.2             | glm-5.2              | glm-5.2              | glm-5.2             | glm-5.2             | sonnet,opus |
 | deepseek | deepseek-v4-pro     | deepseek-v4-flash    | deepseek-v4-pro      | deepseek-v4-pro     | deepseek-v4-pro     | sonnet,opus |
-| auto     | glm-5.1             | ark-code-latest      | minimax-m3           | glm-5.1             | kimi-k2.6           | -           |
+| auto     | glm-5.2             | ark-code-latest      | deepseek-v4-pro      | glm-5.2             | kimi-k2.7-code      | -           |
 
 </details>
 
@@ -246,10 +246,10 @@ Each provider supports multiple model profiles. A profile defines mappings for a
 
 | Profile  | Model               | Haiku                | Sonnet               | Opus                | Reasoning           | Context1M   |
 | -------- | ------------------- | -------------------- | -------------------- | ------------------- | ------------------- | ----------- |
-| default  | glm-5.1             | glm-5.1              | glm-5.1              | glm-5.1             | glm-5.1             | -           |
+| default  | glm-5.2             | glm-5.2              | glm-5.2              | glm-5.2             | glm-5.2             | -           |
 | deepseek | deepseek-v4-pro     | deepseek-v4-flash    | deepseek-v4-pro      | deepseek-v4-pro     | deepseek-v4-pro     | sonnet,opus |
 | doubao   | doubao-seed-2.0-pro | doubao-seed-2.0-lite | doubao-seed-2.0-code | doubao-seed-2.0-pro | doubao-seed-2.0-pro | -           |
-| glm      | glm-5.1             | glm-5.1              | glm-5.1              | glm-5.1             | glm-5.1             | -           |
+| glm      | glm-5.2             | glm-5.2              | glm-5.2              | glm-5.2             | glm-5.2             | sonnet,opus |
 | kimi     | kimi-k2.6           | kimi-k2.6            | kimi-k2.6            | kimi-k2.6           | kimi-k2.6           | -           |
 | minimax  | minimax-m3          | minimax-m3           | minimax-m3           | minimax-m3          | minimax-m3          | sonnet,opus |
 
@@ -289,12 +289,12 @@ Each provider supports multiple model profiles. A profile defines mappings for a
 <details>
 <summary>View glm/zai model profiles (deprecated)</summary>
 
-| Profile | Model        | Haiku       | Sonnet  | Opus    | Reasoning |
-| ------- | ------------ | ----------- | ------- | ------- | --------- |
-| default | glm-5.1      | glm-4.7     | glm-5.1 | glm-5.1 | glm-5.1   |
-| 5       | glm-5        | glm-5-turbo | glm-5   | glm-5   | glm-5     |
-| 5.1     | glm-5.1      | glm-4.7     | glm-5.1 | glm-5.1 | glm-5.1   |
-| 5v      | glm-5v-turbo | glm-4.7     | glm-5.1 | glm-5.1 | glm-5.1   |
+| Profile | Model        | Haiku        | Sonnet  | Opus    | Reasoning |
+| ------- | ------------ | ------------ | ------- | ------- | --------- |
+| default | glm-5.1      | qwen3.7-plus | glm-5.1 | glm-5.1 | glm-5.1   |
+| 5       | glm-5        | glm-5-turbo  | glm-5   | glm-5   | glm-5     |
+| 5.1     | glm-5.1      | qwen3.7-plus | glm-5.1 | glm-5.1 | glm-5.1   |
+| 5v      | glm-5v-turbo | qwen3.7-plus | glm-5.1 | glm-5.1 | glm-5.1   |
 
 </details>
 
