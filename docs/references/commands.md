@@ -60,6 +60,7 @@ cc-helper mcp remove <name>               # Remove MCP server
 ```
 
 Available MCP servers:
+
 - `weixin` - WeChat channel
 - `minimaxi` - MiniMax AI
 - `xiaomi` - Xiaomi TTS
@@ -83,7 +84,9 @@ cc-helper proxy query                     # Query proxy logs (GraphQL)
 cc-helper proxy schema                    # Show GraphQL schema
 cc-helper proxy providers                 # List providers with logs
 cc-helper proxy secret                    # Manage proxy secret
-cc-helper proxy mcp                       # Run proxy MCP server
+cc-helper proxy mcp                       # Run proxy MCP server (stdio, default)
+cc-helper proxy mcp --serve               # Run proxy MCP as HTTP server (fallback if `svc add proxy` fails)
+cc-helper proxy mcp --gateway             # Run proxy MCP with HTTP gateway forwarding
 ```
 
 ## Utility Commands
