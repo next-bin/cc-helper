@@ -94,6 +94,8 @@ cc-helper sync export
 | `ark-agent` | (CN) Ark Agent Plan  |
 | `xiaomi`    | (CN) Xiaomi MiMo     |
 | `deepseek`  | DeepSeek             |
+| ~~`glm`~~   | ~~(CN) Zhipu~~       |
+| ~~`zai`~~   | ~~(EN) Zhipu~~       |
 
 > [!TIP]
 > 每个 Provider 支持多个模型配置。使用 `cc-helper plan list` 查看可用配置。
@@ -133,6 +135,9 @@ cc-helper weixin login
 ```bash
 # 添加代理服务
 cc-helper svc add proxy
+
+# 备选方案：直接以 HTTP 服务方式运行代理 MCP（如果 svc add proxy 失败）
+cc-helper proxy mcp --serve
 
 # 查看端点
 cc-helper proxy endpoints

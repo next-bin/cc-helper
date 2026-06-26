@@ -92,6 +92,8 @@ eval "$(cc-helper config claude -p bailian --proxy --profile 1m)"               
 | `ark-agent` | (CN) Ark Agent Plan  |
 | `xiaomi`    | (CN) Xiaomi MiMo     |
 | `deepseek`  | DeepSeek             |
+| ~~`glm`~~   | ~~(CN) Zhipu~~       |
+| ~~`zai`~~   | ~~(EN) Zhipu~~       |
 
 ## Model Profiles
 
@@ -109,7 +111,7 @@ Each provider supports multiple model profiles. A profile defines mappings for a
 
 | Profile | Model        | Haiku        | Sonnet       | Opus         | Reasoning    | Context1M   |
 | ------- | ------------ | ------------ | ------------ | ------------ | ------------ | ----------- |
-| default | glm-5        | glm-4.7      | glm-5        | glm-5        | glm-5        | -           |
+| default | glm-5        | qwen3.7-plus | glm-5        | glm-5        | glm-5        | -           |
 | 5       | glm-5        | glm-5        | glm-5        | qwen3.7-plus | glm-5        | opus        |
 | 1m      | glm-5        | glm-5        | qwen3.7-plus | qwen3.7-plus | glm-5        | sonnet,opus |
 | 3.6     | qwen3.6-plus | qwen3.6-plus | qwen3.6-plus | qwen3.6-plus | qwen3.6-plus | sonnet,opus |
@@ -120,6 +122,14 @@ Each provider supports multiple model profiles. A profile defines mappings for a
 | minimax | MiniMax-M2.5 | MiniMax-M2.5 | MiniMax-M2.5 | MiniMax-M2.5 | MiniMax-M2.5 | -           |
 
 ### minimaxi Profiles
+
+| Profile | Model        | Haiku                  | Sonnet       | Opus         | Reasoning    | Context1M   |
+| ------- | ------------ | ---------------------- | ------------ | ------------ | ------------ | ----------- |
+| default | MiniMax-M3   | MiniMax-M2.7-highspeed | MiniMax-M3   | MiniMax-M3   | MiniMax-M3   | sonnet,opus |
+| 2.7     | MiniMax-M2.7 | MiniMax-M2.7-highspeed | MiniMax-M2.7 | MiniMax-M2.7 | MiniMax-M2.7 | -           |
+| 3       | MiniMax-M3   | MiniMax-M3             | MiniMax-M3   | MiniMax-M3   | MiniMax-M3   | sonnet,opus |
+
+### minimax Profiles (Global)
 
 | Profile | Model        | Haiku                  | Sonnet       | Opus         | Reasoning    | Context1M   |
 | ------- | ------------ | ---------------------- | ------------ | ------------ | ------------ | ----------- |
@@ -143,10 +153,10 @@ Each provider supports multiple model profiles. A profile defines mappings for a
 
 | Profile  | Model               | Haiku                | Sonnet               | Opus                | Reasoning           | Context1M   |
 | -------- | ------------------- | -------------------- | -------------------- | ------------------- | ------------------- | ----------- |
-| default  | glm-5.2             | glm-5.2              | glm-5.2              | glm-5.2             | glm-5.2             | -           |
+| default  | glm-5.1             | glm-5.1              | glm-5.1              | glm-5.1             | glm-5.1             | -           |
 | deepseek | deepseek-v4-pro     | deepseek-v4-flash    | deepseek-v4-pro      | deepseek-v4-pro     | deepseek-v4-pro     | sonnet,opus |
 | doubao   | doubao-seed-2.0-pro | doubao-seed-2.0-lite | doubao-seed-2.0-code | doubao-seed-2.0-pro | doubao-seed-2.0-pro | -           |
-| glm      | glm-5.2             | glm-5.2              | glm-5.2              | glm-5.2             | glm-5.2             | sonnet,opus |
+| glm      | glm-5.1             | glm-5.1              | glm-5.1              | glm-5.1             | glm-5.1             | sonnet,opus |
 | kimi     | kimi-k2.6           | kimi-k2.6            | kimi-k2.6            | kimi-k2.6           | kimi-k2.6           | -           |
 | minimax  | minimax-m3          | minimax-m3           | minimax-m3           | minimax-m3          | minimax-m3          | sonnet,opus |
 
@@ -156,18 +166,29 @@ Each provider supports multiple model profiles. A profile defines mappings for a
 | ---------- | --------------- | --------------- | --------------- | --------------- | --------------- | ----------- |
 | default    | mimo-v2.5-pro   | mimo-v2.5-flash | mimo-v2.5-pro   | mimo-v2.5-pro   | mimo-v2.5-pro   | sonnet,opus |
 | pro        | mimo-v2.5-pro   | mimo-v2.5-pro   | mimo-v2.5-pro   | mimo-v2.5-pro   | mimo-v2.5-pro   | sonnet,opus |
-| v2.5       | mimo-v2.5       | mimo-v2.5       | mimo-v2.5       | mimo-v2.5       | mimo-v2.5       | -           |
-| v2.5-flash | mimo-v2.5-flash | mimo-v2.5-flash | mimo-v2.5-flash | mimo-v2.5-flash | mimo-v2.5-flash | -           |
+| v2.5       | mimo-v2.5       | mimo-v2.5       | mimo-v2.5       | mimo-v2.5       | mimo-v2.5       | sonnet,opus |
+| v2.5-flash | mimo-v2.5-flash | mimo-v2.5-flash | mimo-v2.5-flash | mimo-v2.5-flash | mimo-v2.5-flash | sonnet,opus |
 | v2         | mimo-v2-pro     | mimo-v2-omni    | mimo-v2-pro     | mimo-v2-pro     | mimo-v2-pro     | sonnet,opus |
 | omni       | mimo-v2.5       | mimo-v2-omni    | mimo-v2.5       | mimo-v2.5       | mimo-v2.5       | -           |
 
 ### deepseek Profiles
 
-| Profile | Model             | Haiku             | Sonnet            | Opus              | Reasoning         |
-| ------- | ----------------- | ----------------- | ----------------- | ----------------- | ----------------- |
-| default | deepseek-v4-pro   | deepseek-v4-flash | deepseek-v4-pro   | deepseek-v4-pro   | deepseek-v4-pro   |
-| flash   | deepseek-v4-flash | deepseek-v4-flash | deepseek-v4-flash | deepseek-v4-flash | deepseek-v4-flash |
-| pro     | deepseek-v4-pro   | deepseek-v4-pro   | deepseek-v4-pro   | deepseek-v4-pro   | deepseek-v4-pro   |
+| Profile | Model             | Haiku             | Sonnet            | Opus              | Reasoning         | Context1M   |
+| ------- | ----------------- | ----------------- | ----------------- | ----------------- | ----------------- | ----------- |
+| default | deepseek-v4-pro   | deepseek-v4-flash | deepseek-v4-flash | deepseek-v4-pro   | deepseek-v4-pro   | sonnet,opus |
+| flash   | deepseek-v4-flash | deepseek-v4-flash | deepseek-v4-flash | deepseek-v4-flash | deepseek-v4-flash | -           |
+| pro     | deepseek-v4-pro   | deepseek-v4-pro   | deepseek-v4-pro   | deepseek-v4-pro   | deepseek-v4-pro   | -           |
+
+### ~~glm / zai~~ Profiles
+
+| Profile | Model         | Haiku       | Sonnet        | Opus          | Reasoning     |
+| ------- | ------------- | ----------- | ------------- | ------------- | ------------- |
+| default | glm-5.1       | glm-4.7     | glm-5.1       | glm-5.1       | glm-5.1       |
+| 5       | glm-5         | glm-5-turbo | glm-5         | glm-5         | glm-5         |
+| 5.x     | glm-x-preview | glm-5.1     | glm-x-preview | glm-x-preview | glm-x-preview |
+| 5.1     | glm-5.1       | glm-4.7     | glm-5.1       | glm-5.1       | glm-5.1       |
+| 5.2     | glm-5.2       | glm-5.1     | glm-5.2       | glm-5.2       | glm-5.2       |
+| 5v      | glm-5v-turbo  | glm-4.7     | glm-5.1       | glm-5.1       | glm-5.1       |
 
 ## Examples
 

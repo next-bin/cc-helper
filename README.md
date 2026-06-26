@@ -94,6 +94,8 @@ cc-helper sync export
 | `ark-agent` | (CN) Ark Agent Plan  |
 | `xiaomi`    | (CN) Xiaomi MiMo     |
 | `deepseek`  | DeepSeek             |
+| ~~`glm`~~   | ~~(CN) Zhipu~~       |
+| ~~`zai`~~   | ~~(EN) Zhipu~~       |
 
 > [!TIP]
 > Each provider supports multiple model profiles. Use `cc-helper plan list` to view available profiles.
@@ -133,6 +135,9 @@ Gateway server with request logging, analytics, and key management.
 ```bash
 # Add proxy service
 cc-helper svc add proxy
+
+# Fallback: run proxy MCP as HTTP server directly (if svc add proxy fails)
+cc-helper proxy mcp --serve
 
 # View endpoints
 cc-helper proxy endpoints
