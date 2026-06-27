@@ -2,7 +2,7 @@
 
 # CC-Helper
 
-### Claude Code & Codex 的全能助手与 Provider 管理工具
+### Claude Code、CodeBuddy 与 Codex 的全能助手与 Provider 管理工具
 
 [![npm version](https://img.shields.io/npm/v/@unitsvc/cc-helper.svg?color=blue&label=version)](https://www.npmjs.com/package/@unitsvc/cc-helper)
 [![npm downloads](https://img.shields.io/npm/dt/@unitsvc/cc-helper.svg?color=green&label=downloads)](https://www.npmjs.com/package/@unitsvc/cc-helper)
@@ -13,7 +13,7 @@
 
 </div>
 
-多 Provider 管理、MCP 服务器、通道集成和 AI Provider 代理工具包，适用于 Claude Code 和 Codex CLI。
+多 Provider 管理、MCP 服务器、通道集成和 AI Provider 代理工具包，适用于 Claude Code、CodeBuddy 和 Codex CLI。
 
 > [!TIP]
 > **核心特性**
@@ -27,6 +27,7 @@
 
 ---
 
+- [前置条件](#前置条件)
 - [安装](#安装)
 - [快速开始](#快速开始)
 - [通道与 MCP](#通道与-mcp)
@@ -38,6 +39,24 @@
 - [安全](#安全)
 - [声明](#声明)
 
+## 前置条件
+
+cc-helper 用于配置和管理以下编码 Agent CLI，按需安装：
+
+```bash
+# Claude Code（建议固定版本）
+npm install -g @anthropic-ai/claude-code@v2.1.112
+
+# Codex CLI
+npm install -g @openai/codex@latest
+
+# CodeBuddy
+npm install -g @tencent-ai/codebuddy-code@latest
+```
+
+> [!TIP]
+> 如需加速安装，可在命令后追加 `--registry=https://registry.npmmirror.com`。
+
 ## 安装
 
 ```bash
@@ -45,7 +64,7 @@ npm install -g @unitsvc/cc-helper@latest
 ```
 
 > [!NOTE]
-> 需要 Node.js >= 14.0.0，Claude Code v2.1.71+ 或 Codex 0.80.0+
+> 需要 Node.js >= 14.0.0。请至少安装一个受支持的 CLI：Claude Code v2.1.71+、CodeBuddy 或 Codex 0.80.0+。
 
 ### 更新与代理
 

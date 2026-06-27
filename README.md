@@ -2,7 +2,7 @@
 
 # CC-Helper
 
-### The All-in-One Assistant & Provider Manager for Claude Code & Codex
+### The All-in-One Assistant & Provider Manager for Claude Code, CodeBuddy & Codex
 
 [![npm version](https://img.shields.io/npm/v/@unitsvc/cc-helper.svg?color=blue&label=version)](https://www.npmjs.com/package/@unitsvc/cc-helper)
 [![npm downloads](https://img.shields.io/npm/dt/@unitsvc/cc-helper.svg?color=green&label=downloads)](https://www.npmjs.com/package/@unitsvc/cc-helper)
@@ -13,7 +13,7 @@ English | [简体中文](README-zh.md)
 
 </div>
 
-Multi-provider management, MCP servers, channels, and AI provider proxy toolkit for Claude Code & Codex CLI.
+Multi-provider management, MCP servers, channels, and AI provider proxy toolkit for Claude Code, CodeBuddy & Codex CLI.
 
 > [!TIP]
 > **Key features**
@@ -27,6 +27,7 @@ Multi-provider management, MCP servers, channels, and AI provider proxy toolkit 
 
 ---
 
+- [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Quick Start](#quick-start)
 - [Channels & MCP](#channels--mcp)
@@ -38,6 +39,24 @@ Multi-provider management, MCP servers, channels, and AI provider proxy toolkit 
 - [Security](#security)
 - [Disclaimer](#disclaimer)
 
+## Prerequisites
+
+cc-helper configures and manages these coding agent CLIs. Install the ones you plan to use:
+
+```bash
+# Claude Code (pinned version recommended)
+npm install -g @anthropic-ai/claude-code@v2.1.112
+
+# Codex CLI
+npm install -g @openai/codex@latest
+
+# CodeBuddy
+npm install -g @tencent-ai/codebuddy-code@latest
+```
+
+> [!TIP]
+> For faster installs, append `--registry=https://registry.npmmirror.com` to the command.
+
 ## Installation
 
 ```bash
@@ -45,7 +64,7 @@ npm install -g @unitsvc/cc-helper@latest
 ```
 
 > [!NOTE]
-> Requires Node.js >= 14.0.0, Claude Code v2.1.71+ or Codex 0.80.0+
+> Requires Node.js >= 14.0.0. Install at least one supported CLI: Claude Code v2.1.71+, CodeBuddy, or Codex 0.80.0+.
 
 ### Update & Proxy
 
