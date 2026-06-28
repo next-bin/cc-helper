@@ -73,10 +73,10 @@ npm install -g @unitsvc/cc-helper@latest
 cc-helper update
 
 # Enable download proxy (if npm install fails)
-cc-helper --dl-proxy enable
+cc-helper update --dl-proxy
 
 # Use custom proxy
-cc-helper --dl-proxy https://your-proxy.com enable
+cc-helper update --dl-proxy https://your-proxy.com
 ```
 
 ## Quick Start

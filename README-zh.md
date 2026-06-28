@@ -73,10 +73,10 @@ npm install -g @unitsvc/cc-helper@latest
 cc-helper update
 
 # 启用下载代理（如果 npm install 失败）
-cc-helper --dl-proxy enable
+cc-helper update --dl-proxy
 
 # 使用自定义代理
-cc-helper --dl-proxy https://your-proxy.com enable
+cc-helper update --dl-proxy https://your-proxy.com
 ```
 
 ## 快速开始
