@@ -139,15 +139,15 @@ Each provider supports multiple model profiles. A profile defines mappings for a
 
 ### ark Profiles
 
-| Profile  | Model               | Haiku                | Sonnet               | Opus                | Reasoning           | Context1M   |
-| -------- | ------------------- | -------------------- | -------------------- | ------------------- | ------------------- | ----------- |
-| default  | kimi-k2.6           | kimi-k2.6            | kimi-k2.6            | kimi-k2.6           | kimi-k2.6           | -           |
-| kimi     | kimi-k2.6           | kimi-k2.6            | kimi-k2.6            | kimi-k2.6           | kimi-k2.6           | -           |
-| doubao   | doubao-seed-2.0-pro | doubao-seed-2.0-lite | doubao-seed-2.0-code | doubao-seed-2.0-pro | doubao-seed-2.0-pro | -           |
-| minimax  | minimax-m3          | minimax-m3           | minimax-m3           | minimax-m3          | minimax-m3          | sonnet,opus |
-| glm      | glm-5.2             | glm-5.2              | glm-5.2              | glm-5.2             | glm-5.2             | sonnet,opus |
-| deepseek | deepseek-v4-pro     | deepseek-v4-flash    | deepseek-v4-pro      | deepseek-v4-pro     | deepseek-v4-pro     | sonnet,opus |
-| auto     | glm-5.2             | ark-code-latest      | deepseek-v4-pro      | glm-5.2             | kimi-k2.7-code      | -           |
+| Profile  | Model                 | Haiku                | Sonnet                | Opus                  | Reasoning             | Context1M   |
+| -------- | --------------------- | -------------------- | --------------------- | --------------------- | --------------------- | ----------- |
+| default  | kimi-k2.7-code        | kimi-k2.7-code       | kimi-k2.7-code        | kimi-k2.7-code        | kimi-k2.7-code        | -           |
+| kimi     | kimi-k2.7-code        | kimi-k2.7-code       | kimi-k2.7-code        | kimi-k2.7-code        | kimi-k2.7-code        | -           |
+| doubao   | doubao-seed-2.1-turbo | doubao-seed-2.0-lite | doubao-seed-2.1-turbo | doubao-seed-2.1-turbo | doubao-seed-2.1-turbo | -           |
+| minimax  | minimax-m3            | minimax-m3           | minimax-m3            | minimax-m3            | minimax-m3            | sonnet,opus |
+| glm      | glm-5.3               | glm-5.3              | glm-5.3               | glm-5.3               | glm-5.3               | sonnet,opus |
+| deepseek | deepseek-v4-pro       | deepseek-v4-flash    | deepseek-v4-pro       | deepseek-v4-pro       | deepseek-v4-pro       | sonnet,opus |
+| auto     | glm-5.3               | ark-code-latest      | deepseek-v4-pro       | glm-5.3               | kimi-k2.7-code        | -           |
 
 ### ark-agent Profiles
 
@@ -183,11 +183,12 @@ Each provider supports multiple model profiles. A profile defines mappings for a
 
 | Profile | Model         | Haiku       | Sonnet        | Opus          | Reasoning     |
 | ------- | ------------- | ----------- | ------------- | ------------- | ------------- |
-| default | glm-5.1       | glm-4.7     | glm-5.1       | glm-5.1       | glm-5.1       |
+| default | glm-5.3       | glm-5.3     | glm-5.3       | glm-5.3       | glm-5.3       |
 | 5       | glm-5         | glm-5-turbo | glm-5         | glm-5         | glm-5         |
 | 5.x     | glm-x-preview | glm-5.1     | glm-x-preview | glm-x-preview | glm-x-preview |
 | 5.1     | glm-5.1       | glm-4.7     | glm-5.1       | glm-5.1       | glm-5.1       |
 | 5.2     | glm-5.2       | glm-5.1     | glm-5.2       | glm-5.2       | glm-5.2       |
+| 5.3     | glm-5.3       | glm-5.3     | glm-5.3       | glm-5.3       | glm-5.3       |
 | 5v      | glm-5v-turbo  | glm-4.7     | glm-5.1       | glm-5.1       | glm-5.1       |
 
 ## Examples
