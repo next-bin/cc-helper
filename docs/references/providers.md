@@ -181,15 +181,18 @@ Each provider supports multiple model profiles. A profile defines mappings for a
 
 ### ~~glm / zai~~ Profiles
 
-| Profile | Model         | Haiku       | Sonnet        | Opus          | Reasoning     |
-| ------- | ------------- | ----------- | ------------- | ------------- | ------------- |
-| default | glm-5.3       | glm-5.3     | glm-5.3       | glm-5.3       | glm-5.3       |
-| 5       | glm-5         | glm-5-turbo | glm-5         | glm-5         | glm-5         |
-| 5.x     | glm-x-preview | glm-5.1     | glm-x-preview | glm-x-preview | glm-x-preview |
-| 5.1     | glm-5.1       | glm-4.7     | glm-5.1       | glm-5.1       | glm-5.1       |
-| 5.2     | glm-5.2       | glm-5.1     | glm-5.2       | glm-5.2       | glm-5.2       |
-| 5.3     | glm-5.3       | glm-5.3     | glm-5.3       | glm-5.3       | glm-5.3       |
-| 5v      | glm-5v-turbo  | glm-4.7     | glm-5.1       | glm-5.1       | glm-5.1       |
+| Profile   | Model         | Haiku         | Sonnet        | Opus          | Reasoning     |
+| --------- | ------------- | ------------- | ------------- | ------------- | ------------- |
+| default   | glm-5.3       | glm-5.3-flash | glm-5.3       | glm-5.3       | glm-5.3       |
+| 5         | glm-5         | glm-5-turbo   | glm-5         | glm-5         | glm-5         |
+| 5.x       | glm-x-preview | glm-5.1       | glm-x-preview | glm-x-preview | glm-x-preview |
+| 5.1       | glm-5.1       | glm-4.7       | glm-5.1       | glm-5.1       | glm-5.1       |
+| 5.2       | glm-5.2       | glm-5.1       | glm-5.2       | glm-5.2       | glm-5.2       |
+| 5.3       | glm-5.3       | glm-5.3-flash | glm-5.3       | glm-5.3       | glm-5.3       |
+| 5.3-flash | glm-5.3-flash | glm-5.3-flash | glm-5.3-flash | glm-5.3-flash | glm-5.3-flash |
+| 5v        | glm-5v-turbo  | glm-4.7       | glm-5.1       | glm-5.1       | glm-5.1       |
+
+Note: glm-5.3-flash is natively multimodal (image/video/file input) with a 1M context window; other GLM text models are text-only.
 
 ## Examples
 
